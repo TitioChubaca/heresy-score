@@ -1,9 +1,16 @@
 {
-  "name": "Heresy Score",
-  "short_name": "Heresy Score",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#0d0d0c",
-  "theme_color": "#11100e",
-  "description": "Spoiler-safe reading soundtrack companion."
+  "id":"./",
+  "name":"Heresy Score",
+  "short_name":"Heresy Score",
+  "description":"Spoiler-safe reading soundtrack companion.",
+  "start_url":"./",
+  "scope":"./",
+  "display":"standalone",
+  "display_override":["window-controls-overlay","standalone"],
+  "background_color":"#050805",
+  "theme_color":"#081008",
+  "orientation":"portrait-primary",
+  "icons":[
+    {"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
 }
