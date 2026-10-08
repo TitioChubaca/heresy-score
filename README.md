@@ -1,4 +1,4 @@
-# Heresy Score — v0.2
+# Heresy Score — v0.3
 
 Mobile-first spoiler-safe reading soundtrack companion.
 
@@ -15,3 +15,10 @@ Spotify playlist:
 https://open.spotify.com/playlist/2rKr6gNZuXBCIbIIU5LJyU?si=18JNKEkWR5asIwBt3CTxFg
 
 No official Games Workshop artwork or logos are used.
+
+## v0.3 visual pass
+- Uses the uploaded Aquila in the main masthead.
+- Replaces the Unicode skull divider with a real black-and-white skull asset.
+- Adds a subtle animated Administratum transmission in the book header.
+- Adds the Administratum seal to the active reading directive.
+- Keeps the v0.1 localStorage key so reading progress is preserved.
