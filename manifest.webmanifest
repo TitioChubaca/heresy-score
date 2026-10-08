@@ -1,0 +1,9 @@
+{
+  "name": "Heresy Score",
+  "short_name": "Heresy Score",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0d0d0c",
+  "theme_color": "#11100e",
+  "description": "Spoiler-safe reading soundtrack companion."
+}
