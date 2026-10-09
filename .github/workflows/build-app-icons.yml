@@ -24,7 +24,7 @@ jobs:
       - run: python scripts/build_app_icons.py
       - name: Commit generated icons
         run: |
-          if git diff --quiet -- assets/ui/icons; then
+          if [ -z "$(git status --porcelain -- assets/ui/icons)" ]; then
             echo "Icons already current"
             exit 0
           fi
