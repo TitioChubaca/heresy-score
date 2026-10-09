@@ -12,10 +12,16 @@
   "orientation":"portrait-primary",
   "icons":[
     {
+      "src":"./assets/ui/app-icon.svg",
+      "sizes":"any",
+      "type":"image/svg+xml",
+      "purpose":"any maskable"
+    },
+    {
       "src":"./assets/ui/symbols/aquila.png",
       "sizes":"800x800",
       "type":"image/png",
-      "purpose":"any maskable"
+      "purpose":"any"
     }
   ]
 }
