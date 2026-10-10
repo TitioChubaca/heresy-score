@@ -97,3 +97,8 @@ with check (
     'hex'
   )
 );
+
+-- Browser access is still constrained by the RLS policies above.
+grant select, insert, update on table public.reading_logs to anon;
+grant usage, select on sequence public.reading_logs_id_seq to anon;
+revoke delete on table public.reading_logs from anon;
