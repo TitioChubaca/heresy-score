@@ -2,6 +2,20 @@
 
 All notable changes to Heresy Score are tracked here.
 
+## v0.9.0 — Archive / track feedback
+
+- Confirmed Chapters I–IV are successfully mirrored in Supabase.
+- Added per-track `Fits` / `Doesn't Fit` marks during active Spotify playback.
+- Track marks are stored with the chapter payload and included in copied debriefs.
+- Added private Archive Recovery Code copy/restore controls for cross-install log recovery.
+- Added a spoiler-gated Voidcraft & Theatre Archive.
+- Seeded safe archive records for Eisenstein, Terminus Est, Istvaan III and a REDACTED Barbarus visual record.
+- Added archive category filters for Voidcraft and Worlds / Theatres.
+- Recalibrated the future music pool from Chapters III–IV feedback.
+- Removed `A Speech On Earth` from the upcoming Chapter VI score and flagged it with `Side By Side` as a poor-fit candidate.
+- Added a staged Chapter VII score so the app retains a three-chapter buffer.
+- Chapter-specific reserve/final-cue rules remain independent per chapter.
+
 ## v0.8.4 — Cloud sync transport fix
 
 - Fixed Supabase REST authentication for modern `sb_publishable_...` keys.
