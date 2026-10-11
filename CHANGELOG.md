@@ -2,6 +2,18 @@
 
 All notable changes to Heresy Score are tracked here.
 
+## v0.8.3 — Managed cloud logs
+
+- Created the production Supabase project in `sa-east-1`.
+- Applied the reading log schema and RLS policies.
+- Added a private stable helper for per-install sync-token RLS.
+- Added an owner/book/chapter lookup index.
+- Verified RLS with an anon-role smoke test.
+- Supabase security and performance advisors now report no findings.
+- Embedded the project URL and publishable browser key in the PWA.
+- Existing local logs auto-mirror to Supabase on app load.
+- Cloud logs are pulled back after sync for recovery across sessions/devices using the same install token.
+
 ## v0.8.2 — Reading session / archive expansion
 
 - Added integrated reading-session controls for Spotify.
