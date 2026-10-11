@@ -43,6 +43,27 @@ for each row execute function public.set_updated_at();
 
 alter table public.reading_logs enable row level security;
 
+create schema if not exists private;
+
+create or replace function private.request_sync_hash()
+returns text
+language sql
+stable
+security invoker
+set search_path = ''
+as $$
+  select encode(
+    extensions.digest(
+      coalesce((current_setting('request.headers', true)::json ->> 'x-sync-token'), ''),
+      'sha256'
+    ),
+    'hex'
+  )
+$$;
+
+grant usage on schema private to anon;
+grant execute on function private.request_sync_hash() to anon;
+
 drop policy if exists "reading_logs_select_owner" on public.reading_logs;
 drop policy if exists "reading_logs_insert_owner" on public.reading_logs;
 drop policy if exists "reading_logs_update_owner" on public.reading_logs;
@@ -51,60 +72,20 @@ create policy "reading_logs_select_owner"
 on public.reading_logs
 for select
 to anon
-using (
-  owner_hash = (
-    select encode(
-      digest(
-        coalesce((current_setting('request.headers', true)::json ->> 'x-sync-token'), ''),
-        'sha256'
-      ),
-      'hex'
-    )
-  )
-);
+using (owner_hash = (select private.request_sync_hash()));
 
 create policy "reading_logs_insert_owner"
 on public.reading_logs
 for insert
 to anon
-with check (
-  owner_hash = (
-    select encode(
-      digest(
-        coalesce((current_setting('request.headers', true)::json ->> 'x-sync-token'), ''),
-        'sha256'
-      ),
-      'hex'
-    )
-  )
-);
+with check (owner_hash = (select private.request_sync_hash()));
 
 create policy "reading_logs_update_owner"
 on public.reading_logs
 for update
 to anon
-using (
-  owner_hash = (
-    select encode(
-      digest(
-        coalesce((current_setting('request.headers', true)::json ->> 'x-sync-token'), ''),
-        'sha256'
-      ),
-      'hex'
-    )
-  )
-)
-with check (
-  owner_hash = (
-    select encode(
-      digest(
-        coalesce((current_setting('request.headers', true)::json ->> 'x-sync-token'), ''),
-        'sha256'
-      ),
-      'hex'
-    )
-  )
-);
+using (owner_hash = (select private.request_sync_hash()))
+with check (owner_hash = (select private.request_sync_hash()));
 
 -- Browser access is still constrained by the RLS policies above.
 grant select, insert, update on table public.reading_logs to anon;
