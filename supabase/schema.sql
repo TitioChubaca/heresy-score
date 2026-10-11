@@ -52,12 +52,14 @@ on public.reading_logs
 for select
 to anon
 using (
-  owner_hash = encode(
-    digest(
-      coalesce((current_setting('request.headers', true)::json ->> 'x-sync-token'), ''),
-      'sha256'
-    ),
-    'hex'
+  owner_hash = (
+    select encode(
+      digest(
+        coalesce((current_setting('request.headers', true)::json ->> 'x-sync-token'), ''),
+        'sha256'
+      ),
+      'hex'
+    )
   )
 );
 
@@ -66,12 +68,14 @@ on public.reading_logs
 for insert
 to anon
 with check (
-  owner_hash = encode(
-    digest(
-      coalesce((current_setting('request.headers', true)::json ->> 'x-sync-token'), ''),
-      'sha256'
-    ),
-    'hex'
+  owner_hash = (
+    select encode(
+      digest(
+        coalesce((current_setting('request.headers', true)::json ->> 'x-sync-token'), ''),
+        'sha256'
+      ),
+      'hex'
+    )
   )
 );
 
@@ -80,21 +84,25 @@ on public.reading_logs
 for update
 to anon
 using (
-  owner_hash = encode(
-    digest(
-      coalesce((current_setting('request.headers', true)::json ->> 'x-sync-token'), ''),
-      'sha256'
-    ),
-    'hex'
+  owner_hash = (
+    select encode(
+      digest(
+        coalesce((current_setting('request.headers', true)::json ->> 'x-sync-token'), ''),
+        'sha256'
+      ),
+      'hex'
+    )
   )
 )
 with check (
-  owner_hash = encode(
-    digest(
-      coalesce((current_setting('request.headers', true)::json ->> 'x-sync-token'), ''),
-      'sha256'
-    ),
-    'hex'
+  owner_hash = (
+    select encode(
+      digest(
+        coalesce((current_setting('request.headers', true)::json ->> 'x-sync-token'), ''),
+        'sha256'
+      ),
+      'hex'
+    )
   )
 );
 
@@ -102,3 +110,7 @@ with check (
 grant select, insert, update on table public.reading_logs to anon;
 grant usage, select on sequence public.reading_logs_id_seq to anon;
 revoke delete on table public.reading_logs from anon;
+
+
+create index if not exists reading_logs_owner_book_chapter_idx
+on public.reading_logs(owner_hash, book_slug, chapter);
