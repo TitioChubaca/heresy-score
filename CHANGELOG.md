@@ -2,6 +2,12 @@
 
 All notable changes to Heresy Score are tracked here.
 
+## v0.8.4 — Cloud sync transport fix
+
+- Fixed Supabase REST authentication for modern `sb_publishable_...` keys.
+- Publishable keys now use the `apikey` header without being misparsed as a JWT.
+- Local chapter logs will auto-mirror on the next app load.
+
 ## v0.8.3 — Managed cloud logs
 
 - Created the production Supabase project in `sa-east-1`.
