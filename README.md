@@ -1,4 +1,4 @@
-# Heresy Score — v0.8.2
+# Heresy Score — v0.8.3
 
 Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 
@@ -46,7 +46,7 @@ The app maintains one private active playlist and replaces its contents with the
 
 ## Cloud logs
 
-A Supabase schema is included at:
+Cloud sync is active. A reproducible Supabase schema is included at:
 
 `supabase/schema.sql`
 
@@ -57,7 +57,7 @@ The frontend already supports:
 - per-install sync tokens,
 - local-first fallback.
 
-The Supabase backend still needs to be provisioned and the schema applied before cloud sync is active.
+The Supabase backend is provisioned in São Paulo (`sa-east-1`), the schema is applied, RLS is enabled, and the PWA is preconfigured with the project URL and publishable key. Existing local logs are mirrored automatically on the next app load unless cloud sync was explicitly disabled.
 
 ## Repository layout
 
