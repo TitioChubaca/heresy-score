@@ -99,14 +99,24 @@ const SCORES={
 ["Planetfall","Nikola Nikita Jeremic"],["Impending Storm","Vsevolod Borisov"],["Warriors of Mars","Guillaume David"],["Dock Alpha-Rho Skirmish","Pawel Perepelica"],["Millennial Rage","Guillaume David"],["Clash of Convictions","Nikolay Filipovich"],["Broadside Cannonade","Pawel Perepelica"],["Martyr's Endurance","Pawel Perepelica"],["A Fool's Hope","Guillaume David"],["Absolution","Pawel Perepelica"]
 ],
 6:[
-["Minus 273 Degrees","Guillaume David"],["Shadow Quarters","Pawel Perepelica"],["Inside The Station","Guillaume David"],["A Speech On Earth","Guillaume David"],["Ancient Mystery","Nikolay Filipovich"],["Beyond The Asteroid Belt","Guillaume David"],["Lost Signal","Guillaume David"],["Barren","Nikola Nikita Jeremic"],["Adrift","Pawel Perepelica"],["Imperium's Bastion","Dmitry V. Silantyev"],["Our Endless March","Dmitry V. Silantyev"]
+["Minus 273 Degrees","Guillaume David"],["Shadow Quarters","Pawel Perepelica"],["Inside The Station","Guillaume David"],["Darkness Between the Stars","Pawel Perepelica"],["Ancient Mystery","Nikolay Filipovich"],["Beyond The Asteroid Belt","Guillaume David"],["Lost Signal","Guillaume David"],["Barren","Nikola Nikita Jeremic"],["Adrift","Pawel Perepelica"],["Imperium's Bastion","Dmitry V. Silantyev"],["Our Endless March","Dmitry V. Silantyev"]
+],
+7:[
+["Shadow Quarters","Pawel Perepelica"],["Impending Storm","Vsevolod Borisov"],["Lost Signal","Guillaume David"],["Caestus Metalican","Guillaume David"],["Warriors of Mars","Guillaume David"],["Clash of Convictions","Nikolay Filipovich"],["Millennial Rage","Guillaume David"],["Absolution","Pawel Perepelica"],["Our Endless March","Dmitry V. Silantyev"]
 ]};
 const SCORE_META={
 2:{estimatedMinutes:39,startCue:"Darkness Between the Stars",stage:"logged",reserveIndexes:[],finalCueIndex:10},
 3:{estimatedMinutes:36,startCue:"EMV Charon",stage:"logged",reserveIndexes:[],finalCueIndex:12},
 4:{estimatedMinutes:36,startCue:"Across The Void",stage:"ready",reserveIndexes:[],finalCueIndex:10},
 5:{estimatedMinutes:34,startCue:"Planetfall",stage:"prepared",reserveIndexes:[6],finalCueIndex:9},
-6:{estimatedMinutes:36,startCue:"Minus 273 Degrees",stage:"prepared",reserveIndexes:[],finalCueIndex:10}
+6:{estimatedMinutes:35,startCue:"Minus 273 Degrees",stage:"prepared",reserveIndexes:[],finalCueIndex:10},
+7:{estimatedMinutes:34,startCue:"Shadow Quarters",stage:"prepared",reserveIndexes:[6],finalCueIndex:8}
+};
+const MUSIC_CALIBRATION={
+avoid:["Side By Side","A Speech On Earth"],
+strongFits:["Noosphere"],
+paceMinutes:{3:33,4:33},
+notes:"Dialogue-heavy passages need restraint; reserve tracks are chapter-specific and never follow the protected final cue."
 };
 const chapters=Array.from({length:20},(_,k)=>{const i=k+1,m=SCORE_META[i]||{};return{number:i,title:"CHAPTER "+String(i).padStart(2,"0"),estimatedMinutes:m.estimatedMinutes||null,startCue:m.startCue||null}});
 const people=[
