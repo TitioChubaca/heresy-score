@@ -1,4 +1,4 @@
-# Heresy Score — v0.8.3
+# Heresy Score — v0.9.0
 
 Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 
@@ -7,7 +7,8 @@ Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 - Active book: *The Flight of the Eisenstein*
 - Spoiler clearance: through Chapter III
 - Chapter IV: READY
-- Chapters V–VI: STAGED
+- Chapter V: READY
+- Chapters VI–VII: STAGED
 - Local progress key is still `heresy-score-v01` so existing reading history survives upgrades.
 
 ## Main features
@@ -29,11 +30,14 @@ Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
   - reading time
   - duration / opening / peak feedback
   - notes
+  - per-track Fits / Doesn't Fit marks
   - Copy Debrief
   - local/cloud sync state
 - Compact chapter reading window plus full archive toggle.
 - Book archive view.
 - Spoiler-gated Dramatis Personae.
+- Voidcraft & Theatre Archive with clearance-gated records and explicit Official / Reconstruction / REDACTED provenance.
+- Private Archive Recovery Code for restoring the same cloud log identity after reinstalling or moving devices.
 - Safe character visuals when a period-appropriate source is available.
 - Imperial-style REDACTED dossiers when a safe visual is not available.
 - Dedicated adaptive-safe PWA icon generated from the repository Aquila asset.
@@ -57,7 +61,7 @@ The frontend already supports:
 - per-install sync tokens,
 - local-first fallback.
 
-The Supabase backend is provisioned in São Paulo (`sa-east-1`), the schema is applied, RLS is enabled, and the PWA is preconfigured with the project URL and publishable key. Existing local logs are mirrored automatically on the next app load unless cloud sync was explicitly disabled.
+The Supabase backend is provisioned in São Paulo (`sa-east-1`), the schema is applied, RLS is enabled, and the PWA is preconfigured with the project URL and publishable key. Existing local logs are mirrored automatically on app load unless cloud sync was explicitly disabled. The archive recovery code can be copied to another installation to recover the same log identity.
 
 ## Repository layout
 
