@@ -1,4 +1,4 @@
-# Heresy Score — v0.9.0
+# Heresy Score — v0.9.1
 
 Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 
@@ -15,6 +15,7 @@ Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 
 - PWA installable on mobile.
 - Spotify PKCE connection with automatic private chapter playlist sync.
+- Spotify playback-device state detection, with the reading timer held at 00:00 when Spotify has no active device.
 - In-app reading session controls:
   - Play / Resume
   - Pause session
@@ -36,6 +37,8 @@ Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 - Compact chapter reading window plus full archive toggle.
 - Book archive view.
 - Spoiler-gated Dramatis Personae.
+- Progressive spoiler-safe character summaries that expand only when the relevant chapter clearance is reached.
+- Broken/unreliable external character visuals fall back to an intentional REDACTED record instead of a broken image.
 - Voidcraft & Theatre Archive with clearance-gated records and explicit Official / Reconstruction / REDACTED provenance.
 - Private Archive Recovery Code for restoring the same cloud log identity after reinstalling or moving devices.
 - Safe character visuals when a period-appropriate source is available.
