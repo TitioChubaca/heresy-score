@@ -2,6 +2,18 @@
 
 All notable changes to Heresy Score are tracked here.
 
+## v0.9.1 — Spotify device flow / personae summaries
+
+- Added Spotify playback-device detection.
+- If no Spotify device is active when a chapter begins, the reading session now starts paused at 00:00 instead of silently running the timer.
+- Settings now distinguishes Spotify connection state from playback-device state.
+- Returning to the PWA triggers a device recheck, so opening Spotify once and coming back makes Resume reliable.
+- Added progressive spoiler-safe summaries to every currently unlocked Dramatis Personae record.
+- Character summaries gain additional details only after the relevant chapter clearance.
+- REDACTED character dossiers can now be opened and read even without an image.
+- Removed the unreliable Calas Typhon product-image endpoint; the card now intentionally shows REDACTED instead of a broken image.
+- Remote official visual failures now degrade gracefully while leaving the textual dossier usable.
+
 ## v0.9.0 — Archive / track feedback
 
 - Confirmed Chapters I–IV are successfully mirrored in Supabase.
