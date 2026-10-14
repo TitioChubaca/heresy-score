@@ -1,4 +1,4 @@
-# Heresy Score — v0.9.2
+# Heresy Score — v0.9.3
 
 Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 
