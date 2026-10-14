@@ -2,6 +2,14 @@
 
 All notable changes to Heresy Score are tracked here.
 
+## v0.9.3 — Spotify device targeting
+
+- Fixed Resume when Spotify reports the phone as available but not yet active.
+- The app now resolves a usable Spotify device and targets playback with its device ID.
+- Device preference favors the current active device, then the last device, then a smartphone/computer.
+- Spotify Settings now distinguishes an available device from an active playback device.
+- Resume errors now report whether Spotify returned no device at all.
+
 ## v0.9.2 — Chapter VIII / live personae roster
 
 - Staged the Chapter VIII score using the new scene-first soundtrack approach.
