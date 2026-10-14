@@ -2,6 +2,16 @@
 
 All notable changes to Heresy Score are tracked here.
 
+## v0.9.2 — Chapter VIII / live personae roster
+
+- Staged the Chapter VIII score using the new scene-first soundtrack approach.
+- Chapter VIII targets approximately 35 minutes and is ordered around changing scene function rather than a simple low-to-high intensity curve.
+- Added Tollen Sendek and Shipmaster Baryk Carya to the spoiler-safe roster.
+- Added currently encountered Emperor's Children records for Saul Tarvitz, Eidolon and Fabius.
+- Added progressive character status tracking.
+- Pyr Rahl now changes to DECEASED at Chapter VI clearance instead of remaining generically ACTIVE.
+- Personae summaries and statuses continue to unlock only at the chapter where the information becomes known.
+
 ## v0.9.1 — Spotify device flow / personae summaries
 
 - Added Spotify playback-device detection.
