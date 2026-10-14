@@ -2,6 +2,13 @@
 
 All notable changes to Heresy Score are tracked here.
 
+## v0.9.4 — Timer / Spotify state recovery
+
+- Fixed a case where Spotify playback could start successfully while the app still treated the device command as failed.
+- Resume now starts the Heresy Score reading timer immediately; Spotify device reporting can no longer block the chronometer.
+- If Spotify playback begins manually while a fresh session is waiting at 00:00, the app detects it and resumes the reading timer.
+- Spotify Resume now verifies the real player state after an ambiguous playback API response.
+
 ## v0.9.3 — Spotify device targeting
 
 - Fixed Resume when Spotify reports the phone as available but not yet active.
