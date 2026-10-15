@@ -5,7 +5,7 @@ Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 ## Current reading state
 
 - Active book: *The Flight of the Eisenstein*
-- Spoiler clearance: through Chapter VIII
+- Spoiler clearance: through Chapter VIIIII
 - Chapter IX: READY
 - Chapters X–XI: STAGED
 - Local progress key is still `heresy-score-v01` so existing reading history survives upgrades.
