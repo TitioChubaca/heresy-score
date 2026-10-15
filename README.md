@@ -1,13 +1,13 @@
-# Heresy Score — v0.9.4
+# Heresy Score — v0.10.0
 
 Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 
 ## Current reading state
 
 - Active book: *The Flight of the Eisenstein*
-- Spoiler clearance: through Chapter VI
-- Chapter VII: READY
-- Chapter VIII: STAGED
+- Spoiler clearance: through Chapter VIII
+- Chapter IX: READY
+- Chapters X–XI: STAGED
 - Local progress key is still `heresy-score-v01` so existing reading history survives upgrades.
 
 ## Main features
@@ -22,6 +22,8 @@ Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
   - protected Final Cue jump
 - Reading timer pauses together with the Spotify session.
 - Scene-first soundtrack curation: emotional/scene function is prioritized before total playlist duration.
+- Pace-aware chapter targeting uses the reader's ~1.5 min/page baseline plus recent actual chapter times; duration is calibrated per chapter rather than with a global buffer.
+- Leitmotif layer tracks recurring musical identities without forcing the same cue into every appearance.
 - Chapter-specific score metadata supports:
   - curated target duration
   - optional reserve tracks only where the chapter structure allows them
