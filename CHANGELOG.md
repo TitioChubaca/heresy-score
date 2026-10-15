@@ -2,6 +2,13 @@
 
 All notable changes to Heresy Score are tracked here.
 
+## v0.10.0 — Score calibration
+
+- Added Chapters IX–XI score preparation.
+- Duration is now calibrated chapter by chapter from reading pace and recent logs.
+- Added formal leitmotif metadata for recurring musical identities.
+- Updated current character statuses through Chapter VIII.
+
 ## v0.9.4 — Timer / Spotify state recovery
 
 - Fixed a case where Spotify playback could start successfully while the app still treated the device command as failed.
