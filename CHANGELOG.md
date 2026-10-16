@@ -2,6 +2,15 @@
 
 All notable changes to Heresy Score are tracked here.
 
+## v0.10.1 — Post-Isstvan tone calibration
+
+- Calibrated Chapter IX feedback: about 30 minutes, slightly short at the end, and too heroic during the known virus catastrophe.
+- Added a tragic-inevitability scoring rule for disasters the reader already knows are coming.
+- Expanded the composer pool with Jesper Kyd and Jonathan Cacherat from official Warhammer soundtracks.
+- Refined Chapters X–XI with the broader palette and chapter-specific duration targets.
+- Added Huron-Fal and updated Ullis Temeter to DECEASED at Chapter IX clearance.
+- Added Garro's Chapter IX faith development to his spoiler-safe dossier.
+
 ## v0.10.0 — Score calibration
 
 - Added Chapters IX–XI score preparation.
