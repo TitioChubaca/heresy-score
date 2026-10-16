@@ -44,7 +44,7 @@ dialog{border:1px solid #536c49;background:#0a100a;color:var(--bone);width:calc(
 <div class="top"><span>Archive Node // XIV-L</span><span id="mode" class="online">WEB LINK</span></div>
 <div id="install" class="install"><span>Standalone shell available</span><button class="btn primary" id="installBtn">Install App</button></div>
 <header class="mast"><div class="sigil"><img src="./assets/ui/symbols/aquila.png" alt="Imperial Aquila"></div><div><h1>Heresy Score</h1><div class="sub">Adeptus Archivum // Reading Protocol</div></div><button class="menu-btn" id="menuBtn" aria-label="Open archive menu" aria-expanded="false">☰</button><nav class="navmenu" id="navMenu" aria-label="Archive navigation"><button class="navitem active" data-view="reading">Reading Protocol</button><button class="navitem" data-view="books">Book Archives</button><button class="navitem" data-view="personae">Dramatis Personae</button><button class="navitem" data-view="archive">Voidcraft & Theatres</button><button class="navitem" data-view="logs">Field Logs</button><button class="navitem" data-view="settings">Cogitator Settings</button></nav></header><div class="rule"><img src="./assets/ui/symbols/skull-bw-1.png" alt=""></div>
-<div class="view active" data-view-panel="reading"><main class="frame"><section class="bookhead"><img class="ambient-gif" src="./assets/ui/animated/administratum.gif" alt="" aria-hidden="true"><div class="eyebrow">Archive IV // The Horus Heresy</div><div class="title">The Flight of the Eisenstein</div><div class="meta"><span class="chip">20 chapters</span><span class="chip">spoiler-safe</span><span class="chip">protocol v0.10.0</span></div><div class="progressbar"><div id="progress" class="progress"></div></div><div class="progresslabel"><span id="progressText">1 / 20 logged</span><span id="paceText">avg 39 min</span></div></section><section id="chapters" class="chapters"></section><div class="archive-toggle"><button class="btn" id="chapterArchiveToggle">Show Full Chapter Archive</button></div></main>
+<div class="view active" data-view-panel="reading"><main class="frame"><section class="bookhead"><img class="ambient-gif" src="./assets/ui/animated/administratum.gif" alt="" aria-hidden="true"><div class="eyebrow">Archive IV // The Horus Heresy</div><div class="title">The Flight of the Eisenstein</div><div class="meta"><span class="chip">20 chapters</span><span class="chip">spoiler-safe</span><span class="chip">protocol v0.10.1</span></div><div class="progressbar"><div id="progress" class="progress"></div></div><div class="progresslabel"><span id="progressText">1 / 20 logged</span><span id="paceText">avg 39 min</span></div></section><section id="chapters" class="chapters"></section><div class="archive-toggle"><button class="btn" id="chapterArchiveToggle">Show Full Chapter Archive</button></div></main>
 <section class="panel"><div class="panel-title"><img src="./assets/ui/symbols/administratum.png" alt=""><h2>Active Reading Directive</h2></div><div id="directive" class="small" style="margin-top:9px">Reading state loading...</div><div class="grid"><div class="datum"><b>Playback</b><span id="playbackDatum">Spotify / manual fallback</span></div><div class="datum"><b>Chronometer</b><span>pause-aware</span></div><div class="datum"><b>Archive</b><span id="archiveDatum">local-first</span></div><div class="datum"><b>Spoiler filter</b><span id="clearanceLabel">maximum</span></div></div></section>
 <section class="panel debrief"><div class="panel-title"><img src="./assets/ui/symbols/administratum.png" alt=""><h2>Latest Field Debrief</h2></div><div id="debriefBody" class="small" style="margin-top:9px">No completed chapter log available.</div></section></div>
 <section class="panel view" data-view-panel="books"><div class="panel-title"><img src="./assets/ui/symbols/administratum.png" alt=""><h2>Book Archives</h2></div><div class="spoiler-note">Completed archives remain visible; future records stay sealed until the reading protocol advances.</div><div class="library"><div class="book-record"><div class="book-num">I</div><div><div class="btitle">Horus Rising</div><div class="bmeta">Archive complete</div></div><span class="book-state">logged</span></div><div class="book-record"><div class="book-num">II</div><div><div class="btitle">False Gods</div><div class="bmeta">Archive complete</div></div><span class="book-state">logged</span></div><div class="book-record"><div class="book-num">III</div><div><div class="btitle">Galaxy in Flames</div><div class="bmeta">Archive complete</div></div><span class="book-state">logged</span></div><div class="book-record active-book"><div class="book-num">IV</div><div><div class="btitle">The Flight of the Eisenstein</div><div class="bmeta" id="bookArchiveProgress">active reading protocol</div></div><span class="book-state">active</span></div><div class="book-record sealed"><div class="book-num">V</div><div><div class="btitle">RECORD SEALED</div><div class="bmeta">unlocks at book transition</div></div><span class="book-state">sealed</span></div></div></section><section class="panel view" data-view-panel="personae"><div class="archive-head"><div><div class="panel-title"><img src="./assets/ui/symbols/administratum.png" alt=""><h2>Dramatis Personae</h2></div><div class="spoiler-note">Visual archive obeys chapter clearance. Only period-safe references are shown; uncertain or future-facing records remain REDACTED.</div></div><div id="archiveCode" class="archive-code">CLEARANCE // CH 01</div></div><div id="roster" class="roster"></div></section>
@@ -130,25 +130,25 @@ const SCORES={
 ["Our Endless March","Dmitry V. Silantyev"]
 ],
 10:[
-["Impending Storm","Vsevolod Borisov"],
+["The Mourningstar","Jesper Kyd"],
+["Path of Trust","Jesper Kyd"],
+["Offworld Auspex","Jesper Kyd"],
 ["The Expanse","Pawel Perepelica"],
-["Broadside Cannonade","Pawel Perepelica"],
+["Our Enemies Approach","Doyle W. Donehoo"],
 ["When the Stars Tremble","Pawel Perepelica"],
-["The Maelstrom","Vsevolod Borisov"],
-["Clash of Convictions","Nikolay Filipovich"],
-["Millennial Rage","Guillaume David"],
+["Broadside Cannonade","Pawel Perepelica"],
 ["Across The Void","Guillaume David"],
 ["Voidborn","Pawel Perepelica"],
 ["Absolution","Pawel Perepelica"]
 ],
 11:[
-["Minus 273 Degrees","Guillaume David"],
-["Darkness Between the Stars","Pawel Perepelica"],
+["Offworld Auspex","Jesper Kyd"],
+["Nightsider","Jesper Kyd"],
 ["Shadow Quarters","Pawel Perepelica"],
+["Visions","Jonathan Cacherat"],
 ["Lost Signal","Guillaume David"],
 ["Barren","Nikola Nikita Jeremić"],
 ["Death's Play","Vsevolod Borisov"],
-["Millennial Rage","Guillaume David"],
 ["Martyr's Endurance","Pawel Perepelica"],
 ["Absolution","Pawel Perepelica"]
 ]};
@@ -161,15 +161,15 @@ const SCORE_META={
 7:{estimatedMinutes:34,startCue:"Shadow Quarters",stage:"prepared",reserveIndexes:[6],finalCueIndex:8},
 8:{estimatedMinutes:32,startCue:"Impending Storm",stage:"logged",reserveIndexes:[],finalCueIndex:11},
 9:{estimatedMinutes:32,startCue:"Shadow Quarters",stage:"prepared",reserveIndexes:[],finalCueIndex:8},
-10:{estimatedMinutes:35,startCue:"Impending Storm",stage:"prepared",reserveIndexes:[],finalCueIndex:9},
-11:{estimatedMinutes:31,startCue:"Minus 273 Degrees",stage:"prepared",reserveIndexes:[],finalCueIndex:8}
+10:{estimatedMinutes:33,startCue:"The Mourningstar",stage:"prepared",reserveIndexes:[],finalCueIndex:9},
+11:{estimatedMinutes:32,startCue:"Offworld Auspex",stage:"prepared",reserveIndexes:[],finalCueIndex:8}
 };
 const MUSIC_CALIBRATION={
 avoid:["Side By Side","A Speech On Earth"],
 strongFits:["Noosphere","Beyond The Asteroid Belt"],
 readingProfile:{minutesPerPage:1.5,rollingChapterMinutes:34,window:[33,33,36,35,36,32]},
 rule:"Target each chapter independently from scene structure, expected chapter size and observed reading pace. Do not add a generic end buffer just because the previous chapter ran short.",
-notes:"Chapter VII ended 2–3 minutes after its score; Chapter VIII finished around 32 minutes with roughly 1.5 tracks left. Treat those as chapter-specific calibration points, not a global duration trend."
+notes:"Chapter VII ended 2–3 minutes after its score; Chapter VIII finished around 32 minutes with roughly 1.5 tracks left; Chapter IX ran about 30 minutes and needed roughly 1–2 more minutes. Treat each as chapter-specific calibration. For catastrophes the reader already knows are coming, prefer melancholy/inevitability over heroic epic scoring.",artists:["Guillaume David","Pawel Perepelica","Dmitry V. Silantyev","Nikolay Filipovich","Vsevolod Borisov","Nikola Nikita Jeremić","Doyle W. Donehoo","Jesper Kyd","Jonathan Cacherat"]
 };
 const LEITMOTIFS={
 liminalGarro:{track:"Beyond The Asteroid Belt",artist:"Guillaume David",strength:"established by reader fit"},
@@ -184,7 +184,7 @@ const people=[
 ],note:"Official period-safe Mortarion reference. No later form is shown."},
 {name:"Nathaniel Garro",role:"Battle-Captain // 7th Company",unlock:1,visual:"visual record redacted",image:null,facts:[
 {ch:1,text:"Battle-Captain da 7ª Companhia e principal ponto de vista do livro. Disciplinado, observador e pouco confortável com estruturas de lealdade escondidas."},
-{ch:5,text:"Veterano terrano vindo da tradição dos Dusk Raiders; percebe com clareza crescente como a Legion mudou desde a chegada de Mortarion e dos recrutas de Barbarus."}
+{ch:5,text:"Veterano terrano vindo da tradição dos Dusk Raiders; percebe com clareza crescente como a Legion mudou desde a chegada de Mortarion e dos recrutas de Barbarus."},{ch:9,text:"Ao testemunhar Isstvan e conversar com os recém-chegados, começa a aceitar de forma mais consciente a fé no Emperor que antes observava com desconfiança."}
 ],note:"Safe individual visual not selected yet."},
 {name:"Calas Typhon",role:"First Captain // Death Guard",unlock:1,visual:"official record unavailable",image:null,facts:[
 {ch:1,text:"First Captain da Death Guard e um dos oficiais mais próximos de Mortarion. Comanda a poderosa Terminus Est."}
@@ -228,9 +228,13 @@ const people=[
 {name:"Fabius",role:"Apothecary // Emperor's Children",unlock:6,visual:"visual record redacted",image:null,statuses:[{ch:6,status:"active"}],facts:[
 {ch:6,text:"Apothecary dos Emperor's Children. Surge ligado às modificações biológicas empregadas por membros de sua Legion."}
 ],note:"Current summary is intentionally limited to what Chapter VI has revealed."},
-{name:"Ullis Temeter",role:"Captain // 4th Company Death Guard",unlock:7,visual:"visual record redacted",image:null,statuses:[{ch:7,status:"active"}],facts:[
-{ch:7,text:"Captain da 4ª Companhia da Death Guard, presente entre as forças da Legion em Isstvan III. É outro oficial terrano da velha tradição da XIV Legion."}
+{name:"Ullis Temeter",role:"Captain // 4th Company Death Guard",unlock:7,visual:"visual record redacted",image:null,statuses:[{ch:7,status:"active"},{ch:9,status:"deceased"}],facts:[
+{ch:7,text:"Captain da 4ª Companhia da Death Guard, presente entre as forças da Legion em Isstvan III. É outro oficial terrano da velha tradição da XIV Legion."},{ch:9,text:"Durante o bombardeio viral, prioriza colocar seus homens em segurança e acaba permanecendo fora do abrigo ao lado de Huron-Fal."}
 ],note:"No reliable period-safe individual visual selected yet."},
+{name:"Huron-Fal",role:"Venerable Dreadnought // Death Guard",unlock:2,visual:"visual record redacted",image:null,statuses:[{ch:2,status:"active"},{ch:9,status:"deceased"}],facts:[
+{ch:2,text:"Venerable Dreadnought da Death Guard, veterano terrano que combate ao lado da Legion desde antes da chegada de Mortarion."},
+{ch:9,text:"Permanece com Ullis Temeter durante o bombardeio viral e escolhe morrer ao lado do velho companheiro em vez de deixar o Life-Eater decidir seu fim."}
+],note:"No individual spoiler-safe visual selected yet."},
 {name:"Warsinger",role:"Isstvan Extremis // insurgent leader",unlock:6,visual:"visual record redacted",image:null,statuses:[{ch:6,status:"deceased"}],facts:[
 {ch:6,text:"Líder insurgente capaz de transformar canto em força sônica e de impulsionar seus seguidores durante o confronto no zigurate."}
 ],note:"Role/title record; no individual spoiler-safe visual selected."},
@@ -278,7 +282,7 @@ async function sha256Hex(s){let b=await crypto.subtle.digest("SHA-256",new TextE
 function cloudConfigured(){return !!(state.cloud&&state.cloud.url&&state.cloud.anonKey)}
 function cleanCloudUrl(u){return (u||"").trim().replace(/\/$/,"")}
 async function cloudRequest(path,opt={}){if(!cloudConfigured())throw new Error("Cloud archive not configured");let headers={apikey:state.cloud.anonKey,"x-sync-token":state.cloud.token,...(opt.headers||{})};if(!String(state.cloud.anonKey).startsWith("sb_publishable_"))headers.Authorization="Bearer "+state.cloud.anonKey;if(opt.body&&!headers["Content-Type"])headers["Content-Type"]="application/json";let r=await fetch(cleanCloudUrl(state.cloud.url)+"/rest/v1/"+path,{...opt,headers});let t=await r.text(),j=t?(()=>{try{return JSON.parse(t)}catch{return t}})():null;if(!r.ok)throw new Error((j&&j.message)||("Cloud "+r.status));return j}
-async function cloudPushChapter(chapter,loud=false){let d=state.done&&state.done[chapter];if(!d){if(loud)toast("no log for chapter");return false}if(!cloudConfigured()||!state.cloud.enabled){if(loud)toast("cloud not connected");return false}try{let owner=await sha256Hex(state.cloud.token),row={owner_hash:owner,book_slug:"flight-of-the-eisenstein",chapter,minutes:d.minutes||null,length:d.length||null,intensity:d.intensity||null,opening:d.opening||null,peak:d.peak||null,notes:d.notes||"",started_at:d.startedAt||null,finished_at:d.finishedAt||null,app_version:"0.10.0",payload:d};await cloudRequest("reading_logs?on_conflict=owner_hash,book_slug,chapter",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify(row)});d.cloudSynced=true;d.cloudSyncedAt=new Date().toISOString();state.cloud.lastSync=d.cloudSyncedAt;state.cloud.lastError="";save();renderCloud();if(loud)toast("field log synced");return true}catch(e){d.cloudSynced=false;state.cloud.lastError=e.message;save();renderCloud();if(loud)toast("cloud: "+e.message);return false}}
+async function cloudPushChapter(chapter,loud=false){let d=state.done&&state.done[chapter];if(!d){if(loud)toast("no log for chapter");return false}if(!cloudConfigured()||!state.cloud.enabled){if(loud)toast("cloud not connected");return false}try{let owner=await sha256Hex(state.cloud.token),row={owner_hash:owner,book_slug:"flight-of-the-eisenstein",chapter,minutes:d.minutes||null,length:d.length||null,intensity:d.intensity||null,opening:d.opening||null,peak:d.peak||null,notes:d.notes||"",started_at:d.startedAt||null,finished_at:d.finishedAt||null,app_version:"0.10.1",payload:d};await cloudRequest("reading_logs?on_conflict=owner_hash,book_slug,chapter",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify(row)});d.cloudSynced=true;d.cloudSyncedAt=new Date().toISOString();state.cloud.lastSync=d.cloudSyncedAt;state.cloud.lastError="";save();renderCloud();if(loud)toast("field log synced");return true}catch(e){d.cloudSynced=false;state.cloud.lastError=e.message;save();renderCloud();if(loud)toast("cloud: "+e.message);return false}}
 async function cloudSyncAll(loud=false){if(!cloudConfigured()||!state.cloud.enabled)return;let nums=Object.keys(state.done||{}).map(Number).filter(Boolean).sort((a,b)=>a-b),ok=true;for(const n of nums)ok=(await cloudPushChapter(n,false))&&ok;if(loud)toast(ok?"all logs synced":"cloud sync incomplete");render()}
 async function cloudPullLogs(loud=true){if(!cloudConfigured()||!state.cloud.enabled){if(loud)toast("cloud not connected");return}try{let owner=await sha256Hex(state.cloud.token),rows=await cloudRequest("reading_logs?owner_hash=eq."+encodeURIComponent(owner)+"&book_slug=eq.flight-of-the-eisenstein&select=*&order=chapter.asc");for(const r of (rows||[])){let local=state.done[r.chapter]||{},payload=r.payload||{};state.done[r.chapter]={...payload,...local,minutes:local.minutes||r.minutes,length:local.length||r.length,intensity:local.intensity||r.intensity,opening:local.opening||r.opening,peak:local.peak||r.peak,notes:local.notes||r.notes,cloudSynced:true,cloudSyncedAt:r.updated_at}}state.cloud.lastSync=new Date().toISOString();state.cloud.lastError="";save();render();if(loud)toast("cloud logs pulled")}catch(e){state.cloud.lastError=e.message;save();renderCloud();if(loud)toast("cloud: "+e.message)}}
 async function cloudConnect(){state.cloud.url=cleanCloudUrl($("supabaseUrl").value)||DEFAULT_SUPABASE_URL;state.cloud.anonKey=$("supabaseKey").value.trim()||DEFAULT_SUPABASE_KEY;state.cloud.userDisabled=false;state.cloud.enabled=!!(state.cloud.url&&state.cloud.anonKey);save();if(!state.cloud.enabled){toast("cloud credentials missing");renderCloud();return}try{await cloudRequest("reading_logs?select=chapter&limit=1");state.cloud.lastError="";save();await cloudSyncAll(false);await cloudPullLogs(false);toast("cloud archive linked")}catch(e){state.cloud.enabled=false;state.cloud.lastError=e.message;save();renderCloud();toast("cloud: "+e.message)}}
