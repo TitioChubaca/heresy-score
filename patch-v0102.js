@@ -16,7 +16,7 @@ SCORES[11]=[
 ["Martyr's Endurance","Pawel Perepelica"],
 ["Absolution","Pawel Perepelica"]
 ];
-SCORE_META[11]={estimatedMinutes:32,startCue:"Offworld Auspex",stage:"prepared",reserveIndexes:[],finalCueIndex:8,durationReserve:[["Barren","Nikola Nikita Jeremić"],["Across The Void","Guillaume David"]]};
+SCORE_META[11]={estimatedMinutes:32,startCue:"Offworld Auspex",stage:"prepared",reserveIndexes:[],finalCueIndex:8,trimIndexes:[5],durationReserve:[["Barren","Nikola Nikita Jeremić"],["Across The Void","Guillaume David"]]};
 
 SCORES[12]=[
 ["Nightsider","Jesper Kyd"],
@@ -29,7 +29,7 @@ SCORES[12]=[
 ["Barren","Nikola Nikita Jeremić"],
 ["Absolution","Pawel Perepelica"]
 ];
-SCORE_META[12]={estimatedMinutes:34,startCue:"Nightsider",stage:"prepared",reserveIndexes:[],finalCueIndex:8,durationReserve:[["Across The Void","Guillaume David"]]};
+SCORE_META[12]={estimatedMinutes:34,startCue:"Nightsider",stage:"prepared",reserveIndexes:[],finalCueIndex:8,trimIndexes:[4],durationReserve:[["Across The Void","Guillaume David"]]};
 
 SCORES[13]=[
 ["Offworld Auspex","Jesper Kyd"],
@@ -41,7 +41,8 @@ SCORES[13]=[
 ["Martyr's Endurance","Pawel Perepelica"],
 ["Absolution","Pawel Perepelica"]
 ];
-SCORE_META[13]={estimatedMinutes:32,startCue:"Offworld Auspex",stage:"prepared",reserveIndexes:[],finalCueIndex:7,durationReserve:[["Voidborn","Pawel Perepelica"]]};
+SCORE_META[13]={estimatedMinutes:32,startCue:"Offworld Auspex",stage:"prepared",reserveIndexes:[],finalCueIndex:7,trimIndexes:[3],durationReserve:[["Voidborn","Pawel Perepelica"]]};
+[11,12,13].forEach(n=>{if(chapters[n-1]){chapters[n-1].estimatedMinutes=SCORE_META[n].estimatedMinutes;chapters[n-1].startCue=SCORE_META[n].startCue}});
 
 async function resolveTrackInfo(title,artist){
   let key=spotifyNorm(title+"|"+artist),cached=state.spotify.trackCache[key];
@@ -62,6 +63,13 @@ spotifySyncChapter=async function(chapter){
   for(const [title,artist] of score)infos.push(await resolveTrackInfo(title,artist));
   let finalIndex=meta.finalCueIndex==null?infos.length-1:meta.finalCueIndex;
   let total=infos.reduce((n,t)=>n+(t.durationMs||0),0),target=(meta.estimatedMinutes||0)*60000,threshold=Math.max(0,target-60000),used=new Set(infos.map(x=>x.uri));
+  if(target&&total>target+60000&&Array.isArray(meta.trimIndexes)){
+    for(const idx of [...meta.trimIndexes].sort((a,b)=>b-a)){
+      if(total<=target+60000)break;
+      if(idx<0||idx>=infos.length||idx===finalIndex)continue;
+      let removed=infos.splice(idx,1)[0];total-=removed?.durationMs||0;if(idx<finalIndex)finalIndex--;
+    }
+  }
   if(target&&total<threshold&&Array.isArray(meta.durationReserve)){
     for(const [title,artist] of meta.durationReserve){
       let extra=await resolveTrackInfo(title,artist);
@@ -137,5 +145,6 @@ if(sendek&&!sendek.facts.some(f=>f.ch===10))sendek.facts.push({ch:10,text:"Duran
 let carya=people.find(x=>x.name==="Baryk Carya");
 if(carya&&!carya.facts.some(f=>f.ch===10))carya.facts.push({ch:10,text:"Na fuga de Isstvan, sua experiência naval e a coordenação da bridge crew tornam-se tão importantes quanto a força dos Astartes."});
 
+document.querySelectorAll(".chip").forEach(x=>{if(x.textContent.includes("protocol v"))x.textContent="protocol v0.10.2"});
 save();render();
 })();
