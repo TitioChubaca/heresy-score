@@ -2,6 +2,15 @@
 
 All notable changes to Heresy Score are tracked here.
 
+## v0.10.2 — Runtime-aware scoring / archive visuals
+
+- Measures the resolved Spotify playlist duration instead of trusting only the planned chapter target.
+- Can trim designated optional cues when a playlist runs long or insert only chapter-curated reserve cues when it runs short.
+- Keeps the protected Final Cue index correct after runtime adjustments.
+- Chapter XI is READY; Chapters XII–XIII are staged with more atmospheric / claustrophobic scoring options.
+- Added a representative ship image for the Eisenstein archive and kept Terminus Est visually redacted rather than exposing later corrupted imagery.
+- Added Racel Vought, Tirin Maas and Severnaya to the Eisenstein crew roster; updated Sendek and Baryk Carya notes through Chapter X.
+
 ## v0.10.1 — Post-Isstvan tone calibration
 
 - Calibrated Chapter IX feedback: about 30 minutes, slightly short at the end, and too heroic during the known virus catastrophe.
