@@ -1,11 +1,11 @@
-# Heresy Score — v0.10.2
+# Heresy Score — v0.10.3
 
 Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 
 ## Current reading state
 
 - Active book: *The Flight of the Eisenstein*
-- Spoiler clearance: through Chapter XII
+- Spoiler clearance: through Chapter XIII
 - Chapter XI: READY
 - Chapters XII–XIII: STAGED
 - Local progress key is still `heresy-score-v01` so existing reading history survives upgrades.
@@ -44,7 +44,7 @@ Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 - Progressive spoiler-safe character summaries that expand only when the relevant chapter clearance is reached.
 - Progressive ACTIVE / DECEASED status tracking based only on the current reading clearance.
 - Broken/unreliable external character visuals fall back to an intentional REDACTED record instead of a broken image.
-- Voidcraft & Theatre Archive with clearance-gated records and explicit Official / Reconstruction / REDACTED provenance.
+- Voidcraft, Theatre & Entity Compendium with clearance-gated records and explicit Official / Reconstruction / REDACTED labeling.ED provenance.
 - Private Archive Recovery Code for restoring the same cloud log identity after reinstalling or moving devices.
 - Safe character visuals when a period-appropriate source is available.
 - Imperial-style REDACTED dossiers when a safe visual is not available.
