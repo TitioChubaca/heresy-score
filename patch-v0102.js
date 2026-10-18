@@ -105,12 +105,34 @@ if(ship){
   ship.visual="representative frigate reference";
   ship.note="Representative Forge World Gladius-class frigate miniatures used only as a scale/form reference. This is not claimed as the exact Eisenstein hull.";
 }
+const istvaan=archiveRecords.find(r=>r.key==="istvaan-iii");
+if(istvaan){
+  istvaan.image="https://assets.warhammer-community.com/articles/0-2026/october/wc12-10/image1-gbizqrzzhe.jpg";
+  istvaan.visual="official current-book theatre reference";
+  istvaan.note="Official Warhammer Community Flight of the Eisenstein cover art, now safe at the current clearance; used as an Isstvan III theatre reference rather than a literal orbital map.";
+}
 const term=archiveRecords.find(r=>r.key==="terminus-est");
 if(term){
   term.image=null;
   term.visual="visual redacted // exact pre-Heresy configuration uncertain";
   term.note="The exact pre-Heresy exterior is not reliably fixed in current safe sources. Later corrupted imagery is deliberately withheld.";
 }
+
+[
+{key:"reanimated-death-guard",name:"Reanimated Death Guard",kind:"entity",kindLabel:"Entity // Nurgle",unlock:11,glyph:"☣",image:"https://assets.warhammer-community.com/art9_deathguard-nov21-pic1-twl3i27fqq.jpg",visual:"representative Plague Marine reference",note:"Chapter XI reveals Grulgor and his traitor Astartes returned as plague-corrupted monsters. This official Death Guard artwork is a later generic visual analogue, not a claim that their exact Chapter XI appearance matches this armour."},
+{key:"life-eater-revenants",name:"Life-Eater Revenants",kind:"entity",kindLabel:"Entity // Reanimated Dead",unlock:11,glyph:"☠",image:null,visual:"visual reconstruction pending",note:"Crew killed by the Life-Eater are seen moving again as distorted corpses. They are best treated as Nurgle-tainted revenants here rather than equating them exactly with a later tabletop unit such as Poxwalkers."},
+{key:"warp-disc-entity",name:"Disc-like Warp Entity",kind:"entity",kindLabel:"Entity // Warp fauna",unlock:11,glyph:"◈",image:"https://assets.warhammer-community.com/articles/1c8abaaa-307d-4895-9538-04badcf25218/1aqpry1janqfwaq5.jpg",visual:"possible Screamer analogue // not confirmed",note:"The novel describes a spinning purple blade/disc with trailing cilia. Community readers have long compared it to a Screamer of Tzeentch, and official Screamer lore fits warp-flying, ship-hunting behaviour, but the novel does not explicitly name the creature. The image is therefore only a visual analogue."}
+].forEach(r=>{if(!archiveRecords.some(x=>x.key===r.key))archiveRecords.push(r)});
+
+const tabs=document.querySelector(".archive-tabs");
+if(tabs&&!tabs.querySelector('[data-archive-filter="entity"]')){
+  const b=document.createElement("button");
+  b.className="btn"; b.dataset.archiveFilter="entity"; b.textContent="Entities";
+  tabs.appendChild(b);
+  b.onclick=()=>{state.archiveFilter="entity";save();renderArchive()};
+}
+const archiveTitle=document.querySelector('[data-view-panel="archive"] h2');
+if(archiveTitle)archiveTitle.textContent="Voidcraft, Theatres & Entity Compendium";
 
 openArchiveRecord=function(r){
   if(maxClearance()<r.unlock)return;
@@ -142,9 +164,14 @@ ensurePerson({name:"Severnaya",role:"Navigator // Eisenstein",unlock:10,visual:"
 
 let sendek=people.find(x=>x.name==="Tollen Sendek");
 if(sendek&&!sendek.facts.some(f=>f.ch===10))sendek.facts.push({ch:10,text:"Durante a fuga de Isstvan, destaca-se também pela leitura analítica da situação e pelas avaliações táticas junto ao comando."});
+const grulgor=people.find(x=>x.name==="Ignatius Grulgor");
+if(grulgor){
+  grulgor.statuses=[{ch:1,status:"active"},{ch:8,status:"lost"},{ch:11,status:"corrupted"}];
+  if(!grulgor.facts.some(f=>f.ch===11))grulgor.facts.push({ch:11,text:"Durante a falha do Geller field, retorna com seus homens como uma forma monstruosamente corrompida por Nurgle. Garro força a Eisenstein de volta ao realspace para romper a influência do Warp."});
+}
 let carya=people.find(x=>x.name==="Baryk Carya");
 if(carya&&!carya.facts.some(f=>f.ch===10))carya.facts.push({ch:10,text:"Na fuga de Isstvan, sua experiência naval e a coordenação da bridge crew tornam-se tão importantes quanto a força dos Astartes."});
 
-document.querySelectorAll(".chip").forEach(x=>{if(x.textContent.includes("protocol v"))x.textContent="protocol v0.10.2"});
+document.querySelectorAll(".chip").forEach(x=>{if(x.textContent.includes("protocol v"))x.textContent="protocol v0.10.3"});
 save();render();
 })();
