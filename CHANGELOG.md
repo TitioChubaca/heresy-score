@@ -2,6 +2,15 @@
 
 All notable changes to Heresy Score are tracked here.
 
+## v0.10.3 — Chapter XI compendium calibration
+
+- Added an Entities tab to the archive.
+- Added spoiler-safe records for reanimated Death Guard, Life-Eater revenants, and the disc-like Warp entity.
+- Changed Grulgor's Chapter VIII state from suggestive `presumed-deceased` to neutral `lost`; Chapter XI now reveals `corrupted`.
+- Added an official current-book Isstvan III theatre visual.
+- Added representative imagery for corrupted Astartes and a clearly-labelled Screamer visual analogue without claiming the novel names the creature.
+- Chapter XI field log confirms the atmosphere worked but the final action peak needed more weight; future combat peaks are being calibrated separately from Warp ambience.
+
 ## v0.10.2 — Runtime-aware scoring / archive visuals
 
 - Measures the resolved Spotify playlist duration instead of trusting only the planned chapter target.
