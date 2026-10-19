@@ -4,6 +4,14 @@ if(window.__HS_PATCH_0102)return;window.__HS_PATCH_0102=true;
 state.spotify=state.spotify||{};
 state.spotify.scoreDurations=state.spotify.scoreDurations||{};
 state.spotify.chapterRuntime=state.spotify.chapterRuntime||{};
+if(typeof MUSIC_CALIBRATION!=="undefined"){
+  MUSIC_CALIBRATION.strongFits=MUSIC_CALIBRATION.strongFits||[];
+  if(!MUSIC_CALIBRATION.strongFits.includes("Across The Void"))MUSIC_CALIBRATION.strongFits.push("Across The Void");
+  MUSIC_CALIBRATION.chapterXII={readerMinutes:33,length:"good",note:"Across The Void matched the closing passage; one later cue remained unused. Calm faith dialogue should prefer restrained clerical or choral texture."};
+}
+if(typeof LEITMOTIFS!=="undefined"){
+  LEITMOTIFS.faithAwakening={track:"Imperium of Man",artist:"Jesper Kyd",strength:"developing"};
+}
 
 SCORES[11]=[
 ["Offworld Auspex","Jesper Kyd"],
@@ -33,16 +41,41 @@ SCORE_META[12]={estimatedMinutes:34,startCue:"Nightsider",stage:"prepared",reser
 
 SCORES[13]=[
 ["Offworld Auspex","Jesper Kyd"],
-["The Mourningstar","Jesper Kyd"],
 ["Shadow Quarters","Pawel Perepelica"],
-["Visions","Jonathan Cacherat"],
-["The Imperium","Dmitry V. Silantyev"],
+["The Mourningstar","Jesper Kyd"],
+["Path of Trust","Jesper Kyd"],
+["The Imperium Unites","Jesper Kyd"],
 ["Across The Void","Guillaume David"],
-["Martyr's Endurance","Pawel Perepelica"],
+["Our Endless March","Dmitry V. Silantyev"],
 ["Absolution","Pawel Perepelica"]
 ];
-SCORE_META[13]={estimatedMinutes:32,startCue:"Offworld Auspex",stage:"prepared",reserveIndexes:[],finalCueIndex:7,trimIndexes:[3],durationReserve:[["Voidborn","Pawel Perepelica"]]};
-[11,12,13].forEach(n=>{if(chapters[n-1]){chapters[n-1].estimatedMinutes=SCORE_META[n].estimatedMinutes;chapters[n-1].startCue=SCORE_META[n].startCue}});
+SCORE_META[13]={estimatedMinutes:33,startCue:"Offworld Auspex",stage:"prepared",reserveIndexes:[],finalCueIndex:7,trimIndexes:[3],durationReserve:[["Voidborn","Pawel Perepelica"]]};
+
+SCORES[14]=[
+["The Mourningstar","Jesper Kyd"],
+["Path of Trust","Jesper Kyd"],
+["The Imperium","Dmitry V. Silantyev"],
+["Imperium of Man","Jesper Kyd"],
+["Across The Void","Guillaume David"],
+["A Fool's Hope","Guillaume David"],
+["Our Endless March","Dmitry V. Silantyev"],
+["Absolution","Pawel Perepelica"]
+];
+SCORE_META[14]={estimatedMinutes:33,startCue:"The Mourningstar",stage:"prepared",reserveIndexes:[],finalCueIndex:7,trimIndexes:[5],durationReserve:[["Voidborn","Pawel Perepelica"]]};
+
+SCORES[15]=[
+["Shadow Quarters","Pawel Perepelica"],
+["Inside The Station","Guillaume David"],
+["Noosphere","Guillaume David"],
+["Visions","Jonathan Cacherat"],
+["Path of Trust","Jesper Kyd"],
+["Barren","Nikola Nikita Jeremić"],
+["Across The Void","Guillaume David"],
+["Absolution","Pawel Perepelica"]
+];
+SCORE_META[15]={estimatedMinutes:32,startCue:"Shadow Quarters",stage:"prepared",reserveIndexes:[],finalCueIndex:7,trimIndexes:[3],durationReserve:[["The Imperium","Dmitry V. Silantyev"]]};
+
+[11,12,13,14,15].forEach(n=>{if(chapters[n-1]){chapters[n-1].estimatedMinutes=SCORE_META[n].estimatedMinutes;chapters[n-1].startCue=SCORE_META[n].startCue}});
 
 async function resolveTrackInfo(title,artist){
   let key=spotifyNorm(title+"|"+artist),cached=state.spotify.trackCache[key];
@@ -172,6 +205,6 @@ if(grulgor){
 let carya=people.find(x=>x.name==="Baryk Carya");
 if(carya&&!carya.facts.some(f=>f.ch===10))carya.facts.push({ch:10,text:"Na fuga de Isstvan, sua experiência naval e a coordenação da bridge crew tornam-se tão importantes quanto a força dos Astartes."});
 
-document.querySelectorAll(".chip").forEach(x=>{if(x.textContent.includes("protocol v"))x.textContent="protocol v0.10.3"});
+document.querySelectorAll(".chip").forEach(x=>{if(x.textContent.includes("protocol v"))x.textContent="protocol v0.10.4"});
 save();render();
 })();
