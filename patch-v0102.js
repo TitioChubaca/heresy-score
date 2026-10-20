@@ -8,6 +8,7 @@ if(typeof MUSIC_CALIBRATION!=="undefined"){
   MUSIC_CALIBRATION.strongFits=MUSIC_CALIBRATION.strongFits||[];
   if(!MUSIC_CALIBRATION.strongFits.includes("Across The Void"))MUSIC_CALIBRATION.strongFits.push("Across The Void");
   MUSIC_CALIBRATION.chapterXII={readerMinutes:33,length:"good",note:"Across The Void matched the closing passage; one later cue remained unused. Calm faith dialogue should prefer restrained clerical or choral texture."};
+  MUSIC_CALIBRATION.chapterXIII={readerMinutes:26,length:"good",note:"Score fit well but ended roughly 1–2 minutes before the chapter. The chapter moved from uncertainty and human reflection into Imperial relief; keep the next targets chapter-specific rather than inflating all scores."};
 }
 if(typeof LEITMOTIFS!=="undefined"){
   LEITMOTIFS.faithAwakening={track:"Imperium of Man",artist:"Jesper Kyd",strength:"developing"};
@@ -55,27 +56,38 @@ SCORES[14]=[
 ["The Mourningstar","Jesper Kyd"],
 ["Path of Trust","Jesper Kyd"],
 ["The Imperium","Dmitry V. Silantyev"],
-["Imperium of Man","Jesper Kyd"],
 ["Across The Void","Guillaume David"],
-["A Fool's Hope","Guillaume David"],
+["Imperium of Man","Jesper Kyd"],
 ["Our Endless March","Dmitry V. Silantyev"],
 ["Absolution","Pawel Perepelica"]
 ];
-SCORE_META[14]={estimatedMinutes:33,startCue:"The Mourningstar",stage:"prepared",reserveIndexes:[],finalCueIndex:7,trimIndexes:[5],durationReserve:[["Voidborn","Pawel Perepelica"]]};
+SCORE_META[14]={estimatedMinutes:30,startCue:"The Mourningstar",stage:"prepared",reserveIndexes:[],finalCueIndex:6,trimIndexes:[3],durationReserve:[["Voidborn","Pawel Perepelica"]]};
 
 SCORES[15]=[
-["Shadow Quarters","Pawel Perepelica"],
+["The Imperium Unites","Jesper Kyd"],
+["Offworld Auspex","Jesper Kyd"],
+["Path of Trust","Jesper Kyd"],
 ["Inside The Station","Guillaume David"],
 ["Noosphere","Guillaume David"],
-["Visions","Jonathan Cacherat"],
-["Path of Trust","Jesper Kyd"],
-["Barren","Nikola Nikita Jeremić"],
 ["Across The Void","Guillaume David"],
 ["Absolution","Pawel Perepelica"]
 ];
-SCORE_META[15]={estimatedMinutes:32,startCue:"Shadow Quarters",stage:"prepared",reserveIndexes:[],finalCueIndex:7,trimIndexes:[3],durationReserve:[["The Imperium","Dmitry V. Silantyev"]]};
+SCORE_META[15]={estimatedMinutes:31,startCue:"The Imperium Unites",stage:"prepared",reserveIndexes:[],finalCueIndex:6,trimIndexes:[3],durationReserve:[["The Imperium","Dmitry V. Silantyev"]]};
 
-[11,12,13,14,15].forEach(n=>{if(chapters[n-1]){chapters[n-1].estimatedMinutes=SCORE_META[n].estimatedMinutes;chapters[n-1].startCue=SCORE_META[n].startCue}});
+SCORES[16]=[
+["Nightsider","Jesper Kyd"],
+["Visions","Jonathan Cacherat"],
+["Noosphere","Guillaume David"],
+["Death's Play","Vsevolod Borisov"],
+["Clash of Convictions","Nikolay Filipovich"],
+["Millennial Rage","Guillaume David"],
+["Martyr's Endurance","Pawel Perepelica"],
+["Barren","Nikola Nikita Jeremić"],
+["Absolution","Pawel Perepelica"]
+];
+SCORE_META[16]={estimatedMinutes:34,startCue:"Nightsider",stage:"prepared",reserveIndexes:[],finalCueIndex:8,trimIndexes:[3],durationReserve:[["Our Enemies Approach","Doyle W. Donehoo"],["Voidborn","Pawel Perepelica"]]};
+
+[11,12,13,14,15,16].forEach(n=>{if(chapters[n-1]){chapters[n-1].estimatedMinutes=SCORE_META[n].estimatedMinutes;chapters[n-1].startCue=SCORE_META[n].startCue}});
 
 async function resolveTrackInfo(title,artist){
   let key=spotifyNorm(title+"|"+artist),cached=state.spotify.trackCache[key];
@@ -156,6 +168,7 @@ if(term){
 {key:"life-eater-revenants",name:"Life-Eater Revenants",kind:"entity",kindLabel:"Entity // Reanimated Dead",unlock:11,glyph:"☠",image:null,visual:"visual reconstruction pending",note:"Crew killed by the Life-Eater are seen moving again as distorted corpses. They are best treated as Nurgle-tainted revenants here rather than equating them exactly with a later tabletop unit such as Poxwalkers."},
 {key:"warp-disc-entity",name:"Disc-like Warp Entity",kind:"entity",kindLabel:"Entity // Warp fauna",unlock:11,glyph:"◈",image:"https://assets.warhammer-community.com/articles/1c8abaaa-307d-4895-9538-04badcf25218/1aqpry1janqfwaq5.jpg",visual:"possible Screamer analogue // not confirmed",note:"The novel describes a spinning purple blade/disc with trailing cilia. Community readers have long compared it to a Screamer of Tzeentch, and official Screamer lore fits warp-flying, ship-hunting behaviour, but the novel does not explicitly name the creature. The image is therefore only a visual analogue."}
 ].forEach(r=>{if(!archiveRecords.some(x=>x.key===r.key))archiveRecords.push(r)});
+if(!archiveRecords.some(x=>x.key==="phalanx"))archiveRecords.push({key:"phalanx",name:"Phalanx",kind:"voidcraft",kindLabel:"Voidcraft // Imperial Fists",unlock:13,glyph:"⬢",image:"https://assets.warhammer-community.com/articles/3f937ee3-c7c1-4c45-ad3b-bf8e0e8a8b92/3xgsoauoqzk2kohv.jpg",visual:"official Phalanx interior showcase",note:"The colossal mobile fortress-monastery of the Imperial Fists. This official Warhammer Community image shows a later hobby reconstruction of an interior hangar, used only as a spatial reference rather than an exact Heresy-era exterior."});
 
 const tabs=document.querySelector(".archive-tabs");
 if(tabs&&!tabs.querySelector('[data-archive-filter="entity"]')){
@@ -191,6 +204,7 @@ renderArchive=function(){
 };
 
 function ensurePerson(p){if(!people.some(x=>x.name===p.name))people.push(p)}
+ensurePerson({name:"Rogal Dorn",role:"Primarch // VII Legion Imperial Fists",unlock:13,visual:"official Horus Heresy reference",image:"https://assets.warhammer-community.com/articles/4615f4d0-6b15-4749-99ef-83c06673117e/fqcgwqlk7yl7jmg1.jpg",statuses:[{ch:13,status:"active"}],facts:[{ch:13,text:"Primarch dos Imperial Fists. Sua frota encontra a Eisenstein à deriva depois que a explosão dos motores de Warp funciona como um chamado no vazio."}],note:"Official Horus Heresy-era Rogal Dorn visual reference."});
 ensurePerson({name:"Racel Vought",role:"Executive Officer // Eisenstein",unlock:7,visual:"visual record redacted",image:null,statuses:[{ch:7,status:"active"}],facts:[{ch:7,text:"Executive officer da Eisenstein e segunda na cadeia de comando humana abaixo de Baryk Carya."},{ch:10,text:"Ajuda Carya a manter a nave e a tripulação operando durante a fuga de Isstvan."}],note:"No reliable individual visual selected yet."});
 ensurePerson({name:"Tirin Maas",role:"Vox Officer // Eisenstein",unlock:7,visual:"visual record redacted",image:null,statuses:[{ch:7,status:"active"},{ch:10,status:"deceased"}],facts:[{ch:7,text:"Vox officer da Eisenstein e integrante humano da tripulação de comando."},{ch:10,text:"Tenta alertar Calas Typhon sobre a fuga por acreditar que Garro está cometendo motim; Garro descobre a transmissão e o mata antes que comprometa a missão."}],note:"Status reflects only information revealed through Chapter X."});
 ensurePerson({name:"Severnaya",role:"Navigator // Eisenstein",unlock:10,visual:"visual record redacted",image:null,statuses:[{ch:10,status:"active"}],facts:[{ch:10,text:"Navigator da Eisenstein, responsável por conduzir a fragata pelas rotas do Immaterium."}],note:"No reliable individual visual selected yet."});
@@ -204,7 +218,8 @@ if(grulgor){
 }
 let carya=people.find(x=>x.name==="Baryk Carya");
 if(carya&&!carya.facts.some(f=>f.ch===10))carya.facts.push({ch:10,text:"Na fuga de Isstvan, sua experiência naval e a coordenação da bridge crew tornam-se tão importantes quanto a força dos Astartes."});
+if(carya&&!carya.facts.some(f=>f.ch===13))carya.facts.push({ch:13,text:"Como shipmaster humano, Carya oferece a Garro uma perspectiva rara sobre os Astartes: seres quase sobre-humanos que ainda repetem impulsos profundamente humanos de fraternidade, rivalidade e desejo de aprovação."});
 
-document.querySelectorAll(".chip").forEach(x=>{if(x.textContent.includes("protocol v"))x.textContent="protocol v0.10.4"});
+document.querySelectorAll(".chip").forEach(x=>{if(x.textContent.includes("protocol v"))x.textContent="protocol v0.10.5"});
 save();render();
 })();
