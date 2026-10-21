@@ -9,6 +9,7 @@ if(typeof MUSIC_CALIBRATION!=="undefined"){
   if(!MUSIC_CALIBRATION.strongFits.includes("Across The Void"))MUSIC_CALIBRATION.strongFits.push("Across The Void");
   MUSIC_CALIBRATION.chapterXII={readerMinutes:33,length:"good",note:"Across The Void matched the closing passage; one later cue remained unused. Calm faith dialogue should prefer restrained clerical or choral texture."};
   MUSIC_CALIBRATION.chapterXIII={readerMinutes:26,length:"good",note:"Score fit well but ended roughly 1–2 minutes before the chapter. The chapter moved from uncertainty and human reflection into Imperial relief; keep the next targets chapter-specific rather than inflating all scores."};
+  MUSIC_CALIBRATION.chapterXIV={readerMinutes:30,length:"short",note:"The score fit, but again ended about one track early. Future playlists should keep roughly 1–2 minutes of deliberate musical headroom, using only curated reserves."};
 }
 if(typeof LEITMOTIFS!=="undefined"){
   LEITMOTIFS.faithAwakening={track:"Imperium of Man",artist:"Jesper Kyd",strength:"developing"};
@@ -87,7 +88,19 @@ SCORES[16]=[
 ];
 SCORE_META[16]={estimatedMinutes:34,startCue:"Nightsider",stage:"prepared",reserveIndexes:[],finalCueIndex:8,trimIndexes:[3],durationReserve:[["Our Enemies Approach","Doyle W. Donehoo"],["Voidborn","Pawel Perepelica"]]};
 
-[11,12,13,14,15,16].forEach(n=>{if(chapters[n-1]){chapters[n-1].estimatedMinutes=SCORE_META[n].estimatedMinutes;chapters[n-1].startCue=SCORE_META[n].startCue}});
+SCORES[17]=[
+["The Imperium Unites","Jesper Kyd"],
+["Path of Trust","Jesper Kyd"],
+["Imperium of Man","Jesper Kyd"],
+["Across The Void","Guillaume David"],
+["The Imperium","Dmitry V. Silantyev"],
+["A Fool's Hope","Guillaume David"],
+["Our Endless March","Dmitry V. Silantyev"],
+["Absolution","Pawel Perepelica"]
+];
+SCORE_META[17]={estimatedMinutes:30,startCue:"The Imperium Unites",stage:"prepared",reserveIndexes:[],finalCueIndex:7,trimIndexes:[3],durationReserve:[["Voidborn","Pawel Perepelica"],["Light of the Imperium","Jesper Kyd"]]};
+
+[11,12,13,14,15,16,17].forEach(n=>{if(chapters[n-1]){chapters[n-1].estimatedMinutes=SCORE_META[n].estimatedMinutes;chapters[n-1].startCue=SCORE_META[n].startCue}});
 
 async function resolveTrackInfo(title,artist){
   let key=spotifyNorm(title+"|"+artist),cached=state.spotify.trackCache[key];
@@ -107,10 +120,10 @@ spotifySyncChapter=async function(chapter){
   let p=await spotifyEnsurePlaylist(chapter),infos=[];
   for(const [title,artist] of score)infos.push(await resolveTrackInfo(title,artist));
   let finalIndex=meta.finalCueIndex==null?infos.length-1:meta.finalCueIndex;
-  let total=infos.reduce((n,t)=>n+(t.durationMs||0),0),target=(meta.estimatedMinutes||0)*60000,threshold=Math.max(0,target-60000),used=new Set(infos.map(x=>x.uri));
-  if(target&&total>target+60000&&Array.isArray(meta.trimIndexes)){
+  let total=infos.reduce((n,t)=>n+(t.durationMs||0),0),target=(meta.estimatedMinutes||0)*60000,threshold=Math.max(0,target+90000),ceiling=target+240000,used=new Set(infos.map(x=>x.uri));
+  if(target&&total>ceiling&&Array.isArray(meta.trimIndexes)){
     for(const idx of [...meta.trimIndexes].sort((a,b)=>b-a)){
-      if(total<=target+60000)break;
+      if(total<=ceiling)break;
       if(idx<0||idx>=infos.length||idx===finalIndex)continue;
       let removed=infos.splice(idx,1)[0];total-=removed?.durationMs||0;if(idx<finalIndex)finalIndex--;
     }
@@ -148,7 +161,8 @@ const ship=archiveRecords.find(r=>r.key==="eisenstein");
 if(ship){
   ship.image="https://miniset.net/files/set/gw-sg-bfg-g-008-0.jpg";
   ship.visual="representative frigate reference";
-  ship.note="Representative Forge World Gladius-class frigate miniatures used only as a scale/form reference. This is not claimed as the exact Eisenstein hull.";
+  ship.note=maxClearance()>=14?"Depois que os sobreviventes são transferidos para a Phalanx, a fragata gravemente danificada é destruída para eliminar qualquer risco de contaminação do Warp. A missão da Eisenstein termina mesmo que a nave não sobreviva.":"Representative Forge World Gladius-class frigate miniatures used only as a scale/form reference. This is not claimed as the exact Eisenstein hull.";
+  if(maxClearance()>=14)ship.status="destroyed";
 }
 const istvaan=archiveRecords.find(r=>r.key==="istvaan-iii");
 if(istvaan){
@@ -205,10 +219,16 @@ renderArchive=function(){
 
 function ensurePerson(p){if(!people.some(x=>x.name===p.name))people.push(p)}
 ensurePerson({name:"Rogal Dorn",role:"Primarch // VII Legion Imperial Fists",unlock:13,visual:"official Horus Heresy reference",image:"https://assets.warhammer-community.com/articles/4615f4d0-6b15-4749-99ef-83c06673117e/fqcgwqlk7yl7jmg1.jpg",statuses:[{ch:13,status:"active"}],facts:[{ch:13,text:"Primarch dos Imperial Fists. Sua frota encontra a Eisenstein à deriva depois que a explosão dos motores de Warp funciona como um chamado no vazio."}],note:"Official Horus Heresy-era Rogal Dorn visual reference."});
+ensurePerson({name:"Efried",role:"Captain // Imperial Fists",unlock:14,visual:"visual record redacted",image:null,statuses:[{ch:14,status:"active"}],facts:[{ch:14,text:"Captain dos Imperial Fists presente na reorganização da frota depois que Dorn aceita a notícia da traição."}],note:"No reliable period-safe individual visual selected yet."});
+ensurePerson({name:"Halbrecht",role:"Captain // Imperial Fists",unlock:14,visual:"visual record redacted",image:null,statuses:[{ch:14,status:"active"}],facts:[{ch:14,text:"Captain dos Imperial Fists presente entre as forças de Dorn quando a Legião se divide entre Terra e uma resposta a Isstvan."}],note:"No reliable period-safe individual visual selected yet."});
 ensurePerson({name:"Racel Vought",role:"Executive Officer // Eisenstein",unlock:7,visual:"visual record redacted",image:null,statuses:[{ch:7,status:"active"}],facts:[{ch:7,text:"Executive officer da Eisenstein e segunda na cadeia de comando humana abaixo de Baryk Carya."},{ch:10,text:"Ajuda Carya a manter a nave e a tripulação operando durante a fuga de Isstvan."}],note:"No reliable individual visual selected yet."});
 ensurePerson({name:"Tirin Maas",role:"Vox Officer // Eisenstein",unlock:7,visual:"visual record redacted",image:null,statuses:[{ch:7,status:"active"},{ch:10,status:"deceased"}],facts:[{ch:7,text:"Vox officer da Eisenstein e integrante humano da tripulação de comando."},{ch:10,text:"Tenta alertar Calas Typhon sobre a fuga por acreditar que Garro está cometendo motim; Garro descobre a transmissão e o mata antes que comprometa a missão."}],note:"Status reflects only information revealed through Chapter X."});
 ensurePerson({name:"Severnaya",role:"Navigator // Eisenstein",unlock:10,visual:"visual record redacted",image:null,statuses:[{ch:10,status:"active"}],facts:[{ch:10,text:"Navigator da Eisenstein, responsável por conduzir a fragata pelas rotas do Immaterium."}],note:"No reliable individual visual selected yet."});
 
+const dornNow=people.find(x=>x.name==="Rogal Dorn");
+if(dornNow&&!dornNow.facts.some(f=>f.ch===14))dornNow.facts.push({ch:14,text:"Recebe a denúncia de Garro com incredulidade e raiva diante da ideia de Horus ter traído o Emperor; as gravações mnemônicas de Mersadie finalmente tornam a evidência impossível de ignorar. Depois disso, reorganiza suas forças para levar o aviso a Terra e responder a Isstvan."});
+const mersadieNow=people.find(x=>x.name==="Mersadie Oliton");
+if(mersadieNow&&!mersadieNow.facts.some(f=>f.ch===14))mersadieNow.facts.push({ch:14,text:"Na Phalanx, suas gravações mnemônicas se tornam a prova decisiva que confirma o testemunho de Garro diante de Rogal Dorn."});
 let sendek=people.find(x=>x.name==="Tollen Sendek");
 if(sendek&&!sendek.facts.some(f=>f.ch===10))sendek.facts.push({ch:10,text:"Durante a fuga de Isstvan, destaca-se também pela leitura analítica da situação e pelas avaliações táticas junto ao comando."});
 const grulgor=people.find(x=>x.name==="Ignatius Grulgor");
@@ -220,6 +240,6 @@ let carya=people.find(x=>x.name==="Baryk Carya");
 if(carya&&!carya.facts.some(f=>f.ch===10))carya.facts.push({ch:10,text:"Na fuga de Isstvan, sua experiência naval e a coordenação da bridge crew tornam-se tão importantes quanto a força dos Astartes."});
 if(carya&&!carya.facts.some(f=>f.ch===13))carya.facts.push({ch:13,text:"Como shipmaster humano, Carya oferece a Garro uma perspectiva rara sobre os Astartes: seres quase sobre-humanos que ainda repetem impulsos profundamente humanos de fraternidade, rivalidade e desejo de aprovação."});
 
-document.querySelectorAll(".chip").forEach(x=>{if(x.textContent.includes("protocol v"))x.textContent="protocol v0.10.5"});
+document.querySelectorAll(".chip").forEach(x=>{if(x.textContent.includes("protocol v"))x.textContent="protocol v0.10.6"});
 save();render();
 })();
