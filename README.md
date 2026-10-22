@@ -1,11 +1,11 @@
-# Heresy Score — v0.10.3
+# Heresy Score — v0.10.7
 
 Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 
 ## Current reading state
 
 - Active book: *The Flight of the Eisenstein*
-- Spoiler clearance: through Chapter XIII
+- Spoiler clearance: through Chapter XV
 - Chapter XI: READY
 - Chapters XII–XIII: STAGED
 - Local progress key is still `heresy-score-v01` so existing reading history survives upgrades.
@@ -101,3 +101,8 @@ Service-worker cache versions are bumped whenever the installed PWA must receive
 ## Attribution
 
 This is an unofficial personal reading tool. Warhammer, The Horus Heresy and related marks/characters are property of Games Workshop. Some spoiler-safe official visual references may be displayed for personal archival/reference use. The interface and application code are custom.
+
+
+## Persistent project context
+- `docs/READING_CONTEXT.md` — spoiler-safe reading state, themes, character status and open questions.
+- `docs/HERESY_SCORE_CONTEXT.md` — soundtrack methodology, reader calibration, app architecture, known debt and next-book refactor plan.
