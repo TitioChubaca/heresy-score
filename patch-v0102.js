@@ -10,6 +10,7 @@ if(typeof MUSIC_CALIBRATION!=="undefined"){
   MUSIC_CALIBRATION.chapterXII={readerMinutes:33,length:"good",note:"Across The Void matched the closing passage; one later cue remained unused. Calm faith dialogue should prefer restrained clerical or choral texture."};
   MUSIC_CALIBRATION.chapterXIII={readerMinutes:26,length:"good",note:"Score fit well but ended roughly 1–2 minutes before the chapter. The chapter moved from uncertainty and human reflection into Imperial relief; keep the next targets chapter-specific rather than inflating all scores."};
   MUSIC_CALIBRATION.chapterXIV={readerMinutes:30,length:"short",note:"The score fit, but again ended about one track early. Future playlists should keep roughly 1–2 minutes of deliberate musical headroom, using only curated reserves."};
+  MUSIC_CALIBRATION.chapterXV={readerMinutes:36,length:"short",note:"Third consecutive short ending. Repetition was also noticeable and some reflective scenes needed less musical pressure. Chapter XVI therefore uses a mostly fresh palette and about three minutes of planned headroom instead of a single emergency reserve."};
 }
 if(typeof LEITMOTIFS!=="undefined"){
   LEITMOTIFS.faithAwakening={track:"Imperium of Man",artist:"Jesper Kyd",strength:"developing"};
@@ -76,31 +77,27 @@ SCORES[15]=[
 SCORE_META[15]={estimatedMinutes:31,startCue:"The Imperium Unites",stage:"prepared",reserveIndexes:[],finalCueIndex:6,trimIndexes:[3],durationReserve:[["The Imperium","Dmitry V. Silantyev"]]};
 
 SCORES[16]=[
-["Nightsider","Jesper Kyd"],
-["Visions","Jonathan Cacherat"],
-["Noosphere","Guillaume David"],
-["Death's Play","Vsevolod Borisov"],
-["Clash of Convictions","Nikolay Filipovich"],
-["Millennial Rage","Guillaume David"],
-["Martyr's Endurance","Pawel Perepelica"],
-["Barren","Nikola Nikita Jeremić"],
-["Absolution","Pawel Perepelica"]
-];
-SCORE_META[16]={estimatedMinutes:34,startCue:"Nightsider",stage:"prepared",reserveIndexes:[],finalCueIndex:8,trimIndexes:[3],durationReserve:[["Our Enemies Approach","Doyle W. Donehoo"],["Voidborn","Pawel Perepelica"]]};
-
-SCORES[17]=[
-["The Imperium Unites","Jesper Kyd"],
-["Path of Trust","Jesper Kyd"],
+["Severance Ambient","Steve Molitz"],
+["Reality Slipping","Jesper Kyd"],
+["Warp Whispers","Nima Fakhrara"],
+["The Scourge","Steve Molitz"],
+["Severance Combat","Steve Molitz"],
+["Onslaught","Nima Fakhrara"],
+["Death Is My Duty","Nima Fakhrara"],
+["The Resilient","Nima Fakhrara"],
+["Heart of Heresy","Jesper Kyd"],
 ["Imperium of Man","Jesper Kyd"],
-["Across The Void","Guillaume David"],
-["The Imperium","Dmitry V. Silantyev"],
-["A Fool's Hope","Guillaume David"],
-["Our Endless March","Dmitry V. Silantyev"],
-["Absolution","Pawel Perepelica"]
+["Immortal Imperium","Jesper Kyd"],
+["The Emperor of Mankind","Jesper Kyd"],
+["The Might of the Emperor","Nima Fakhrara"],
+["Duty Without End Outro","Steve Molitz"]
 ];
-SCORE_META[17]={estimatedMinutes:30,startCue:"The Imperium Unites",stage:"prepared",reserveIndexes:[],finalCueIndex:7,trimIndexes:[3],durationReserve:[["Voidborn","Pawel Perepelica"],["Light of the Imperium","Jesper Kyd"]]};
+SCORE_META[16]={estimatedMinutes:37,startCue:"Severance Ambient",stage:"prepared",reserveIndexes:[],finalCueIndex:13,trimIndexes:[],durationReserve:[["Voidsong","Steve Molitz"],["The Will of the Imperium","Jesper Kyd"]]};
 
-[11,12,13,14,15,16,17].forEach(n=>{if(chapters[n-1]){chapters[n-1].estimatedMinutes=SCORE_META[n].estimatedMinutes;chapters[n-1].startCue=SCORE_META[n].startCue}});
+delete SCORES[17];
+delete SCORE_META[17];
+chapters.splice(16);
+[11,12,13,14,15,16].forEach(n=>{if(chapters[n-1]){chapters[n-1].estimatedMinutes=SCORE_META[n].estimatedMinutes;chapters[n-1].startCue=SCORE_META[n].startCue}});
 
 async function resolveTrackInfo(title,artist){
   let key=spotifyNorm(title+"|"+artist),cached=state.spotify.trackCache[key];
@@ -240,6 +237,18 @@ let carya=people.find(x=>x.name==="Baryk Carya");
 if(carya&&!carya.facts.some(f=>f.ch===10))carya.facts.push({ch:10,text:"Na fuga de Isstvan, sua experiência naval e a coordenação da bridge crew tornam-se tão importantes quanto a força dos Astartes."});
 if(carya&&!carya.facts.some(f=>f.ch===13))carya.facts.push({ch:13,text:"Como shipmaster humano, Carya oferece a Garro uma perspectiva rara sobre os Astartes: seres quase sobre-humanos que ainda repetem impulsos profundamente humanos de fraternidade, rivalidade e desejo de aprovação."});
 
-document.querySelectorAll(".chip").forEach(x=>{if(x.textContent.includes("protocol v"))x.textContent="protocol v0.10.6"});
+const baseRenderV0107=render;
+render=function(){
+  baseRenderV0107();
+  const total=16;
+  const logged=Object.keys(state.done||{}).map(Number).filter(n=>n>=1&&n<=total).length;
+  if($("progress"))$("progress").style.width=(logged/total*100)+"%";
+  if($("progressText"))$("progressText").textContent=logged+" / "+total+" logged";
+  if($("bookArchiveProgress"))$("bookArchiveProgress").textContent=logged+" / "+total+" chapters logged";
+  document.querySelectorAll(".chip").forEach(x=>{
+    if(x.textContent.includes("chapters"))x.textContent=total+" chapters";
+    if(x.textContent.includes("protocol v"))x.textContent="protocol v0.10.7";
+  });
+};
 save();render();
 })();
