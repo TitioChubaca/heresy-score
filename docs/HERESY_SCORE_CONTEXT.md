@@ -1,0 +1,150 @@
+# Heresy Score — Technical and Musical Context
+
+Last updated: 2026-10-21
+Current patch protocol: **v0.10.7**
+Current book: **The Flight of the Eisenstein**
+Correct chapter count: **16**
+Current reader clearance: **Chapter XV complete**
+Next score: **Chapter XVI — FINAL — ready**
+
+## Product purpose
+Heresy Score is a mobile-first, spoiler-safe reading soundtrack companion for the Horus Heresy.
+
+The primary product is **scene-to-music fit**. UI, cloud sync, archives, images and Spotify integration support that goal; they must not take priority over soundtrack quality.
+
+## Core repository/runtime
+- Repository: TitioChubaca/heresy-score
+- Main PWA: index.html
+- Runtime patch currently injected by service worker: patch-v0102.js
+- Service worker cache should be bumped whenever the runtime patch changes.
+- Persistent localStorage key: `heresy-score-v01`
+  - Do not change without an explicit migration.
+- Spotify uses PKCE; never store or request a client secret.
+- Spotify Client ID is a public identifier and is already configured in the app.
+- Supabase mirrors reading logs; local state remains authoritative.
+- Supabase project ref: metjuhqaybhhauujahhu
+- reading_logs stores chapter, minutes, length, intensity, opening, peak, notes and payload.
+- The base index currently still contains some old hard-coded v0.10.1/version strings; runtime patching overrides visible behavior. This should be cleaned structurally for Book V.
+
+## Critical structural correction
+The Flight of the Eisenstein has **16 chapters**, not 20.
+The original app scaffold created 20 generic chapter cards.
+v0.10.7 truncates the runtime chapter array to 16 and fixes visible progress metadata.
+For the next book, total chapter count must be data-driven per book rather than hard-coded.
+
+## Soundtrack method
+Always work:
+**text -> scene -> emotional function -> cue -> total duration**
+
+Privately map each chapter into:
+- opening state
+- dialogue/reflection
+- tension
+- action
+- liminal/emotional
+- ending function
+
+Never expose the hidden scene map before the chapter is read.
+
+## Reader timing model
+- Reader baseline: roughly 1.5 min/page, but chapter-specific actuals outrank the baseline.
+- Never apply a universal duration buffer solely because the previous chapter was short.
+- However, three consecutive recent short endings reveal a systematic delivery problem:
+  - Chapter XIII: ~26 min reading, score ended ~1–2 min early.
+  - Chapter XIV: ~30 min reading, score ended roughly one track early.
+  - Chapter XV: 36 min reading, score again ended significantly early.
+- For the Chapter XVI finale, deliberate musical headroom is now preferred over silence at the end.
+- v0.10.7 finale base score is designed around roughly 39 minutes of known source durations, before any reserve logic.
+
+## Current duration engine
+When Spotify resolves tracks:
+- read real `duration_ms` from resolved tracks;
+- sum the actual playlist runtime;
+- use curated reserve cues only;
+- preserve Final Cue position after insertions;
+- avoid random filler;
+- for the final chapter, do not trim merely to hit an estimated reading target if the extra minutes provide safe ending headroom.
+
+## Repetition policy
+Repeated music is allowed only when one of these is true:
+1. It is an established leitmotif and the same thematic/emotional idea has returned.
+2. Reader feedback previously identified the track as a strong fit for that specific function.
+3. The recurrence creates intentional recognition.
+
+Do not repeat tracks simply because they are familiar, available, or from the preferred composer pool.
+
+Recent feedback: Chapter XV had too much recognizable repetition and some quiet dialogue needed less pressure.
+Chapter XVI therefore uses a mostly fresh palette, including material from the Space Marine 2 OST alongside Darktide.
+
+## Established / developing musical language
+Strong fits:
+- Noosphere — Sisters of Silence / blank presence.
+- Beyond The Asteroid Belt — liminal Garro / suspended near-death or introspection.
+- Across The Void — contemplative/travel/closing function; reader-confirmed fit.
+
+Developing motifs:
+- Shadow Quarters — Eisenstein / claustrophobic ship tension.
+- Imperium of Man — restrained faith/clerical tone for conversations about belief; do not turn every Keeler scene into a choir.
+
+Avoid / weak fits:
+- Side By Side.
+- A Speech On Earth.
+
+## Scene-specific lessons
+- Known catastrophe: melancholy / inevitability / horror is often better than heroic epic scoring.
+- Warp horror: atmosphere, unreality and claustrophobia first; action still needs real impact when it arrives.
+- Faith dialogue: calm, restrained clerical/choral texture rather than generic ambient music.
+- Human/philosophical dialogue: leave room; do not score every reflective exchange too heavily.
+- Action peaks: percussion/weight must rise enough to be perceptible.
+- Ending function is independent from peak; a chapter can need a quiet, unresolved or mournful ending.
+
+## Recent chapter feedback
+- Ch V: duration good; battle/finale lacked appropriate musical support.
+- Ch VI: opening too quiet for immediate combat; Beyond The Asteroid Belt excellent for Garro's liminal moment; ending a little too epic.
+- Ch VII: good overall, ended 2–3 min after score.
+- Ch VIII: score ran ~1.5 tracks too long.
+- Ch IX: ~30 min, needed 1–2 min more; virus catastrophe was too heroic instead of melancholy.
+- Ch X: planned target and actual Spotify runtime diverged badly; triggered duration_ms work.
+- Ch XI: atmosphere good; final action needed more weight.
+- Ch XII: 33 min; one cue remained, but Across The Void fit the ending very well.
+- Ch XIII: music fit, but ended ~1–2 min early.
+- Ch XIV: again about one track short.
+- Ch XV: 36 min, again short; noticeable repeated tracks; some quiet moments needed less pressure.
+
+## Chapter XVI score design
+- Status: READY / FINAL.
+- Private scene map is sealed until the reader finishes.
+- Target philosophy: action must have weight, quieter material must breathe, ending must remain scored.
+- Base soundtrack uses a mostly fresh Space Marine 2 + Darktide palette.
+- Approximate planned base runtime from published track durations: ~39 minutes.
+- Additional curated reserves exist if Spotify resolves the score materially shorter.
+- Do not show future scene-to-track mapping before completion.
+
+## Archive / compendium structure
+- Dramatis Personae
+- Voidcraft
+- Worlds / Theatres
+- Entity Compendium
+
+Visual priority:
+1. Official and safe for current clearance.
+2. Canon reference.
+3. Clearly labelled representative visual / reconstruction.
+4. REDACTED.
+
+Never use a later visual that spoils a transformation or fate.
+
+## Known app debt to address before Book V
+After Flight of the Eisenstein is finished, refactor rather than stacking more runtime patches:
+- Move books/chapter counts/scores into structured per-book data.
+- Remove hard-coded 20-chapter assumptions.
+- Migrate v0.10.x runtime patch logic cleanly into the base app.
+- Fix app_version written to Supabase so it reflects the actual runtime protocol.
+- Make real Spotify runtime visible before starting a chapter.
+- Add explicit Ending feedback separate from Peak.
+- Improve archive image loading/fallbacks and stop relying on fragile external hotlinks where possible.
+- Audit all character statuses for meta-spoiler leakage.
+- Make leitmotif metadata first-class rather than scattered constants.
+- Add an automatic recent-track repetition check before finalizing a score.
+- Add a soundtrack QA check: planned runtime, resolved runtime, scene coverage, ending coverage, repeat count.
+- Prepare Book V as a separate data package without changing the localStorage key unless a migration is intentionally designed.
