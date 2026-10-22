@@ -2,6 +2,16 @@
 
 All notable changes to Heresy Score are tracked here.
 
+## v0.10.7 — Finale hardening and persistent context
+
+- Corrected Flight of the Eisenstein from the old generic 20-chapter scaffold to the actual 16-chapter structure.
+- Rebuilt Chapter XVI as the true finale with a mostly fresh Space Marine 2 + Darktide palette and roughly 39 minutes of planned base runtime.
+- Added deliberate finale headroom after Chapters XIII–XV repeatedly ended before the reader.
+- Added persistent spoiler-safe reading context in docs/READING_CONTEXT.md.
+- Added persistent app/music context in docs/HERESY_SCORE_CONTEXT.md.
+- Added recent-track repetition as an explicit QA concern and recorded Chapter XV feedback.
+- Kept Chapter XVI scene mapping sealed until completion.
+
 ## v0.10.3 — Chapter XI compendium calibration
 
 - Added an Entities tab to the archive.
