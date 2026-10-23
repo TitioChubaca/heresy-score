@@ -1,7 +1,7 @@
 # Heresy Score — Technical and Musical Context
 
 Last updated: 2026-10-23
-Current patch protocol: **v0.10.8**
+Current patch protocol: **v0.10.9**
 Current book: **The Flight of the Eisenstein**
 Correct chapter count: **17 (chapter XVII is a short epilogue)**
 Current reader clearance: **Book IV complete, through Chapter XVII**
@@ -29,7 +29,7 @@ The primary product is **scene-to-music fit**. UI, cloud sync, archives, images 
 ## Critical structural correction
 The Flight of the Eisenstein has **16 chapters**, not 20.
 The original app scaffold created 20 generic chapter cards.
-v0.10.8 truncates the runtime chapter array to 16 and fixes visible progress metadata.
+v0.10.9 truncates the runtime chapter array to 16 and fixes visible progress metadata.
 For the next book, total chapter count must be data-driven per book rather than hard-coded.
 
 ## Soundtrack method
@@ -54,7 +54,7 @@ Never expose the hidden scene map before the chapter is read.
   - Chapter XIV: ~30 min reading, score ended roughly one track early.
   - Chapter XV: 36 min reading, score again ended significantly early.
 - For the Chapter XVI finale, deliberate musical headroom is now preferred over silence at the end.
-- v0.10.8 finale base score is designed around roughly 39 minutes of known source durations, before any reserve logic.
+- v0.10.9 finale base score is designed around roughly 39 minutes of known source durations, before any reserve logic.
 
 ## Current duration engine
 When Spotify resolves tracks:
@@ -154,5 +154,14 @@ After Flight of the Eisenstein is finished, refactor rather than stacking more r
 - Reader rating: 3/5. Strongest musical alignment: 'The Emperor of Mankind' during Garro's faith-driven return in the Decius / Lord of the Flies confrontation, reported as cinematic.
 - Chapter XVI score had enough additional tracks to extend into the short epilogue XVII, but playback ended before the reader finished both chapters. Reader considered it acceptable because XVII had not been planned.
 - Chapter XVII should be a separate **unscored** Field Log, without fabricating a standalone reading duration. Its minutes can remain null.
-- v0.10.8 patch restores chapter XVII in UI and provides a 'Log Read Epilogue' action after chapter XVI is logged. This is an incremental correction, **not** the completed Fulgrim transition refactor.
+- v0.10.9 patch restores chapter XVII in UI and provides a 'Log Read Epilogue' action after chapter XVI is logged. This is an incremental correction, **not** the completed Fulgrim transition refactor.
 - Must preserve Book IV local logs and Supabase owner identity at transition. Avoid overriding logs on completion.
+
+
+## v0.10.9 — Book IV epilogue and portrait groundwork
+- Chapter XVII now has an 2-cue epilogue score (Immortal Imperium → Across The Void), Spotify-resolved playback and an optional reserve specified outside the automatic runtime extension.
+- Existing reader can mark epilogue read without inventing reading minutes. New readers can play the regular timed chapter score.
+- Chapter statuses updated: Sendek and Decius through XVI; Malcador introduced at XVII.
+- Compendium art metadata and branded portrait-pending cards introduced; original art not yet generated or added.
+- Specification and character visual audit: docs/BOOK_IV_V_TRANSITION_SPEC.md.
+- Pending major refactor: book-specific logs, Supabase migration, base-source consolidation, Fulgrim readiness. Do not claim completed.
