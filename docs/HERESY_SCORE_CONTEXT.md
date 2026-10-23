@@ -1,11 +1,11 @@
 # Heresy Score — Technical and Musical Context
 
-Last updated: 2026-10-21
-Current patch protocol: **v0.10.7**
+Last updated: 2026-10-23
+Current patch protocol: **v0.10.8**
 Current book: **The Flight of the Eisenstein**
-Correct chapter count: **16**
-Current reader clearance: **Chapter XV complete**
-Next score: **Chapter XVI — FINAL — ready**
+Correct chapter count: **17 (chapter XVII is a short epilogue)**
+Current reader clearance: **Book IV complete, through Chapter XVII**
+Next score: **Fulgrim Chapter I, pending refactor and curation**
 
 ## Product purpose
 Heresy Score is a mobile-first, spoiler-safe reading soundtrack companion for the Horus Heresy.
@@ -29,7 +29,7 @@ The primary product is **scene-to-music fit**. UI, cloud sync, archives, images 
 ## Critical structural correction
 The Flight of the Eisenstein has **16 chapters**, not 20.
 The original app scaffold created 20 generic chapter cards.
-v0.10.7 truncates the runtime chapter array to 16 and fixes visible progress metadata.
+v0.10.8 truncates the runtime chapter array to 16 and fixes visible progress metadata.
 For the next book, total chapter count must be data-driven per book rather than hard-coded.
 
 ## Soundtrack method
@@ -54,7 +54,7 @@ Never expose the hidden scene map before the chapter is read.
   - Chapter XIV: ~30 min reading, score ended roughly one track early.
   - Chapter XV: 36 min reading, score again ended significantly early.
 - For the Chapter XVI finale, deliberate musical headroom is now preferred over silence at the end.
-- v0.10.7 finale base score is designed around roughly 39 minutes of known source durations, before any reserve logic.
+- v0.10.8 finale base score is designed around roughly 39 minutes of known source durations, before any reserve logic.
 
 ## Current duration engine
 When Spotify resolves tracks:
@@ -148,3 +148,11 @@ After Flight of the Eisenstein is finished, refactor rather than stacking more r
 - Add an automatic recent-track repetition check before finalizing a score.
 - Add a soundtrack QA check: planned runtime, resolved runtime, scene coverage, ending coverage, repeat count.
 - Prepare Book V as a separate data package without changing the localStorage key unless a migration is intentionally designed.
+
+
+## Book IV final field debrief — 2026-10-23
+- Reader rating: 3/5. Strongest musical alignment: 'The Emperor of Mankind' during Garro's faith-driven return in the Decius / Lord of the Flies confrontation, reported as cinematic.
+- Chapter XVI score had enough additional tracks to extend into the short epilogue XVII, but playback ended before the reader finished both chapters. Reader considered it acceptable because XVII had not been planned.
+- Chapter XVII should be a separate **unscored** Field Log, without fabricating a standalone reading duration. Its minutes can remain null.
+- v0.10.8 patch restores chapter XVII in UI and provides a 'Log Read Epilogue' action after chapter XVI is logged. This is an incremental correction, **not** the completed Fulgrim transition refactor.
+- Must preserve Book IV local logs and Supabase owner identity at transition. Avoid overriding logs on completion.
