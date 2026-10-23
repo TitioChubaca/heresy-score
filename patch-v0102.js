@@ -1,33 +1,7 @@
 (()=>{
 if(window.__HS_PATCH_0102)return;window.__HS_PATCH_0102=true;
 
-// v0.11.0: non-destructive book-scoped copy of legacy Eisenstein logs.
-const HS_BOOK_IV="flight-of-the-eisenstein";
-state.schemaVersion=Math.max(Number(state.schemaVersion)||1,2);
-state.books=state.books||{};
-if(!state.books[HS_BOOK_IV]){
- state.books[HS_BOOK_IV]={slug:HS_BOOK_IV,title:"The Flight of the Eisenstein",chapterCount:17,
-  status:"archive",rating:3,done:JSON.parse(JSON.stringify(state.done||{})),migratedAt:new Date().toISOString()};
-}else{
- const old=state.books[HS_BOOK_IV];
- old.done=old.done||{};
- for(const [chapter,log] of Object.entries(state.done||{}))
-   if(!old.done[chapter] || (log.finishedAt && log.finishedAt!==old.done[chapter].finishedAt))
-     old.done[chapter]=JSON.parse(JSON.stringify(log));
- old.chapterCount=17;
-}
-state.books.fulgrim=state.books.fulgrim||{slug:"fulgrim",title:"Fulgrim",status:"sealed",
- chapterCount:null,done:{},spoilerClearance:0};
-state.activeBookSlug=state.activeBookSlug||HS_BOOK_IV;
-// This release intentionally keeps the legacy state.done view backed by Book IV only.
-// Fulgrim must not be activated until all chapter-scoped UI/player/cloud code is migrated.
-const hsOldSave=save;
-save=function(){
- if(state.activeBookSlug===HS_BOOK_IV){
-  state.books[HS_BOOK_IV].done=JSON.parse(JSON.stringify(state.done||{}));
- }
- hsOldSave();
-};
+// Book-state migration is initialized before the main runtime in scripts/book-state.js.
 state.spotify=state.spotify||{};
 state.spotify.scoreDurations=state.spotify.scoreDurations||{};
 state.spotify.chapterRuntime=state.spotify.chapterRuntime||{};
