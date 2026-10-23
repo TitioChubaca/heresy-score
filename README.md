@@ -1,4 +1,4 @@
-# Heresy Score — v0.10.8
+# Heresy Score — v0.10.9
 
 Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 
@@ -107,3 +107,8 @@ This is an unofficial personal reading tool. Warhammer, The Horus Heresy and rel
 ## Persistent project context
 - `docs/READING_CONTEXT.md` — spoiler-safe reading state, themes, character status and open questions.
 - `docs/HERESY_SCORE_CONTEXT.md` — soundtrack methodology, reader calibration, app architecture, known debt and next-book refactor plan.
+
+## Book IV epilogue and portrait work
+- Chapter XVII has an epilogue score and a separate option to mark prior completion without fabricating reading minutes.
+- Compendium now distinguishes existing image provenance from missing original portraits, using a consistent branded placeholder.
+- See `docs/BOOK_IV_V_TRANSITION_SPEC.md` for transition requirements and portrait audit. Fulgrim is not yet enabled.
