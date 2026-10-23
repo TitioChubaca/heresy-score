@@ -1,0 +1,18 @@
+{
+  "slug": "fulgrim",
+  "title": "Fulgrim",
+  "number": 5,
+  "state": "score_pending",
+  "chapterCount": null,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "CHAPTER 01",
+      "scoreStatus": "sealed",
+      "estimatedMinutes": null,
+      "startCue": null
+    }
+  ],
+  "personae": [],
+  "archiveRecords": []
+}
