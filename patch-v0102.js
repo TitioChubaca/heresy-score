@@ -96,7 +96,9 @@ SCORE_META[16]={estimatedMinutes:37,startCue:"Severance Ambient",stage:"prepared
 
 delete SCORES[17];
 delete SCORE_META[17];
-chapters.splice(16);
+chapters.splice(17);
+// Chapter XVII is a short unscored epilogue, logged separately without inventing playback or timing.
+if(chapters[16]){chapters[16].title="CHAPTER 17 // EPILOGUE";chapters[16].estimatedMinutes=null;chapters[16].startCue=null;}
 [11,12,13,14,15,16].forEach(n=>{if(chapters[n-1]){chapters[n-1].estimatedMinutes=SCORE_META[n].estimatedMinutes;chapters[n-1].startCue=SCORE_META[n].startCue}});
 
 async function resolveTrackInfo(title,artist){
@@ -240,14 +242,20 @@ if(carya&&!carya.facts.some(f=>f.ch===13))carya.facts.push({ch:13,text:"Como shi
 const baseRenderV0107=render;
 render=function(){
   baseRenderV0107();
-  const total=16;
+  const total=17;
   const logged=Object.keys(state.done||{}).map(Number).filter(n=>n>=1&&n<=total).length;
   if($("progress"))$("progress").style.width=(logged/total*100)+"%";
   if($("progressText"))$("progressText").textContent=logged+" / "+total+" logged";
   if($("bookArchiveProgress"))$("bookArchiveProgress").textContent=logged+" / "+total+" chapters logged";
+  // A separately completed epilogue should not demand a new Spotify playlist.
+  if(!state.done[17] && state.done[16]){
+    const ep=[...document.querySelectorAll(".chapter")].find(x=>x.querySelector(".chname")?.textContent.includes("EPILOGUE"));
+    const action=ep?.querySelector(".actions");
+    if(action){action.innerHTML="";const b=document.createElement("button");b.className="btn primary";b.textContent="Log Read Epilogue";b.onclick=()=>{state.done[17]={minutes:null,length:"unscored",notes:"Short epilogue read together with Chapter XVI; no independent score or recorded duration.",finishedAt:new Date().toISOString(),cloudSynced:false};save();render();openLog(17);};action.appendChild(b);}
+  }
   document.querySelectorAll(".chip").forEach(x=>{
     if(x.textContent.includes("chapters"))x.textContent=total+" chapters";
-    if(x.textContent.includes("protocol v"))x.textContent="protocol v0.10.7";
+    if(x.textContent.includes("protocol v"))x.textContent="protocol v0.10.8";
   });
 };
 save();render();
