@@ -1,4 +1,4 @@
-const CACHE="heresy-score-v0107";
+const CACHE="heresy-score-v0108";
 const PATCH="./patch-v0102.js";
 const ASSETS=["./","./index.html","./manifest.webmanifest","./patch-v0102.js","./assets/ui/icons/app-icon-maskable-512.png","./assets/ui/icons/app-icon-512.png","./assets/ui/icons/app-icon-192.png","./assets/ui/symbols/aquila.png","./assets/ui/symbols/skull-bw-1.png","./assets/ui/symbols/administratum.png","./assets/ui/animated/administratum.gif"];
 
