@@ -12,5 +12,7 @@ const sel=panel.querySelector("select");
 for(const person of people){let option=document.createElement("option");option.textContent=person.name;option.value=person.name;sel.append(option)}
 async function restore(){for(const person of people){const entry=await readImage(person.name);if(entry?.file){person.image=URL.createObjectURL(entry.file);person.visual="PERSONAL ART // "+entry.artist}}render()}
 panel.querySelector("button").onclick=async()=>{const f=panel.querySelector('input[type="file"]').files[0];if(!f||f.size>9000000){panel.querySelector("#privatePortraitMessage").textContent="Escolha uma imagem de até 9 MB";return}await storeImage(sel.value,f,panel.querySelector("#privatePortraitArtist").value);panel.querySelector("#privatePortraitMessage").textContent="Imagem salva neste aparelho";await restore()};
+window.HSPrivateArt={refresh:restore};
+window.addEventListener("hs-portraits-updated",()=>restore().catch(()=>{}));
 restore().catch(e=>{panel.querySelector("#privatePortraitMessage").textContent="Armazenamento indisponível: "+e.message});
 })();
