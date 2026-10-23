@@ -1,7 +1,7 @@
 # Heresy Score — Technical and Musical Context
 
 Last updated: 2026-10-23
-Current patch protocol: **v0.11.0**
+Current patch protocol: **v0.11.1**
 Current book: **The Flight of the Eisenstein**
 Correct chapter count: **17 (chapter XVII is a short epilogue)**
 Current reader clearance: **Book IV complete, through Chapter XVII**
@@ -174,7 +174,7 @@ After Flight of the Eisenstein is finished, refactor rather than stacking more r
 - Current code still has incomplete book scoping; character art metadata and actual portrait asset integration pending. Do not mistake style-board concept art for canon-verified individual portraits.
 
 
-## v0.11.0 — extracted Book IV and safe archive migration (2026-10-23)
+## v0.11.1 — extracted Book IV and safe archive migration (2026-10-23)
 - `index.html` now loads `data/eisenstein-score.js` and `data/eisenstein-compendium.js` before its existing application script; both were extracted from the original, while existing runtime patch still applies later scores/status logic.
 - `data/books.json` has Eisenstein (IV, 17 chapters, 3/5) and a sealed Fulgrim (V) placeholder, with no fabricated chapter data.
 - Runtime initializes schemaVersion 2, keeps the old `heresy-score-v01` key and `state.done` read-path, and non-destructively copies Book IV logs into `state.books["flight-of-the-eisenstein"].done`. Subsequent saves mirror existing Book IV logs into the scoped copy.
@@ -183,3 +183,11 @@ After Flight of the Eisenstein is finished, refactor rather than stacking more r
 - `scripts/book-backup.js` allows export of Book IV JSON reading history from Settings, excluding image blobs; backup should be taken before any full switch.
 - Rendered PWA cache bumped via `sw.js`; live device/browser QA and successful Supabase synchronization not yet verified.
 - Art direction correction: reduce uniform AI-like glow, halation, shiny/plastic finish; favor matte/painterly grain and meaningful focal highlights, for planets, ships, environments and characters. Original user-provided artworks are not modified by default.
+
+## v0.11.1 — multi-book state selection (2026-10-23)
+- Added `scripts/book-state.js` with schemaVersion 3, non-destructive legacy Book IV migration, `persistActive`, safe book switch and active session guard. Invariant: `state.done` reflects only the selected book, `state.books[slug].done` stores per-book records.
+- `index.html` now loads the migration before the inline runtime and persists the selected book on `save()`. Cloud upload/pull uses active `book_slug`, Supabase `app_version` updated to 0.11.1, nullish-coalescing avoids altering explicit empty values on cloud pull.
+- Added `scripts/book-switch.js`: Book Archives selector IV / V, per-book UI state, Book IV restored as archive, Book V selected as a sealed/uncurated placeholder; no invented Fulgrim scores, personae, plot or chapter count. The view blocks switching while a reading session is active. It deliberately does not enable starting chapter I before score QA.
+- Added runtime scripts directly in `index.html` so a first-page load does not rely on service-worker injection. `sw.js` caches migration, selector and previous runtime, cache version `heresy-score-v0112`.
+- Validated JavaScript syntax of live `index.html` script and modules. Unit-checked migration, reload/switch independence, credential preservation, and active-session rejection. NOT tested on user's device or live Supabase/Spotify; browser runtime integration remains to verify.
+- Artwork browsing stays local-only; no artist screenshots committed to public GitHub.
