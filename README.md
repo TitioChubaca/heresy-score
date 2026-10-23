@@ -1,13 +1,14 @@
-# Heresy Score — v0.10.7
+# Heresy Score — v0.10.8
 
 Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 
 ## Current reading state
 
 - Active book: *The Flight of the Eisenstein*
-- Spoiler clearance: through Chapter XV
-- Chapter XI: READY
-- Chapters XII–XIII: STAGED
+- Reader clearance: Book IV completed through Chapter XVII epilogue; Fulgrim not yet started.
+- Book IV has 17 chapters, including an unscored epilogue XVII.
+- Chapter XVII can be marked read separately after Chapter XVI is logged.
+- Book V migration/refactor is still pending.
 - Local progress key is still `heresy-score-v01` so existing reading history survives upgrades.
 
 ## Main features
