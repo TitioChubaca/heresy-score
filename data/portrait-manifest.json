@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "note": "Personal reference metadata only; artwork is not published here.",
+  "sources": [
+    {
+      "creator": "@chrisjonessuperartist",
+      "type": "colored concept references",
+      "count": 7
+    },
+    {
+      "creator": "@tattoo_babay",
+      "type": "character studies",
+      "count": 21
+    },
+    {
+      "creator": "unverified",
+      "type": "Garviel Loken user-submitted portrait",
+      "count": 1
+    }
+  ],
+  "cropPresets": {
+    "Nathaniel Garro": {
+      "x": 50,
+      "y": 18,
+      "zoom": 108
+    },
+    "Mortarion": {
+      "x": 50,
+      "y": 22,
+      "zoom": 102
+    },
+    "Garviel Loken": {
+      "x": 50,
+      "y": 16,
+      "zoom": 110
+    },
+    "Ezekyle Abaddon": {
+      "x": 50,
+      "y": 17,
+      "zoom": 107
+    }
+  }
+}
