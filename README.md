@@ -112,3 +112,10 @@ This is an unofficial personal reading tool. Warhammer, The Horus Heresy and rel
 - Chapter XVII has an epilogue score and a separate option to mark prior completion without fabricating reading minutes.
 - Compendium now distinguishes existing image provenance from missing original portraits, using a consistent branded placeholder.
 - See `docs/BOOK_IV_V_TRANSITION_SPEC.md` for transition requirements and portrait audit. Fulgrim is not yet enabled.
+
+## v0.11.1 book archives
+- Book IV data extracted and preserved under `state.books["flight-of-the-eisenstein"]`.
+- Book V selector is available through Book Archives. Fulgrim scores/content remain sealed pending curation.
+- Local state migration v3 preserves legacy `heresy-score-v01` storage and independent chapter logs by book.
+- Cloud requests now use active book slug; Spotify still uses one active playlist but no Book V tracks are provided before curation.
+- This is not a validated multi-device release: test book switching, cloud recovery, app cache and player before relying on the new workflow.
