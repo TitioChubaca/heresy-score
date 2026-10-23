@@ -113,9 +113,16 @@ This is an unofficial personal reading tool. Warhammer, The Horus Heresy and rel
 - Compendium now distinguishes existing image provenance from missing original portraits, using a consistent branded placeholder.
 - See `docs/BOOK_IV_V_TRANSITION_SPEC.md` for transition requirements and portrait audit. Fulgrim is not yet enabled.
 
-## v0.11.1 book archives
+## v0.11.2 book archives
 - Book IV data extracted and preserved under `state.books["flight-of-the-eisenstein"]`.
 - Book V selector is available through Book Archives. Fulgrim scores/content remain sealed pending curation.
 - Local state migration v3 preserves legacy `heresy-score-v01` storage and independent chapter logs by book.
 - Cloud requests now use active book slug; Spotify still uses one active playlist but no Book V tracks are provided before curation.
 - This is not a validated multi-device release: test book switching, cloud recovery, app cache and player before relying on the new workflow.
+
+## v0.11.2 local portrait import
+- Personal Art Pack importer in Settings accepts the one `.hsartpack` file from the user's conversation, stores files in IndexedDB, and does not upload artwork to GitHub or Supabase.
+- Per-character portrait crop studio controls horizontal/vertical focal position and zoom (card view); dossier modal displays full image.
+- The original per-file importer remains available; bulk import shares its IndexedDB store.
+- Private art package is intentionally not shipped in the public repository. If changing devices, import it again.
+- Browser/device runtime test still needed; source files passed JavaScript syntax checks.
