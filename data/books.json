@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 2,
+  "books": [
+    {
+      "slug": "flight-of-the-eisenstein",
+      "title": "The Flight of the Eisenstein",
+      "number": 4,
+      "chapterCount": 17,
+      "state": "completed",
+      "rating": 3,
+      "scoreSource": "data/eisenstein-score.js",
+      "personaeSource": "data/eisenstein-compendium.js"
+    },
+    {
+      "slug": "fulgrim",
+      "title": "Fulgrim",
+      "number": 5,
+      "chapterCount": null,
+      "state": "sealed",
+      "scoreSource": null,
+      "personaeSource": null
+    }
+  ]
+}
