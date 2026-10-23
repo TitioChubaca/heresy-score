@@ -98,7 +98,16 @@ delete SCORES[17];
 delete SCORE_META[17];
 chapters.splice(17);
 // Chapter XVII is a short unscored epilogue, logged separately without inventing playback or timing.
-if(chapters[16]){chapters[16].title="CHAPTER 17 // EPILOGUE";chapters[16].estimatedMinutes=null;chapters[16].startCue=null;}
+// Musical target is editorial, not a fabricated Kindle page/time measurement.
+SCORES[17]=[
+  ["Immortal Imperium","Jesper Kyd"],
+  ["Across The Void","Guillaume David"]
+];
+SCORE_META[17]={type:"epilogue",estimatedMinutes:8.25,estimatedPages:5.5,planningPaceMinutesPerPage:1.5,
+  stage:"ready",startCue:"Immortal Imperium",finalCueIndex:1,trimIndexes:[],
+  durationReserve:[],optionalReserve:[["The Will of the Imperium","Jesper Kyd"]],
+  note:"Post-battle audience with the Imperial Regent; solemn resolution, contemplative closing."};
+if(chapters[16]){chapters[16].title="CHAPTER 17 // EPILOGUE";chapters[16].type="epilogue";chapters[16].estimatedMinutes=8.25;chapters[16].startCue="Immortal Imperium";}
 [11,12,13,14,15,16].forEach(n=>{if(chapters[n-1]){chapters[n-1].estimatedMinutes=SCORE_META[n].estimatedMinutes;chapters[n-1].startCue=SCORE_META[n].startCue}});
 
 async function resolveTrackInfo(title,artist){
@@ -239,6 +248,66 @@ let carya=people.find(x=>x.name==="Baryk Carya");
 if(carya&&!carya.facts.some(f=>f.ch===10))carya.facts.push({ch:10,text:"Na fuga de Isstvan, sua experiência naval e a coordenação da bridge crew tornam-se tão importantes quanto a força dos Astartes."});
 if(carya&&!carya.facts.some(f=>f.ch===13))carya.facts.push({ch:13,text:"Como shipmaster humano, Carya oferece a Garro uma perspectiva rara sobre os Astartes: seres quase sobre-humanos que ainda repetem impulsos profundamente humanos de fraternidade, rivalidade e desejo de aprovação."});
 
+// Canonical spoiler gates are independent from illustration availability.
+const markDeath=(name,chapter,fact)=>{
+  const p=people.find(x=>x.name===name);if(!p)return;
+  p.statuses=p.statuses||[{ch:p.unlock||1,status:"active"}];
+  if(!p.statuses.some(x=>x.ch===chapter))p.statuses.push({ch:chapter,status:"deceased"});
+  p.statuses.sort((a,b)=>a.ch-b.ch);
+  if(fact && !p.facts.some(f=>f.ch===chapter))p.facts.push({ch:chapter,text:fact});
+};
+markDeath("Tollen Sendek",16,"Morre durante o confronto final em Luna; sua análise tática e presença na 7ª Companhia eram valorizadas.");
+markDeath("Solun Decius",16,"Após sua transformação em Lord of the Flies, é derrotado por Garro em Luna.");
+if(!people.some(p=>p.name==="Malcador the Sigillite"))people.push({
+ name:"Malcador the Sigillite",role:"Regent of Terra // Imperial counsellor",unlock:17,visual:"portrait pending // canonical role",
+ image:null,statuses:[{ch:17,status:"active"}],
+ facts:[{ch:17,text:"Recebe Garro e outros sobreviventes após a crise na Lua. Dispensa o encontro direto com o Imperador e indica um novo caminho de serviço."}],
+ note:"Only Book IV facts are available here; later roles and events deliberately withheld."
+});
+// One standardized image provenance contract for all currently known entries.
+people.forEach(p=>{p.art=p.art||{
+  kind:p.image?(p.name==="Amendera Kendel"?"official_order_reference":"official_character_reference"):"pending",
+  image:p.image||null,book:"flight-of-the-eisenstein",unlockChapter:p.unlock,
+  subjectExact:!!p.image&&p.name!=="Amendera Kendel",approval:p.image?"approved_reference":"needs_research",
+  credit:p.image?"Games Workshop / Warhammer Community":null};
+});
+const dossierStyles=document.createElement("style");
+dossierStyles.textContent=`
+.archive-portrait-pending{min-height:124px;width:100%;height:100%;display:flex;flex-direction:column;
+align-items:center;justify-content:center;text-align:center;gap:9px;padding:15px 8px;
+background:radial-gradient(circle at 50% 30%,#1b2a19 0%,#0b120b 66%);color:#a8db72;
+border:1px solid #445e39;box-shadow:inset 0 0 25px rgba(90,145,65,.13);}
+.archive-portrait-pending .dossier-mark{font:28px Georgia,serif;letter-spacing:.08em;color:#d2cbb7;}
+.archive-portrait-pending .dossier-label{font:8px ui-monospace,monospace;letter-spacing:.12em;color:#90a780;line-height:1.6;}
+.dossier-provenance{font:8px ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:#c39a55;
+margin-top:6px;}
+`;
+document.head.appendChild(dossierStyles);
+const baseRenderRoster=renderRoster;
+renderRoster=function(){
+  baseRenderRoster();
+  const clearance=maxClearance(),cards=[...$("roster").children];
+  people.forEach((p,i)=>{
+    if(clearance<p.unlock || p.image)return;
+    const v=cards[i]?.querySelector(".person-visual");if(!v)return;
+    v.innerHTML="";
+    const placeholder=document.createElement("div");placeholder.className="archive-portrait-pending";
+    const mark=document.createElement("div");mark.className="dossier-mark";
+    mark.textContent=p.name.split(/\\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join("").toUpperCase();
+    const label=document.createElement("div");label.className="dossier-label";
+    label.textContent="PORTRAIT PENDING // ARCHIVE RECONSTRUCTION";
+    placeholder.append(mark,label);v.appendChild(placeholder);
+  });
+};
+const baseOpenPerson=openPerson;
+openPerson=function(p){
+  baseOpenPerson(p);
+  const dlg=$("personDialog"),old=dlg.querySelector(".dossier-art-detail");if(old)old.remove();
+  const d=document.createElement("div");d.className="dossier-art-detail dossier-provenance";
+  d.textContent="VISUAL SOURCE // "+(p.art?.kind||"pending").replaceAll("_"," ")+
+    (p.art?.subjectExact?" // exact subject":" // not an individual likeness");
+  const note=$("personDialogNote");note.parentNode.insertBefore(d,note);
+};
 const baseRenderV0107=render;
 render=function(){
   baseRenderV0107();
@@ -247,15 +316,23 @@ render=function(){
   if($("progress"))$("progress").style.width=(logged/total*100)+"%";
   if($("progressText"))$("progressText").textContent=logged+" / "+total+" logged";
   if($("bookArchiveProgress"))$("bookArchiveProgress").textContent=logged+" / "+total+" chapters logged";
-  // A separately completed epilogue should not demand a new Spotify playlist.
-  if(!state.done[17] && state.done[16]){
+  // First-time readers can play Chapter XVII; returning readers may log completion without invented timing.
+  if(!state.done[17] && state.done[16] && !state.active){
     const ep=[...document.querySelectorAll(".chapter")].find(x=>x.querySelector(".chname")?.textContent.includes("EPILOGUE"));
     const action=ep?.querySelector(".actions");
-    if(action){action.innerHTML="";const b=document.createElement("button");b.className="btn primary";b.textContent="Log Read Epilogue";b.onclick=()=>{state.done[17]={minutes:null,length:"unscored",notes:"Short epilogue read together with Chapter XVI; no independent score or recorded duration.",finishedAt:new Date().toISOString(),cloudSynced:false};save();render();openLog(17);};action.appendChild(b);}
+    if(action){
+      const b=document.createElement("button");b.className="btn";
+      b.textContent="Mark Already Read";
+      b.onclick=()=>{state.done[17]={minutes:null,length:"not_measured",readingType:"epilogue",
+        scorePlannedMinutes:8.25,notes:"Epílogo lido com o capítulo XVI; duração individual não medida.",
+        finishedAt:new Date().toISOString(),cloudSynced:false};
+        save();render();openLog(17);};
+      action.appendChild(b);
+    }
   }
   document.querySelectorAll(".chip").forEach(x=>{
     if(x.textContent.includes("chapters"))x.textContent=total+" chapters";
-    if(x.textContent.includes("protocol v"))x.textContent="protocol v0.10.8";
+    if(x.textContent.includes("protocol v"))x.textContent="protocol v0.10.9";
   });
 };
 save();render();
