@@ -1,8 +1,8 @@
 # Warhammer Reading Context
 
-Last updated: 2026-10-21
-Spoiler ceiling: **The Flight of the Eisenstein — Chapter XV complete**
-Next safe chapter: **XVI (final chapter)**
+Last updated: 2026-10-23
+Spoiler ceiling: **The Flight of the Eisenstein — complete (including Chapter XVII epilogue)**
+Next safe chapter: **Fulgrim — Chapter I (not yet started)**
 
 ## Reading order and current position
 - Reading the Horus Heresy in English, publication order, without skipping the main sequence.
@@ -110,3 +110,11 @@ When adding a status, image, compendium entry, soundtrack cue or label:
 2. Do not encode future knowledge indirectly.
 3. Prefer neutral labels such as ACTIVE, LOST, UNKNOWN or REDACTED until the text itself reveals more.
 4. Never use later-era official art if the visual transformation itself reveals a future fate.
+
+
+## Book IV completion — 2026-10-23
+- The Flight of the Eisenstein completed, including a short chapter XVII / epilogue (corrects earlier count of 16).
+- Reader rating: 3/5 'robôs gigantes'. Main criticism: first third retreads already-known Isstvan material, ship-flight section felt short for the title, climax cinematic but dialogue and battles less compelling than Horus Rising and Galaxy in Flames respectively.
+- Climax: Garro faces Decius as Lord of the Flies on Luna, turns to faith and experiences a perceived voice of the Emperor.
+- Tollen Sendek dies; reader considered the death abrupt and underdeveloped for an interesting analytical character.
+- No Fulgrim plot clearance yet. Transition reading discussion to a new Book V conversation.
