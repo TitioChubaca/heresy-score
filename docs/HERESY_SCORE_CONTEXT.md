@@ -1,11 +1,11 @@
 # Heresy Score — Technical and Musical Context
 
 Last updated: 2026-10-23
-Current patch protocol: **v0.11.3**
-Current book: **The Flight of the Eisenstein**
+Current patch protocol: **v0.11.4**
+Current book: **Fulgrim (Book V)**
 Correct chapter count: **17 (chapter XVII is a short epilogue)**
-Current reader clearance: **Book IV complete, through Chapter XVII**
-Next score: **Fulgrim Chapter I — prepared, device QA pending**
+Current reader clearance: **Book IV complete; Fulgrim Chapter I complete**
+Next score: **Fulgrim Chapter II — curatorial calibration pending; Kindle estimate 26 min**
 
 ## Product purpose
 Heresy Score is a mobile-first, spoiler-safe reading soundtrack companion for the Horus Heresy.
@@ -27,14 +27,14 @@ The primary product is **scene-to-music fit**. UI, cloud sync, archives, images 
 - The base index currently still contains some old hard-coded v0.10.1/version strings; runtime patching overrides visible behavior. This should be cleaned structurally for Book V.
 
 ## Critical structural correction
-The Flight of the Eisenstein has **16 chapters**, not 20.
+The Flight of the Eisenstein has **17 chapters**, counting the short Chapter XVII epilogue, not 20.
 The original app scaffold created 20 generic chapter cards.
-v0.10.9 truncates the runtime chapter array to 16 and fixes visible progress metadata.
+Current runtime truncates the Book IV chapter array to 17 and fixes visible progress metadata. Older references to 16 predate the reader's clarification.
 For the next book, total chapter count must be data-driven per book rather than hard-coded.
 
 ## Soundtrack method
 Always work:
-**text -> scene -> emotional function -> cue -> total duration**
+**text -> dramatic function -> character perspective -> implied acoustics -> emotional energy -> cue -> transition -> protected ending -> runtime validation**. See [SOUND_DIRECTION_BIBLE_V1.md](SOUND_DIRECTION_BIBLE_V1.md) for the normative process.
 
 Privately map each chapter into:
 - opening state
@@ -60,7 +60,7 @@ Never expose the hidden scene map before the chapter is read.
 When Spotify resolves tracks:
 - read real `duration_ms` from resolved tracks;
 - sum the actual playlist runtime;
-- use curated reserve cues only;
+- NEVER auto-insert reserve tracks just to reach a duration estimate; any narrative insertion requires explicit editorial justification and a valid position before the protected Final Cue;
 - preserve Final Cue position after insertions;
 - avoid random filler;
 - for the final chapter, do not trim merely to hit an estimated reading target if the extra minutes provide safe ending headroom.
@@ -207,3 +207,14 @@ After Flight of the Eisenstein is finished, refactor rather than stacking more r
 - `scripts/book-switch.js` restores the Book IV archive on demand and installs the Chapter I score for Fulgrim. Chapter II+ remain sealed. `patch-v0102.js` now names the reused Spotify playlist for active book.
 - Important: This is mood-first calibration because chapter-specific detailed text and Kindle page count have not been provided for the new book. Do not claim fine-grained scene sync. Calibrate after real chapter feedback.
 - QA: JS syntax and module order checked; not live tested against user's Spotify/Supabase/device. Book IV remained preserved in user's manual switch test on prior version.
+
+
+## Sound direction policy correction — 2026-10-23 (v0.11.4)
+- Reader insists the soundtrack must function as **film music editing + implied sound design for silent reading**, not a franchise playlist, generic genre classification or mathematical timing exercise.
+- Dramatic function comes first: performance does not always equal opera; Warsinger does not automatically mean singing. Use musical texture, dynamics, spatial acoustics, restraint, silence, and perspective to supply absent ambience.
+- Composer pool is deliberately unrestricted: games, cinema, modern classical, experimental, ambient and other media, not only Warhammer 40k authors. Screen candidates for suitability, not genre.
+- **Ending cue has narrative priority**; reserves and trims are opt-in only with scene-based justification. No automatic padding or trimming by minutes.
+- In `patch-v0102.js`, `durationReserve` remains inert unless `reserveMode:"narrative_insert"` and a nonempty `reserveJustification` are explicitly present. Trims similarly require `trimMode:"narrative_trim"` and `trimJustification`. Older book metadata remains but cannot trigger mathematical auto insertions.
+- Fulgrim I actual 25 minutes, ~3.5 tracks left. Fulgrim II Kindle estimate 26 min, to be assessed against chapter size and actual pace without arbitrary headroom; soundtrack still requires scene-aware curation.
+- New canonical guidance: `docs/SOUND_DIRECTION_BIBLE_V1.md`. Protect spoiler-sensitive scene maps.
+- Static runtime validation remains distinct from live Spotify or reading-device QA.
