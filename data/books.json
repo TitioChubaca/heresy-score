@@ -16,9 +16,11 @@
       "title": "Fulgrim",
       "number": 5,
       "chapterCount": null,
-      "state": "sealed",
-      "scoreSource": null,
-      "personaeSource": null
+      "state": "in_progress",
+      "scoreSource": "data/fulgrim-score.js",
+      "personaeSource": "data/fulgrim-score.js",
+      "curatedThrough": 2,
+      "readerClearanceNotGlobal": true
     }
   ]
 }
