@@ -197,7 +197,36 @@ async function spotifyApi(path,opt={}){let token=await spotifyAccess(),headers={
 async function handleSpotifyCallback(){let q=new URLSearchParams(location.search),code=q.get("code"),err=q.get("error");if(!code&&!err)return;if(err){toast("Spotify authorization denied");history.replaceState({},document.title,spotifyRedirectUri());return}let expected=localStorage.getItem("heresy-spotify-state"),got=q.get("state"),verifier=localStorage.getItem("heresy-spotify-verifier");if(!expected||expected!==got||!verifier){toast("Spotify OAuth state mismatch");return}try{await spotifyToken({client_id:state.spotify.clientId,grant_type:"authorization_code",code,redirect_uri:spotifyRedirectUri(),code_verifier:verifier});localStorage.removeItem("heresy-spotify-state");localStorage.removeItem("heresy-spotify-verifier");history.replaceState({},document.title,spotifyRedirectUri());toast("Spotify linked")}catch(e){toast(e.message)}}
 function spotifyNorm(s){return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim()}
 async function spotifyResolveTrack(title,artist){let key=spotifyNorm(title+"|"+artist);if(state.spotify.trackCache[key])return state.spotify.trackCache[key];let q=encodeURIComponent('track:"'+title+'" artist:"'+artist+'"'),j=await spotifyApi("/search?q="+q+"&type=track&limit=5"),items=j.tracks?.items||[];if(!items.length)throw new Error("Track not found: "+title);let nt=spotifyNorm(title),na=spotifyNorm(artist),best=items.map(x=>({x,score:(spotifyNorm(x.name)===nt?4:spotifyNorm(x.name).includes(nt)?2:0)+((x.artists||[]).some(a=>spotifyNorm(a.name)===na)?4:0)})).sort((a,b)=>b.score-a.score)[0].x;state.spotify.trackCache[key]=best.uri;save();return best.uri}
-async function spotifyEnsurePlaylist(chapter){if(state.spotify.playlistId){try{let p=await spotifyApi("/playlists/"+state.spotify.playlistId);state.spotify.playlistUrl=p.external_urls?.spotify||state.spotify.playlistUrl;save();return p}catch(e){state.spotify.playlistId="";state.spotify.playlistUrl=""}}let p=await spotifyApi("/me/playlists",{method:"POST",body:JSON.stringify({name:"Heresy Score // Active Chapter",public:false,description:"Spoiler-safe reading score managed by Heresy Score."})});state.spotify.playlistId=p.id;state.spotify.playlistUrl=p.external_urls?.spotify||("https://open.spotify.com/playlist/"+p.id);save();return p}
+async function spotifyEnsurePlaylist(chapter){
+ // A distinct private Spotify playlist per book+chapter prevents the
+ // active score from overwriting music previously curated for another chapter.
+ const slug=state.activeBookSlug||HSBooks.IV,key=slug+":"+chapter;
+ state.spotify.playlists=state.spotify.playlists||{};
+ const existing=state.spotify.playlists[key];
+ if(existing?.id){
+  try{
+   const p=await spotifyApi("/playlists/"+existing.id);
+   if(state.activeBookSlug!==slug)throw Error("Book changed during Spotify preflight");
+   state.spotify.playlistId=p.id;
+   state.spotify.playlistUrl=p.external_urls?.spotify||("https://open.spotify.com/playlist/"+p.id);
+   save();return p;
+  }catch(e){
+   if(state.activeBookSlug!==slug)throw e;
+   // Do not create duplicates on transient network failures.
+   if(!String(e.message||e).includes("404"))throw e;
+   delete state.spotify.playlists[key];
+  }
+ }
+ if(state.activeBookSlug!==slug)throw Error("Book changed during Spotify preflight");
+ const p=await spotifyApi("/me/playlists",{method:"POST",
+  body:JSON.stringify({name:"Heresy Score // "+slug+" // CH "+String(chapter).padStart(2,"0"),public:false,
+    description:"Spoiler-safe chapter score managed by Heresy Score."})});
+ state.spotify.playlists[key]={id:p.id,url:p.external_urls?.spotify||("https://open.spotify.com/playlist/"+p.id)};
+ if(state.activeBookSlug!==slug){save();throw Error("Book changed during Spotify preflight")}
+ state.spotify.playlistId=p.id;
+ state.spotify.playlistUrl=state.spotify.playlists[key].url;
+ save();return p;
+}
 async function spotifySyncChapter(chapter){let score=SCORES[chapter];if(!score)throw new Error("Score for this chapter is still sealed");let p=await spotifyEnsurePlaylist(chapter),uris=[];for(const [title,artist] of score)uris.push(await spotifyResolveTrack(title,artist));await spotifyApi("/playlists/"+p.id+"/items",{method:"PUT",body:JSON.stringify({uris})});await spotifyApi("/playlists/"+p.id,{method:"PUT",body:JSON.stringify({name:"Heresy Score // Eisenstein // CH "+String(chapter).padStart(2,"0"),public:false,description:"Active spoiler-safe score. Curated by chapter."})});state.spotify.playlistUrl="https://open.spotify.com/playlist/"+p.id;save();return p.id}
 async function spotifyDevices(){try{let d=await spotifyApi("/me/player/devices");return (d.devices||[]).filter(x=>x&&x.id&&!x.is_restricted)}catch(e){return []}}
 async function spotifyResolveDevice(){let devices=await spotifyDevices();if(!devices.length){state.spotify.deviceActive=false;state.spotify.deviceId="";state.spotify.deviceName="";save();return null}let preferred=devices.find(d=>d.is_active)||devices.find(d=>d.id===state.spotify.deviceId)||devices.find(d=>String(d.type||"").toLowerCase()==="smartphone")||devices.find(d=>String(d.type||"").toLowerCase()==="computer")||devices[0];state.spotify.deviceId=preferred.id;state.spotify.deviceName=preferred.name||preferred.type||"Spotify device";state.spotify.deviceActive=!!preferred.is_active;save();return preferred}
