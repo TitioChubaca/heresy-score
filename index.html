@@ -112,9 +112,76 @@ async function sha256Hex(s){let b=await crypto.subtle.digest("SHA-256",new TextE
 function cloudConfigured(){return !!(state.cloud&&state.cloud.url&&state.cloud.anonKey)}
 function cleanCloudUrl(u){return (u||"").trim().replace(/\/$/,"")}
 async function cloudRequest(path,opt={}){if(!cloudConfigured())throw new Error("Cloud archive not configured");let headers={apikey:state.cloud.anonKey,"x-sync-token":state.cloud.token,...(opt.headers||{})};if(!String(state.cloud.anonKey).startsWith("sb_publishable_"))headers.Authorization="Bearer "+state.cloud.anonKey;if(opt.body&&!headers["Content-Type"])headers["Content-Type"]="application/json";let r=await fetch(cleanCloudUrl(state.cloud.url)+"/rest/v1/"+path,{...opt,headers});let t=await r.text(),j=t?(()=>{try{return JSON.parse(t)}catch{return t}})():null;if(!r.ok)throw new Error((j&&j.message)||("Cloud "+r.status));return j}
-async function cloudPushChapter(chapter,loud=false){let d=state.done&&state.done[chapter];if(!d){if(loud)toast("no log for chapter");return false}if(!cloudConfigured()||!state.cloud.enabled){if(loud)toast("cloud not connected");return false}try{let owner=await sha256Hex(state.cloud.token),row={owner_hash:owner,book_slug:state.activeBookSlug||HSBooks.IV,chapter,minutes:d.minutes||null,length:d.length||null,intensity:d.intensity||null,opening:d.opening||null,peak:d.peak||null,notes:d.notes||"",started_at:d.startedAt||null,finished_at:d.finishedAt||null,app_version:"0.11.5",payload:d};await cloudRequest("reading_logs?on_conflict=owner_hash,book_slug,chapter",{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify(row)});d.cloudSynced=true;d.cloudSyncedAt=new Date().toISOString();state.cloud.lastSync=d.cloudSyncedAt;state.cloud.lastError="";save();renderCloud();if(loud)toast("field log synced");return true}catch(e){d.cloudSynced=false;state.cloud.lastError=e.message;save();renderCloud();if(loud)toast("cloud: "+e.message);return false}}
-async function cloudSyncAll(loud=false){if(!cloudConfigured()||!state.cloud.enabled)return;let nums=Object.keys(state.done||{}).map(Number).filter(Boolean).sort((a,b)=>a-b),ok=true;for(const n of nums)ok=(await cloudPushChapter(n,false))&&ok;if(loud)toast(ok?"all logs synced":"cloud sync incomplete");render()}
-async function cloudPullLogs(loud=true){if(!cloudConfigured()||!state.cloud.enabled){if(loud)toast("cloud not connected");return}try{let owner=await sha256Hex(state.cloud.token),rows=await cloudRequest("reading_logs?owner_hash=eq."+encodeURIComponent(owner)+"&book_slug=eq."+encodeURIComponent(state.activeBookSlug||HSBooks.IV)+"&select=*&order=chapter.asc");for(const r of (rows||[])){let local=state.done[r.chapter]||{},payload=r.payload||{};state.done[r.chapter]={...payload,...local,minutes:local.minutes??r.minutes,length:local.length??r.length,intensity:local.intensity??r.intensity,opening:local.opening??r.opening,peak:local.peak??r.peak,notes:local.notes??r.notes,cloudSynced:true,cloudSyncedAt:r.updated_at}}state.cloud.lastSync=new Date().toISOString();state.cloud.lastError="";save();render();if(loud)toast("cloud logs pulled")}catch(e){state.cloud.lastError=e.message;save();renderCloud();if(loud)toast("cloud: "+e.message)}}
+async function cloudPushChapter(chapter,loud=false){
+ const slug=state.activeBookSlug||HSBooks.IV,token=state.cloud.token;
+ const record=state.done&&state.done[chapter];
+ if(!record){if(loud)toast("no log for chapter");return false}
+ if(!cloudConfigured()||!state.cloud.enabled){if(loud)toast("cloud not connected");return false}
+ const snapshot=JSON.parse(JSON.stringify(record));
+ const stable=x=>JSON.stringify({...x,cloudSynced:undefined,cloudSyncedAt:undefined});
+ try{
+  const owner=await sha256Hex(token);
+  if(state.activeBookSlug!==slug||state.cloud.token!==token||state.done[chapter]!==record)return false;
+  const row={owner_hash:owner,book_slug:slug,chapter,minutes:snapshot.minutes??null,
+   length:snapshot.length||null,intensity:snapshot.intensity||null,opening:snapshot.opening||null,
+   peak:snapshot.peak||null,notes:snapshot.notes||"",started_at:snapshot.startedAt||null,
+   finished_at:snapshot.finishedAt||null,app_version:"0.11.6",payload:snapshot};
+  await cloudRequest("reading_logs?on_conflict=owner_hash,book_slug,chapter",
+   {method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify(row)});
+  // A response from an old book or changed log must not mutate the new book's state.
+  if(state.activeBookSlug!==slug||state.cloud.token!==token||state.done[chapter]!==record||stable(record)!==stable(snapshot))return false;
+  record.cloudSynced=true;record.cloudSyncedAt=new Date().toISOString();
+  state.cloud.lastSync=record.cloudSyncedAt;state.cloud.lastError="";
+  save();renderCloud();if(loud)toast("field log synced");return true;
+ }catch(e){
+  if(state.activeBookSlug===slug&&state.cloud.token===token&&state.done[chapter]===record){
+   record.cloudSynced=false;state.cloud.lastError=e.message;save();renderCloud();
+   if(loud)toast("cloud: "+e.message);
+  }
+  return false;
+ }
+}
+async function cloudSyncAll(loud=false){
+ if(!cloudConfigured()||!state.cloud.enabled)return;
+ const slug=state.activeBookSlug||HSBooks.IV;
+ const nums=Object.keys(state.done||{}).map(Number).filter(Boolean).sort((a,b)=>a-b);
+ let ok=true;
+ for(const n of nums){
+  if(state.activeBookSlug!==slug){ok=false;break}
+  const result=await cloudPushChapter(n,false);
+  ok=result&&ok;
+  if(state.activeBookSlug!==slug){ok=false;break}
+ }
+ if(loud)toast(ok?"all logs synced":"cloud sync incomplete");
+ if(state.activeBookSlug===slug)render();
+}
+async function cloudPullLogs(loud=true){
+ if(!cloudConfigured()||!state.cloud.enabled){if(loud)toast("cloud not connected");return false}
+ const slug=state.activeBookSlug||HSBooks.IV,token=state.cloud.token;
+ try{
+  const owner=await sha256Hex(token);
+  if(state.activeBookSlug!==slug||state.cloud.token!==token)return false;
+  const rows=await cloudRequest("reading_logs?owner_hash=eq."+encodeURIComponent(owner)+
+   "&book_slug=eq."+encodeURIComponent(slug)+"&select=*&order=chapter.asc");
+  if(state.activeBookSlug!==slug||state.cloud.token!==token)return false;
+  for(const r of (rows||[])){
+   if(r.book_slug!==slug||!Number.isInteger(r.chapter)||r.chapter<1)continue;
+   const local=state.done[r.chapter]||{},payload=r.payload&&typeof r.payload==="object"?r.payload:{};
+   state.done[r.chapter]={...payload,...local,
+    minutes:local.minutes??r.minutes,length:local.length??r.length,
+    intensity:local.intensity??r.intensity,opening:local.opening??r.opening,
+    peak:local.peak??r.peak,notes:local.notes??r.notes,
+    cloudSynced:true,cloudSyncedAt:r.updated_at};
+  }
+  state.cloud.lastSync=new Date().toISOString();state.cloud.lastError="";
+  save();render();if(loud)toast("cloud logs pulled");return true;
+ }catch(e){
+  if(state.activeBookSlug===slug&&state.cloud.token===token){
+   state.cloud.lastError=e.message;save();renderCloud();if(loud)toast("cloud: "+e.message)
+  }
+  return false;
+ }
+}
 async function cloudConnect(){state.cloud.url=cleanCloudUrl($("supabaseUrl").value)||DEFAULT_SUPABASE_URL;state.cloud.anonKey=$("supabaseKey").value.trim()||DEFAULT_SUPABASE_KEY;state.cloud.userDisabled=false;state.cloud.enabled=!!(state.cloud.url&&state.cloud.anonKey);save();if(!state.cloud.enabled){toast("cloud credentials missing");renderCloud();return}try{await cloudRequest("reading_logs?select=chapter&limit=1");state.cloud.lastError="";save();await cloudSyncAll(false);await cloudPullLogs(false);toast("cloud archive linked")}catch(e){state.cloud.enabled=false;state.cloud.lastError=e.message;save();renderCloud();toast("cloud: "+e.message)}}
 function renderCloud(){let configured=cloudConfigured(),on=configured&&state.cloud.enabled,el=$("cloudState");if(!el)return;el.classList.toggle("on",on&&!state.cloud.lastError);el.classList.toggle("error",!!state.cloud.lastError);$("cloudStateText").textContent=state.cloud.lastError?"cloud error // "+state.cloud.lastError:on?"cloud archive linked":"cloud archive not configured";$("supabaseUrl").value=state.cloud.url||"";$("supabaseKey").value=state.cloud.anonKey||"";$("cloudPull").disabled=!on;$("cloudDisconnect").disabled=!configured;$("cloudMeta").textContent=state.cloud.lastSync?"last sync // "+new Date(state.cloud.lastSync).toLocaleString():"Local archive remains authoritative until cloud link is established.";$("archiveRecoveryCode").value=state.cloud.token||""}
 function debriefText(n){let d=state.done[n]||{};return["Heresy Score // "+(state.books?.[state.activeBookSlug]?.title||"The Flight of the Eisenstein"),"Chapter "+String(n).padStart(2,"0"),"Time: "+(d.minutes||"?")+" min","Length: "+(d.length||"—"),"Intensity: "+(d.intensity||"—"),"Opening: "+(d.opening||"—"),"Peak: "+(d.peak||"—"),"Notes: "+(d.notes||"—"),"Track marks: "+((d.trackFeedback||[]).map(t=>(t.verdict==="mismatch"?"MISMATCH ":"FIT ")+(t.title||"track")+" — "+(t.artist||"")).join(" | ")||"—")].join("\n")}
