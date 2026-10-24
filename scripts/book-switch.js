@@ -17,7 +17,7 @@ function setBanner(){
  if(cards[4]){cards[4].classList.toggle("sealed",false);cards[4].classList.toggle("active-book",slug===v);cards[4].querySelector(".btitle").textContent="Fulgrim";cards[4].querySelector(".book-state").textContent=slug===v?"selected":"preparing"}
  const panel=document.getElementById("hsBookSwitch");
  if(panel)panel.value=slug;
- const locked=slug===v;
+ const locked=slug===v&&!state.done?.[1];
  for(const el of document.querySelectorAll('[data-view="personae"],[data-view="archive"]'))el.disabled=locked;
 }
 const oldRender=render;render=function(){
@@ -28,11 +28,14 @@ const oldRender=render;render=function(){
   const prog=document.getElementById("progress");if(prog)prog.style.width="0%";
   const text=document.getElementById("progressText");if(text)text.textContent=count+" / 1 curated // Book V";
   const label=document.getElementById("clearanceLabel");if(label)label.textContent="Book V // no chapters read";
-  const directive=document.getElementById("directive");if(directive&&!state.active)directive.textContent=count?"FULGRIM // chapter I logged; next score sealed.":"FULGRIM // chapter I score ready. Future scores remain sealed.";
+  const directive=document.getElementById("directive");if(directive&&!state.active)directive.textContent=count>=2?"FULGRIM // Next score remains sealed.":count===1?"FULGRIM // CHAPTER 02 SCORE READY.":"FULGRIM // CHAPTER 01 SCORE READY.";
   const archive=document.getElementById("bookArchiveProgress");if(archive)archive.textContent="17 chapters // completed";
   
-  const roster=document.getElementById("roster");if(roster)roster.replaceChildren();
-  const world=document.getElementById("worldArchive");if(world)world.replaceChildren();
+  // Prevent chapter-I dossier records from appearing before the reader logs I.
+  if(!state.done?.[1]){
+    const roster=document.getElementById("roster");if(roster)roster.replaceChildren();
+    const world=document.getElementById("worldArchive");if(world)world.replaceChildren();
+  }
  }
 };
 function change(slug){
@@ -44,6 +47,8 @@ function change(slug){
   state.spotify.scoreDurations={};state.spotify.chapterRuntime={};
   state.view="reading";
   save();render();applyView("reading");
+  // Reapply any personal-only portraits that were imported before this book had a roster.
+  Promise.resolve(window.HSPrivateArt?.refresh?.()).catch(()=>{});
   toast(slug===iv?"Eisenstein archive loaded":"Fulgrim archive selected; score still sealed");
  }catch(e){toast(e.message);const p=document.getElementById("hsBookSwitch");if(p)p.value=state.activeBookSlug}
 }
