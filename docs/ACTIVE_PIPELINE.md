@@ -1,5 +1,5 @@
 # Heresy Score — Active Product Pipeline
-**Updated:** 2026-10-24
+**Updated:** 2026-10-24 — v0.11.5
 **Protocol:** v0.11.4
 **Reader clearance:** `The Flight of the Eisenstein` completed including XVII; `Fulgrim` Chapter I completed. Nothing from Book V Chapter II+ may be exposed before reading.
 **Owner:** Heresy Score / App Lab (conversation 00)
@@ -17,11 +17,11 @@
 - GitHub context file is newer than static Project attachments, which still mention Eisenstein XV / v0.10.7; synchronize these for correct context in later conversations.
 
 ## Now — must complete before next Fulgrim chapter session
-- [ ] **P0.1** Privately review Chapter II's dramatic beats with reader's current spoiler limit; if chapter content cannot be verified confidently, keep the score provisional and avoid inventing scene-specific alignment.
-- [ ] **P0.2** Compose a function-first cue sheet: point of view, subtext, implied acoustics (no literal effects required), energy progression, transitions and **protected final cue**.
+- [x] **P0.1** Privately review Chapter II's dramatic beats with reader's current spoiler limit; if chapter content cannot be verified confidently, keep the score provisional and avoid inventing scene-specific alignment.
+- [x] **P0.2** Compose a function-first cue sheet: point of view, subtext, implied acoustics (no literal effects required), energy progression, transitions and **protected final cue**.
 - [ ] **P0.3** Check Spotify matching tracks and exact `duration_ms`; calibrate to Kindle ~26 minutes while treating it as a forecast, not a mathematical target. No reserve/trim unless justified by a specific scene and position before final cue.
 - [ ] **P0.4** Publish Chapter II **only**, verify Chapter III+ remain sealed, and run start/pause/resume/final cue tests. Reader can begin once score and player QA are confirmed.
-- [ ] **P1.1** Make Book V Chapter I safe personae and theatre records available, based on what reader actually encountered. Never expose scenes, variants or statuses from later chapters. Keep image source metadata truthful.
+- [x] **P1.1** Make Book V Chapter I safe personae and theatre records available, based on what reader actually encountered. Never expose scenes, variants or statuses from later chapters. Keep image source metadata truthful.
 - [ ] **P1.2** Confirm media appear with correct full-image/crop option in both card and modal. Allow absent art without hiding a safe character.
 
 ## Next — reliability sprint
@@ -58,3 +58,10 @@
 - `docs/HERESY_SCORE_CONTEXT.md`: latest technical context.
 - `READING_CONTEXT.md` and `PROJECT_ROUTER.md` are in the ChatGPT Warhammer Project but their mounted copies are currently outdated (2026-10-22); align spoiler ceiling and version with this pipeline before relying on them in a new thread.
 - Logs: Supabase `reading_logs` by `book_slug` (or app's exported JSON backup); do not equate the visible log with source text of a chapter.
+
+### v0.11.5 checkpoint (2026-10-24)
+- **P0 published:** seven-cue Chapter II score (25:39 published catalog runtime), protected ending, no padding. Reader has not read II; the score's narrative function ledger stays private. Secondary-source chapter skeleton checked; individual transitions still need feedback.
+- **P0 release gate still open:** click **Check Spotify Runtime** inside Fulgrim II to fetch real Spotify `duration_ms`, check resolved recording identities, and ensure start/pause/resume/manual Final Cue. Not tested using user's Spotify login yet.
+- **P1 published:** six already-known character dossiers and five archive records under Chapter I gate. Image crop/portrait correctness needs device QA; only Fulgrim currently has a suitable imported personal reference in the conversation pack.
+- **QA regression:** JS parse and isolated book-state tests passed; book IV preserved after IV↔V simulation. Live app/PWA/cloud remain separate validation tasks.
+- **Next execution:** validate preflight and finish P1 image QA; then resume P2 reliability and add explicit ending/sonic-design feedback fields.
