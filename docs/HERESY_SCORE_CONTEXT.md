@@ -1,11 +1,11 @@
 # Heresy Score — Technical and Musical Context
 
 Last updated: 2026-10-23
-Current patch protocol: **v0.11.2**
+Current patch protocol: **v0.11.3**
 Current book: **The Flight of the Eisenstein**
 Correct chapter count: **17 (chapter XVII is a short epilogue)**
 Current reader clearance: **Book IV complete, through Chapter XVII**
-Next score: **Fulgrim Chapter I, pending refactor and curation**
+Next score: **Fulgrim Chapter I — prepared, device QA pending**
 
 ## Product purpose
 Heresy Score is a mobile-first, spoiler-safe reading soundtrack companion for the Horus Heresy.
@@ -199,3 +199,11 @@ After Flight of the Eisenstein is finished, refactor rather than stacking more r
 - Adjustable X, Y and zoom crop per named character in Cogitator Settings; portrait cards use crop, open dossier shows whole image with `contain`. LocalStorage crop keys use `hs-crop:<character>`.
 - Existing local portrait module can reload after bulk import. Initial presets for Garro, Mortarion, Loken and Abaddon.
 - Static syntax tests passed. Live PWA, Spotify, Supabase and book IV/V switching still require device testing; do not assert complete QA.
+
+
+## v0.11.3 — Fulgrim Chapter I (2026-10-23)
+- New `data/fulgrim-score.js`: only Chapter I, playlist sequence and score metadata; no future character records or narrative reveals.
+- Initial cue: Path of Trust / Jesper Kyd. Curated musical arc: cautious ceremony, atmospheric reflection, developing tension, action and sober ending. Target 33 minutes is a provisional planning value, not a measured chapter size; total and track availability await Spotify resolve.
+- `scripts/book-switch.js` restores the Book IV archive on demand and installs the Chapter I score for Fulgrim. Chapter II+ remain sealed. `patch-v0102.js` now names the reused Spotify playlist for active book.
+- Important: This is mood-first calibration because chapter-specific detailed text and Kindle page count have not been provided for the new book. Do not claim fine-grained scene sync. Calibrate after real chapter feedback.
+- QA: JS syntax and module order checked; not live tested against user's Spotify/Supabase/device. Book IV remained preserved in user's manual switch test on prior version.
