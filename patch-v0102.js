@@ -130,14 +130,25 @@ spotifySyncChapter=async function(chapter){
   for(const [title,artist] of score)infos.push(await resolveTrackInfo(title,artist));
   let finalIndex=meta.finalCueIndex==null?infos.length-1:meta.finalCueIndex;
   let total=infos.reduce((n,t)=>n+(t.durationMs||0),0),target=(meta.estimatedMinutes||0)*60000,threshold=Math.max(0,target+90000),ceiling=target+240000,used=new Set(infos.map(x=>x.uri));
-  if(target&&total>ceiling&&Array.isArray(meta.trimIndexes)){
+  // Never remove a cue merely to hit a time estimate: trimming also needs a
+  // deliberate editorial decision, or transitions and endings can be damaged.
+  if(meta.trimMode==="narrative_trim" &&
+     typeof meta.trimJustification==="string" &&
+     meta.trimJustification.trim().length>0 &&
+     target&&total>ceiling&&Array.isArray(meta.trimIndexes)){
     for(const idx of [...meta.trimIndexes].sort((a,b)=>b-a)){
       if(total<=ceiling)break;
       if(idx<0||idx>=infos.length||idx===finalIndex)continue;
       let removed=infos.splice(idx,1)[0];total-=removed?.durationMs||0;if(idx<finalIndex)finalIndex--;
     }
   }
-  if(target&&total<threshold&&Array.isArray(meta.durationReserve)){
+  // A mathematical runtime deficit is NEVER enough to insert music.
+  // Explicit editorial approval must include a scene function and transition reason.
+  // The final cue remains protected; any approved insertion occurs BEFORE it.
+  if(meta.reserveMode==="narrative_insert" &&
+     typeof meta.reserveJustification==="string" &&
+     meta.reserveJustification.trim().length>0 &&
+     target&&total<threshold&&Array.isArray(meta.durationReserve)){
     for(const [title,artist] of meta.durationReserve){
       let extra=await resolveTrackInfo(title,artist);
       if(used.has(extra.uri))continue;
@@ -333,7 +344,7 @@ render=function(){
   }
   document.querySelectorAll(".chip").forEach(x=>{
     if(x.textContent.includes("chapters"))x.textContent=total+" chapters";
-    if(x.textContent.includes("protocol v"))x.textContent="protocol v0.11.3";
+    if(x.textContent.includes("protocol v"))x.textContent="protocol v0.11.4";
   });
 };
 save();render();
