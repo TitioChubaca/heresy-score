@@ -1,5 +1,5 @@
 # Heresy Score — Active Product Pipeline
-**Updated:** 2026-10-24 — v0.11.5
+**Updated:** 2026-10-24 — v0.11.6
 **Protocol:** v0.11.4
 **Reader clearance:** `The Flight of the Eisenstein` completed including XVII; `Fulgrim` Chapter I completed. Nothing from Book V Chapter II+ may be exposed before reading.
 **Owner:** Heresy Score / App Lab (conversation 00)
@@ -29,7 +29,7 @@
 - [ ] **P2.2** Test IV → V → IV after reload and cloud pull with separate `book_slug` log keys, including local-only data and stored history.
 - [ ] **P2.3** Confirm completed Book IV 17 records incl. XVII epilogue and user book rating remain recoverable; check data from Supabase for duplicates rather than silently deleting rows.
 - [ ] **P2.4** Confirm PWA fresh/installed/offline loads are consistent; test on mobile and desktop. Backups should be exportable and verifiable.
-- [ ] **P2.5** Add **ending** feedback separately from dramatic peak, plus theatre/sonic-design opportunity, atmosphere and transition notes.
+- [x] **P2.5** Add distinct **ending**, **ambient space** and **transition** feedback categories; optional opportunity notes remain free text.
 
 ## Later — maintainable architecture
 - [ ] **P3.1** Consolidate runtime overrides from `patch-v0102.js` into coherent book-aware modules.
@@ -65,3 +65,10 @@
 - **P1 published:** six already-known character dossiers and five archive records under Chapter I gate. Image crop/portrait correctness needs device QA; only Fulgrim currently has a suitable imported personal reference in the conversation pack.
 - **QA regression:** JS parse and isolated book-state tests passed; book IV preserved after IV↔V simulation. Live app/PWA/cloud remain separate validation tasks.
 - **Next execution:** validate preflight and finish P1 image QA; then resume P2 reliability and add explicit ending/sonic-design feedback fields.
+
+### P2 reliability checkpoint — v0.11.6
+- **Code complete / device QA open:** async Supabase cross-book guard, chapter-scoped private Spotify playlists, no duplicate starts during Spotify prepare, all-book backup (no secrets), three optional sound-direction ratings and offline-cached local diagnostics.
+- Synthetic regression tests passed; no user-account Spotify, Supabase, offline-device, pause/resume or Final Cue behavior claimed as tested.
+- [P2 QA checklist](P2_QA_CHECKLIST.md): lightweight user-device smoke test and remaining gates.
+- P2.1 Spotify live verification, P2.2 cloud round-trip and P2.4 offline real-device check are **not closed**. The user already verified basic IV↔V switching before this release; post-change test still needed.
+- Do not reset localStorage or delete the legacy Spotify playlist; historical reading scores remain separated.
