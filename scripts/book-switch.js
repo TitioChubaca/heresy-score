@@ -6,7 +6,7 @@ const clearScore=()=>{for(const k of Object.keys(SCORES))delete SCORES[k];for(co
 function installData(slug){
  clearScore();chapters.splice(0);people.splice(0);archiveRecords.splice(0);
  if(slug===iv){Object.assign(SCORES,ivData.scores);Object.assign(SCORE_META,ivData.meta);chapters.push(...ivData.chapters);people.push(...ivData.people);archiveRecords.push(...ivData.archive)}
- else {chapters.push({number:1,title:"CHAPTER 01 // SCORE NOT CURATED",estimatedMinutes:null,startCue:null})}
+ else {const d=window.HS_FULGRIM_DATA;if(d){Object.assign(SCORES,d.scores);Object.assign(SCORE_META,d.scoreMeta);chapters.push(...d.chapters);people.push(...d.people);archiveRecords.push(...d.archive)}else chapters.push({number:1,title:"CHAPTER 01 // SCORE NOT CURATED",estimatedMinutes:null,startCue:null})}
 }
 function setBanner(){
  const slug=state.activeBookSlug||iv,title=state.books[slug]?.title||"";
@@ -26,11 +26,11 @@ const oldRender=render;render=function(){
  if(state.activeBookSlug===v){
   const count=Object.keys(state.done||{}).length;
   const prog=document.getElementById("progress");if(prog)prog.style.width="0%";
-  const text=document.getElementById("progressText");if(text)text.textContent=count+" logged // score pending";
+  const text=document.getElementById("progressText");if(text)text.textContent=count+" / 1 curated // Book V";
   const label=document.getElementById("clearanceLabel");if(label)label.textContent="Book V // no chapters read";
-  const directive=document.getElementById("directive");if(directive)directive.textContent="FULGRIM // score do capítulo I ainda não validado. Nenhum evento narrativo foi antecipado.";
+  const directive=document.getElementById("directive");if(directive&&!state.active)directive.textContent=count?"FULGRIM // chapter I logged; next score sealed.":"FULGRIM // chapter I score ready. Future scores remain sealed.";
   const archive=document.getElementById("bookArchiveProgress");if(archive)archive.textContent="17 chapters // completed";
-  const chapter=document.querySelector("#chapters .chapter .actions");if(chapter)chapter.innerHTML='<span class="small">Chapter I score pending QA</span>';
+  
   const roster=document.getElementById("roster");if(roster)roster.replaceChildren();
   const world=document.getElementById("worldArchive");if(world)world.replaceChildren();
  }
@@ -49,7 +49,7 @@ function change(slug){
 }
 const nav=document.querySelector('[data-view-panel="books"]');
 const panel=document.createElement("section");panel.id="hsBooksPanel";panel.className="panel";
-panel.innerHTML='<h2>Active Book // Library</h2><p class="small">O progresso, as anotações e a sincronização na nuvem são separados por livro. Não é possível trocar durante uma leitura ativa. O score de Fulgrim permanece selado.</p><label class="small">Selected book <select id="hsBookSwitch" style="width:100%;margin-top:8px;background:#101a0f;color:#d2cbb7;padding:12px;border:1px solid #536746"><option value="flight-of-the-eisenstein">IV — The Flight of the Eisenstein</option><option value="fulgrim">V — Fulgrim (preparing)</option></select></label>';
+panel.innerHTML='<h2>Active Book // Library</h2><p class="small">O progresso, as anotações e a sincronização na nuvem são separados por livro. Não é possível trocar durante uma leitura ativa. Apenas o capítulo I de Fulgrim está preparado.</p><label class="small">Selected book <select id="hsBookSwitch" style="width:100%;margin-top:8px;background:#101a0f;color:#d2cbb7;padding:12px;border:1px solid #536746"><option value="flight-of-the-eisenstein">IV — The Flight of the Eisenstein</option><option value="fulgrim">V — Fulgrim (chapter I ready)</option></select></label>';
 nav.append(panel);
 document.getElementById("hsBookSwitch").onchange=e=>change(e.target.value);
 if(state.activeBookSlug===v)installData(v);
