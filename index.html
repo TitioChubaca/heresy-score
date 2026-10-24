@@ -243,7 +243,36 @@ async function spotifyFinalCue(){if(!state.active)return;let meta=SCORE_META[sta
 async function toggleSessionPause(){if(!state.active)return;if(state.active.paused){state.active.paused=false;state.active.resumedAt=Date.now();state.active.pausedAt=null;save();renderNow();let ok=true;if(spotifyConnected())ok=await spotifyResume();if(ok){state.spotify.deviceActive=spotifyConnected()?true:state.spotify.deviceActive;save();renderSpotify();refreshPlayer();toast("session resumed")}else{renderSpotify();refreshPlayer();toast("timer resumed // Spotify playback not confirmed")}}else{state.active.elapsedMs=elapsed();state.active.paused=true;state.active.pausedAt=Date.now();save();if(spotifyConnected())await spotifyPause();renderNow();refreshPlayer();toast("session paused")}}
 async function detectSpotifyDevice(){if(!spotifyConnected()){state.spotify.deviceActive=null;return null}try{let d=await spotifyResolveDevice(),available=!!d;state.spotify.deviceActive=d?!!d.is_active:false;save();renderSpotify();return available}catch(e){state.spotify.deviceActive=null;return null}}
 function renderSpotify(){let connected=spotifyConnected(),device=state.spotify.deviceActive,name=state.spotify.deviceName;$("spotifyState").classList.toggle("on",connected);$("spotifyStateText").textContent=!connected?"Spotify disconnected":device===true?"Spotify linked // "+(name||"device")+" active":name?"Spotify linked // "+name+" available":"Spotify linked // no playback device reported";$("spotifyClientId").value=state.spotify.clientId||"";$("spotifyRedirect").value=spotifyRedirectUri();$("spotifyConnect").textContent=connected?"Reconnect Spotify":"Connect Spotify";$("spotifyDisconnect").disabled=!connected;$("openSpotifyBtn").disabled=!(state.spotify.playlistUrl||state.playlistUrl)}
-async function begin(c){if(state.active)return;let connected=spotifyConnected(),started=false;if(connected&&SCORES[c.number]){toast("syncing chapter score");try{let id=await spotifySyncChapter(c.number);started=await spotifyStartPlaylist(id);state.spotify.deviceActive=started?true:false;toast(started?"score synced // playback started":"score synced // Spotify device inactive")}catch(e){state.spotify.deviceActive=false;toast(e.message)}}let now=Date.now(),waitForSpotify=connected&&!started;state.active={chapter:c.number,startedAt:now,resumedAt:now,elapsedMs:0,paused:waitForSpotify,pausedAt:waitForSpotify?now:null,currentTrack:null,trackFeedback:[]};save();render();if(started)refreshPlayer();if(waitForSpotify)toast("Open Spotify, return here, then Resume");if(!connected&&c.startCue&&navigator.clipboard)navigator.clipboard.writeText(c.startCue).catch(()=>{});if(!connected)setTimeout(()=>window.open(state.playlistUrl||PLAYLIST,"_blank"),150)}
+let beginPending=false;
+async function begin(c){
+ if(state.active||beginPending)return;
+ const sourceBook=state.activeBookSlug||HSBooks.IV;
+ if(!SCORES[c.number]){toast("Score ainda selado");return}
+ beginPending=true;
+ try{
+  let connected=spotifyConnected(),started=false;
+  if(connected){
+   toast("syncing chapter score");
+   try{
+    const id=await spotifySyncChapter(c.number);
+    if(state.activeBookSlug!==sourceBook)return;
+    started=await spotifyStartPlaylist(id);
+    if(state.activeBookSlug!==sourceBook)return;
+    state.spotify.deviceActive=!!started;
+    toast(started?"score synced // playback started":"score synced // Spotify device inactive");
+   }catch(e){state.spotify.deviceActive=false;toast(e.message)}
+  }
+  if(state.activeBookSlug!==sourceBook||state.active)return;
+  let now=Date.now(),waitForSpotify=connected&&!started;
+  state.active={chapter:c.number,startedAt:now,resumedAt:now,elapsedMs:0,
+   paused:waitForSpotify,pausedAt:waitForSpotify?now:null,currentTrack:null,trackFeedback:[]};
+  save();render();
+  if(started)refreshPlayer();
+  if(waitForSpotify)toast("Open Spotify, return here, then Resume");
+  if(!connected&&c.startCue&&navigator.clipboard)navigator.clipboard.writeText(c.startCue).catch(()=>{});
+  if(!connected)setTimeout(()=>window.open(state.playlistUrl||PLAYLIST,"_blank"),150);
+ }finally{beginPending=false}
+}
 function renderNow(){if(!state.active){$("now").classList.remove("active");$("now").classList.remove("paused");clearInterval(tick);tick=null;clearInterval(playerPoll);playerPoll=null;return}$("now").classList.add("active");$("now").classList.toggle("paused",!!state.active.paused);$("nowChapter").textContent="CHAPTER "+String(state.active.chapter).padStart(2,"0");$("pauseBtn").textContent=state.active.paused?"Resume":"Pause";$("playbackState").textContent=state.active.paused?"session paused":"linked";let meta=SCORE_META[state.active.chapter]||{};$("finalCueBtn").style.display=meta.finalCueIndex==null?"none":"";$("finalCueBtn").disabled=!!state.active.paused;$("prevTrackBtn").disabled=!spotifyConnected();$("nextTrackBtn").disabled=!spotifyConnected();let u=()=>$("timer").textContent=fmt(elapsed());u();if(!tick)tick=setInterval(u,1000);renderTrackFeedbackState();if(!playerPoll){refreshPlayer();playerPoll=setInterval(refreshPlayer,12000)}}
 function finish(){if(!state.active)return;let c=state.active.chapter,ms=elapsed(),startedAt=state.active.startedAt;state.done[c]={...(state.done[c]||{}),minutes:Math.max(1,Math.round(ms/60000)),startedAt:new Date(startedAt).toISOString(),finishedAt:new Date().toISOString(),trackFeedback:[...(state.active.trackFeedback||[])],cloudSynced:false};state.active=null;save();target=c;openLog(c);render()}
 function openLog(c){target=c;let d=state.done[c]||{};$("fbChapter").textContent="CHAPTER "+String(c).padStart(2,"0")+" // "+(d.minutes||"?")+" MIN";$("fbNotes").value=d.notes||"";document.querySelectorAll(".seg").forEach(s=>s.querySelectorAll("button").forEach(b=>b.classList.toggle("on",d[s.dataset.key]===b.dataset.value)));$("feedbackDialog").showModal()}
