@@ -1,11 +1,11 @@
 # Heresy Score — Technical and Musical Context
 
-Last updated: 2026-10-23
-Current patch protocol: **v0.11.4**
+Last updated: 2026-10-24
+Current patch protocol: **v0.11.5**
 Current book: **Fulgrim (Book V)**
 Correct chapter count: **17 (chapter XVII is a short epilogue)**
 Current reader clearance: **Book IV complete; Fulgrim Chapter I complete**
-Next score: **Fulgrim Chapter II — curatorial calibration pending; Kindle estimate 26 min**
+Next score: **Fulgrim Chapter II — seven-cue first pass published; Spotify preflight pending; Kindle estimate 26 min**
 
 ## Product purpose
 Heresy Score is a mobile-first, spoiler-safe reading soundtrack companion for the Horus Heresy.
@@ -223,3 +223,12 @@ After Flight of the Eisenstein is finished, refactor rather than stacking more r
 - Prioritized working board: `docs/ACTIVE_PIPELINE.md`. P0 before next chapter: safely curate Fulgrim II, validate real Spotify durations and protect ending; P1 backfill Fulgrim I Compendium; P2 reliability and logs; P3 refactor and visual extension.
 - Current verified source: `data/fulgrim-score.js` still has only Chapter I and empty personae/archive data. Do **not** claim Fulgrim II is published or that Book V character records already exist.
 - Project-scoped attachments `READING_CONTEXT.md`/`HERESY_SCORE_CONTEXT.md` are stale relative to repository; ensure user-controlled Project copies are refreshed before depending on them in another chat.
+
+## v0.11.5 — Fulgrim II and Compendium I (2026-10-24)
+- User clearance: through Fulgrim Chapter I. Chapter II cue is playable only after Chapter I is logged; no spoilerful future scene labels are published. Later chapters still sealed.
+- Chapter II score in `data/fulgrim-score.js`: Arrakeen (Hans Zimmer), Streets of New London (Piotr Musiał), The Shepherd (Piotr Musiał), Herald of the Change (Hans Zimmer), Transmission Commences (Jesper Kyd), The City Must Survive (Piotr Musiał), Blood for Blood (Hans Zimmer). 7 tracks, **25:39 public catalog runtime** (real Spotify matching/time not yet run). The last cue is a protected climax/ending; no reserve or trim. This is a candidate editorial montage based on chapter-level secondary summaries, not verified to the user's exact Kindle scene offsets.
+- Chapter I Compendium in same file: six named people (Fulgrim, Solomon Demeter, Ostian Delafour, Serena d'Angelus, Bequa Kynska, Paljor Dorji), five records (Pride of the Emperor, Laeran, Atoll 19, Laer, recital). Each unlock at I; `scripts/book-switch.js` suppresses them before a Chapter I log exists. Personal portrait imports are restored after book changes.
+- Added optional `Check Spotify Runtime` button for Chapter II; prepares the active private playlist without starting the timer or playback. Reports exact resolved runtime and final-cue index, or a clear Spotify error.
+- `index.html` now writes `app_version=0.11.5` to Supabase, and PWA cache updates with the new files. Static JS syntax and book-state regression checks passed, but live Spotify/device QA remains pending.
+- Timing: Chapter I actual 25 min vs ~3.5 unused cues; Chapter II Kindle forecast 26 min. 15 chapters of Eisenstein II–XVI median 33 min but not directly transferable due unequal chapter lengths. Reserve and trim remain disabled by default.
+- Soundtrack selection wider than Warhammer: Hans Zimmer (Dune), Piotr Musiał (Frostpunk), Jesper Kyd (Darktide). Protect narrative function, implied space and transitions; no literal opera mandate.
