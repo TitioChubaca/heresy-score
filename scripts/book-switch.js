@@ -23,6 +23,33 @@ function setBanner(){
 const oldRender=render;render=function(){
  oldRender();
  setBanner();
+ // Only the next chapter exposes an optional Spotify preflight. It edits the
+ // active private playlist, but never starts a reading timer or playback.
+ if(state.activeBookSlug===v&&state.done?.[1]&&!state.done?.[2]&&!state.active){
+  const card=[...document.querySelectorAll("#chapters .chapter")]
+   .find(x=>x.querySelector(".chname")?.textContent.includes("CHAPTER 02"));
+  const actions=card?.querySelector(".actions");
+  if(actions){
+   const check=document.createElement("button");
+   check.type="button";check.className="btn";check.textContent="Check Spotify Runtime";
+   check.onclick=async()=>{
+    check.disabled=true;check.textContent="Checking Spotify...";
+    try{
+     if(!spotifyConnected())throw Error("Spotify precisa estar conectado");
+     await spotifySyncChapter(2);
+     const r=state.spotify.chapterRuntime?.[2];
+     if(!r||!Number.isFinite(r.durationMs))throw Error("Duracao nao retornada pelo Spotify");
+     const m=Math.floor(r.durationMs/60000),seconds=String(Math.floor(r.durationMs/1000)%60).padStart(2,"0");
+     const info=card.querySelector(".details");
+     if(info){const line=document.createElement("span");line.textContent="Spotify runtime "+m+":"+seconds+" // final cue #"+(r.finalCueIndex+1);info.append(line)}
+     toast("Score validado no Spotify // "+m+":"+seconds);
+    }catch(err){toast("Spotify QA: "+err.message)}
+    finally{check.disabled=false;check.textContent="Check Spotify Runtime"}
+   };
+   actions.append(check);
+  }
+ }
+
  if(state.activeBookSlug===v){
   const count=Object.keys(state.done||{}).length;
   const prog=document.getElementById("progress");if(prog)prog.style.width="0%";
