@@ -344,7 +344,7 @@ render=function(){
   }
   document.querySelectorAll(".chip").forEach(x=>{
     if(x.textContent.includes("chapters"))x.textContent=total+" chapters";
-    if(x.textContent.includes("protocol v"))x.textContent="protocol v0.11.4";
+    if(x.textContent.includes("protocol v"))x.textContent="protocol v0.11.5";
   });
 };
 save();render();
