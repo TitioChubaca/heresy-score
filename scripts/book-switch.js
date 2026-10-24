@@ -67,11 +67,20 @@ const oldRender=render;render=function(){
 };
 function change(slug){
  if(slug!==iv&&slug!==v)return;
+ if(typeof beginPending!=="undefined"&&beginPending){
+  toast("Aguarde o preparo da sessao atual");
+  const p=document.getElementById("hsBookSwitch");if(p)p.value=state.activeBookSlug;
+  return;
+ }
  if(state.activeBookSlug===slug)return;
  try{
   HSBooks.switchBook(state,slug);
   installData(slug);
   state.spotify.scoreDurations={};state.spotify.chapterRuntime={};
+  // Per-chapter playlists live in state.spotify.playlists. Clear the active
+  // pointer on switches; do not let Open Spotify link to another book's score.
+  state.spotify.playlistId="";
+  state.spotify.playlistUrl="";
   state.view="reading";
   save();render();applyView("reading");
   // Reapply any personal-only portraits that were imported before this book had a roster.
