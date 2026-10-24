@@ -35,6 +35,142 @@ window.HS_FULGRIM_DATA={
       notes:"Opening palette: measured elegance and contemplation; gradual military momentum; reserved action peak; restrained closure. No plot text or chapter-later material."
     }
   },
-  people:[],
-  archive:[]
+  people:[
+  {
+    "name": "Fulgrim",
+    "role": "Primarch // III Legion Emperor's Children",
+    "unlock": 1,
+    "visual": "ARCHIVE PORTRAIT PENDING",
+    "image": null,
+    "facts": [
+      {
+        "ch": 1,
+        "text": "Primarca da III Legião; a busca pela perfeição define a identidade de sua Legião e suas decisões sobre Laeran."
+      }
+    ],
+    "note": "Registro limitado ao primeiro capítulo."
+  },
+  {
+    "name": "Solomon Demeter",
+    "role": "Captain // Emperor's Children",
+    "unlock": 1,
+    "visual": "ARCHIVE PORTRAIT PENDING",
+    "image": null,
+    "facts": [
+      {
+        "ch": 1,
+        "text": "Capitão dos Emperor's Children, visto conduzindo seus guerreiros durante os combates contra os Laer."
+      }
+    ],
+    "note": "Combate registrado no capítulo I."
+  },
+  {
+    "name": "Ostian Delafour",
+    "role": "Remembrancer // sculptor",
+    "unlock": 1,
+    "visual": "ARCHIVE PORTRAIT PENDING",
+    "image": null,
+    "facts": [
+      {
+        "ch": 1,
+        "text": "Escultor remembrancer; reflete sobre arte, técnica e excelência, e assiste ao recital de Bequa Kynska."
+      }
+    ],
+    "note": "Perspectiva humana e artística."
+  },
+  {
+    "name": "Serena d'Angelus",
+    "role": "Remembrancer // painter",
+    "unlock": 1,
+    "visual": "ARCHIVE PORTRAIT PENDING",
+    "image": null,
+    "facts": [
+      {
+        "ch": 1,
+        "text": "Pintora e remembrancer; conversa com Ostian e o acompanha à apresentação musical."
+      }
+    ],
+    "note": "Perspectiva artística."
+  },
+  {
+    "name": "Bequa Kynska",
+    "role": "Remembrancer // musician",
+    "unlock": 1,
+    "visual": "ARCHIVE PORTRAIT PENDING",
+    "image": null,
+    "facts": [
+      {
+        "ch": 1,
+        "text": "Artista musical de grande prestígio; sua apresentação é um exemplo de performance e resposta emocional da plateia."
+      }
+    ],
+    "note": "Oportunidade de direção sonora teatral, sem exigir ópera literal."
+  },
+  {
+    "name": "Paljor Dorji",
+    "role": "Noble // recital attendee",
+    "unlock": 1,
+    "visual": "ARCHIVE PORTRAIT PENDING",
+    "image": null,
+    "facts": [
+      {
+        "ch": 1,
+        "text": "Nobre presente ao recital, envolvido em uma discussão com Bequa Kynska."
+      }
+    ],
+    "note": "Apenas o recital do capítulo I."
+  }
+],
+  archive:[
+  {
+    "key": "pride-of-the-emperor",
+    "name": "Pride of the Emperor",
+    "kind": "voidcraft",
+    "kindLabel": "Voidcraft // III Legion",
+    "unlock": 1,
+    "glyph": "◇",
+    "visual": "PORTRAIT PENDING",
+    "note": "Nave principal associada à frota dos Emperor's Children; espaços de criação artística e cerimônia."
+  },
+  {
+    "key": "laeran",
+    "name": "Laeran",
+    "kind": "theatre",
+    "kindLabel": "World / Theatre",
+    "unlock": 1,
+    "glyph": "◉",
+    "visual": "WORLD RECONSTRUCTION PENDING",
+    "note": "Mundo habitado pelos Laer, cuja tecnologia e relação com o Imperium já são discutidas."
+  },
+  {
+    "key": "atoll-19",
+    "name": "Atoll 19",
+    "kind": "theatre",
+    "kindLabel": "Battlefield",
+    "unlock": 1,
+    "glyph": "⌖",
+    "visual": "THEATRE RECONSTRUCTION PENDING",
+    "note": "Área de combate dos Emperor's Children contra os Laer apresentada no capítulo I."
+  },
+  {
+    "key": "laer",
+    "name": "Laer",
+    "kind": "entity",
+    "kindLabel": "Xenos / species",
+    "unlock": 1,
+    "glyph": "◆",
+    "visual": "SPECIES RECONSTRUCTION PENDING",
+    "note": "Civilização xenos com tecnologia notável, foco da discussão imperial e de combates iniciais."
+  },
+  {
+    "key": "recital",
+    "name": "Recital of Bequa Kynska",
+    "kind": "theatre",
+    "kindLabel": "Cultural venue / fleet",
+    "unlock": 1,
+    "glyph": "♪",
+    "visual": "INTERIOR RECONSTRUCTION PENDING",
+    "note": "Apresentação artística que contrapõe música, poder social e a presença da Legião."
+  }
+]
 };
