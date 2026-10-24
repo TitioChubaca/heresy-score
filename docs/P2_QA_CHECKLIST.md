@@ -45,3 +45,12 @@ These steps are **not run on the user's account**. Do not claim they passed.
 - Spotify preflight reports its exact chapter II duration without opening the timer.
 - One user-driven cross-book sync round trip preserves archive separation.
 - Optional normal reading session confirms final cue and pause/resume.
+
+
+## User validation — 2026-10-24
+- Reader verified the **installed PWA** shows the completed `Eisenstein` (17 chapters) and that **Fulgrim II → Check Spotify Runtime** ran successfully. Exact resolved minute:second was not supplied, so duration accuracy is not yet independently confirmed.
+- Desktop website diagnostic screenshot (v0.11.6): `Eisenstein recorded chapters: 2`, `Fulgrim recorded chapters: 0`, selected `flight-of-the-eisenstein`, Cloud enabled, Spotify authenticated, PWA controller active, feedback fields ready. This is an **independent local archive**, not evidence that the installed PWA lost progress.
+- Direct Supabase read-only check returned **two distinct owner groups**: primary archive = Eisenstein 17 + Fulgrim I 1; secondary archive = Eisenstein 2 + Fulgrim 0. This confirms separate owner hashes for current records (not proof of which precise browser produced each), without publishing either hash or recovery token.
+- No migration, token rebinding, record deletion or reset required. Preserve the installed PWA as the authoritative reader surface. Secondary browser can be ignored. Beware manually pasting the primary recovery token into the stale browser while it has different local chapter data.
+- The cloud auto-sync code remains push-first on load and Connect & Sync. With the **currently distinct owner hashes** it does not cross-overwrite the primary archive, but this is a future multi-device recovery risk if a stale client reuses the primary recovery token. Consider a dedicated pull-first/reconciliation improvement before asking anyone to link a second device.
+- Mark as verified: archive completeness on device, separate cloud archive counts, Spotify preflight execution. Still open: exact track runtimes, Final Cue on player, feedback persistence after refresh, actual cloud roundtrip, JSON export, offline PWA behavior.
