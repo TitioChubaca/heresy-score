@@ -243,3 +243,11 @@ After Flight of the Eisenstein is finished, refactor rather than stacking more r
 - `app_version=0.11.6`, offline SW cache `heresy-score-v0119`, new `scripts/feedback-direction.js` and `scripts/p2-diagnostics.js`.
 - Ran JS syntax and mock asynchronous cloud/Spotify regression tests. **Real account/device Spotify playback, Supabase round-trip, final cue/timer and PWA offline behavior are not yet verified.**
 - The authoritative user-device steps are in [P2 QA checklist](P2_QA_CHECKLIST.md). P2 must not be declared fully finished until user testing.
+
+
+## P2 field observation — 2026-10-24
+- User reports installed PWA still shows **17 Eisenstein chapters** and Fulgrim II Check Spotify Runtime worked. Site in ordinary browser shows only 2 Eisenstein and 0 Fulgrim in local diagnostic v0.11.6; do not mistake that for data loss in PWA.
+- Read-only cloud aggregate across owner_hash groups: main archive 17 Eisenstein + 1 Fulgrim; secondary 2 Eisenstein + 0 Fulgrim. Owners are currently separate. No identifying hashes or recovery credentials stored in docs.
+- Keep PWA as canonical client. Do not suggest clearing data, reinstalling, migrating stale browser logs or cross-linking archive tokens unnecessarily.
+- Caveat: auto `cloudSyncAll` on boot/connect is push-first; if a stale second client is manually joined to the main token in the future, it can overwrite shared chapters. Track a non-destructive pull-first merge and sync reconciliation as a reliability item before enabling cross-device sharing.
+- Spotify run was confirmed by reader but real resolved track duration and final-cue correctness not provided. Remains partly unverified.
