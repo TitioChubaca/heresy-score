@@ -1,4 +1,4 @@
-# Heresy Score — v0.11.5
+# Heresy Score — v0.11.6
 
 Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 
@@ -12,6 +12,15 @@ Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 - Local progress key remains `heresy-score-v01` with per-book `state.books[slug]` migration v3; do not wipe site data.
 - Sound direction rules: [Sound Direction Bible](docs/SOUND_DIRECTION_BIBLE_V1.md).
 - Active work/QA checklist: [Active Pipeline](docs/ACTIVE_PIPELINE.md).
+
+## P2 reliability and feedback (v0.11.6)
+
+- Post-reading form now accepts optional **Ending**, **Atmosphere** and **Transitions** evaluations; fields are mirrored as JSON log payload with no Supabase schema migration.
+- PWA prevents late cloud operations from mixing books after IV ↔ V changes.
+- Spotify creates a **separate private playlist per book/chapter** when first prepared, leaving prior legacy playlists intact.
+- Avoids duplicate chapter starts while a Spotify score is being prepared.
+- Cogitator Settings supports **Export all books backup** (no credentials) and **Run local diagnostics** (sanitized report).
+- QA status: JavaScript and simulated race tests passed; user-device Spotify, Supabase round-trip and offline tests remain in [P2 QA checklist](docs/P2_QA_CHECKLIST.md).
 
 ## Main features
 
