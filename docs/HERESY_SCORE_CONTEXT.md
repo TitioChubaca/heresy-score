@@ -218,3 +218,8 @@ After Flight of the Eisenstein is finished, refactor rather than stacking more r
 - Fulgrim I actual 25 minutes, ~3.5 tracks left. Fulgrim II Kindle estimate 26 min, to be assessed against chapter size and actual pace without arbitrary headroom; soundtrack still requires scene-aware curation.
 - New canonical guidance: `docs/SOUND_DIRECTION_BIBLE_V1.md`. Protect spoiler-sensitive scene maps.
 - Static runtime validation remains distinct from live Spotify or reading-device QA.
+
+## Delivery pipeline — 2026-10-24
+- Prioritized working board: `docs/ACTIVE_PIPELINE.md`. P0 before next chapter: safely curate Fulgrim II, validate real Spotify durations and protect ending; P1 backfill Fulgrim I Compendium; P2 reliability and logs; P3 refactor and visual extension.
+- Current verified source: `data/fulgrim-score.js` still has only Chapter I and empty personae/archive data. Do **not** claim Fulgrim II is published or that Book V character records already exist.
+- Project-scoped attachments `READING_CONTEXT.md`/`HERESY_SCORE_CONTEXT.md` are stale relative to repository; ensure user-controlled Project copies are refreshed before depending on them in another chat.
