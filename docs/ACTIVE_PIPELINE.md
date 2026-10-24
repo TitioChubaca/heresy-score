@@ -72,3 +72,10 @@
 - [P2 QA checklist](P2_QA_CHECKLIST.md): lightweight user-device smoke test and remaining gates.
 - P2.1 Spotify live verification, P2.2 cloud round-trip and P2.4 offline real-device check are **not closed**. The user already verified basic IV↔V switching before this release; post-change test still needed.
 - Do not reset localStorage or delete the legacy Spotify playlist; historical reading scores remain separated.
+
+
+### Field validation — P2 (2026-10-24)
+- Installed PWA is the only authoritative reading client; user reports Book IV complete (17) and successful Fulgrim II Spotify Runtime preflight.
+- Separate web browser local diagnostics showed incomplete archive (IV=2, V=0). Read-only Supabase check shows two different owner groups, **17+1** and **2+0**. The incompleteness did not overwrite the complete cloud archive. Do not wipe/reconnect any token as a workaround.
+- Real-device preflight passed as an *action*, but exact Spotify runtime and final cue position weren't supplied.
+- P2 follow-up: test directional feedback persistence, all-books backup on PWA, Final Cue, offline shell and Supabase roundtrip; then address push-first cloud initialization if second-device recovery becomes a supported workflow.
