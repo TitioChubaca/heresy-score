@@ -147,7 +147,7 @@ spotifySyncChapter=async function(chapter){
   }
   let uris=infos.map(x=>x.uri);
   await spotifyApi("/playlists/"+p.id+"/items",{method:"PUT",body:JSON.stringify({uris})});
-  await spotifyApi("/playlists/"+p.id,{method:"PUT",body:JSON.stringify({name:"Heresy Score // Eisenstein // CH "+String(chapter).padStart(2,"0"),public:false,description:"Active spoiler-safe score. Curated by chapter."})});
+  await spotifyApi("/playlists/"+p.id,{method:"PUT",body:JSON.stringify({name:"Heresy Score // "+(state.activeBookSlug==="fulgrim"?"Fulgrim":"Eisenstein")+" // CH "+String(chapter).padStart(2,"0"),public:false,description:"Active spoiler-safe score. Curated by chapter."})});
   state.spotify.playlistUrl="https://open.spotify.com/playlist/"+p.id;
   state.spotify.scoreDurations[chapter]=total;
   state.spotify.chapterRuntime[chapter]={durationMs:total,targetMs:target,finalCueIndex:finalIndex,trackCount:infos.length};
@@ -333,7 +333,7 @@ render=function(){
   }
   document.querySelectorAll(".chip").forEach(x=>{
     if(x.textContent.includes("chapters"))x.textContent=total+" chapters";
-    if(x.textContent.includes("protocol v"))x.textContent="protocol v0.11.1";
+    if(x.textContent.includes("protocol v"))x.textContent="protocol v0.11.3";
   });
 };
 save();render();
