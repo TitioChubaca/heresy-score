@@ -2,15 +2,15 @@
   "slug": "fulgrim",
   "title": "Fulgrim",
   "number": 5,
-  "state": "score_pending",
+  "state": "chapter-one-prepared",
   "chapterCount": null,
   "chapters": [
     {
       "number": 1,
       "title": "CHAPTER 01",
-      "scoreStatus": "sealed",
-      "estimatedMinutes": null,
-      "startCue": null
+      "scoreStatus": "ready",
+      "estimatedMinutes": 33,
+      "startCue": "Path of Trust"
     }
   ],
   "personae": [],
