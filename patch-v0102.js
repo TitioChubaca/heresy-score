@@ -124,10 +124,17 @@ async function resolveTrackInfo(title,artist){
 }
 
 spotifySyncChapter=async function(chapter){
+  const sourceBook=state.activeBookSlug||HSBooks.IV;
+  const isSameBook=()=>state.activeBookSlug===sourceBook;
   let score=SCORES[chapter],meta=SCORE_META[chapter]||{};
   if(!score)throw new Error("Score for this chapter is still sealed");
   let p=await spotifyEnsurePlaylist(chapter),infos=[];
-  for(const [title,artist] of score)infos.push(await resolveTrackInfo(title,artist));
+  if(!isSameBook())throw new Error("Book changed during Spotify sync");
+  for(const [title,artist] of score){
+    const info=await resolveTrackInfo(title,artist);
+    if(!isSameBook())throw new Error("Book changed during Spotify sync");
+    infos.push(info);
+  }
   let finalIndex=meta.finalCueIndex==null?infos.length-1:meta.finalCueIndex;
   let total=infos.reduce((n,t)=>n+(t.durationMs||0),0),target=(meta.estimatedMinutes||0)*60000,threshold=Math.max(0,target+90000),ceiling=target+240000,used=new Set(infos.map(x=>x.uri));
   // Never remove a cue merely to hit a time estimate: trimming also needs a
@@ -156,9 +163,11 @@ spotifySyncChapter=async function(chapter){
       if(total>=threshold)break;
     }
   }
+  if(!isSameBook())throw new Error("Book changed during Spotify sync");
   let uris=infos.map(x=>x.uri);
   await spotifyApi("/playlists/"+p.id+"/items",{method:"PUT",body:JSON.stringify({uris})});
   await spotifyApi("/playlists/"+p.id,{method:"PUT",body:JSON.stringify({name:"Heresy Score // "+(state.activeBookSlug==="fulgrim"?"Fulgrim":"Eisenstein")+" // CH "+String(chapter).padStart(2,"0"),public:false,description:"Active spoiler-safe score. Curated by chapter."})});
+  if(!isSameBook())throw new Error("Book changed during Spotify sync");
   state.spotify.playlistUrl="https://open.spotify.com/playlist/"+p.id;
   state.spotify.scoreDurations[chapter]=total;
   state.spotify.chapterRuntime[chapter]={durationMs:total,targetMs:target,finalCueIndex:finalIndex,trackCount:infos.length};
