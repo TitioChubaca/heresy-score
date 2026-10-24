@@ -1,15 +1,17 @@
-# Heresy Score — v0.10.9
+# Heresy Score — v0.11.5
 
 Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 
 ## Current reading state
 
-- Active book: *The Flight of the Eisenstein*
-- Reader clearance: Book IV completed through Chapter XVII epilogue; Fulgrim not yet started.
-- Book IV has 17 chapters, including an unscored epilogue XVII.
-- Chapter XVII can be marked read separately after Chapter XVI is logged.
-- Book V migration/refactor is still pending.
-- Local progress key is still `heresy-score-v01` so existing reading history survives upgrades.
+- Active book: **Fulgrim**, Book V. Reader completed Chapter I; Chapter II score ready for Spotify preflight; Chapter III+ sealed.
+- Chapter II soundtrack: seven carefully ordered cues; published catalog time **25:39**; actual Spotify runtime must be confirmed in app.
+- Ending cue protected; no algorithmic reserve/trim for duration alone.
+- Chapter I Compendium: six named people and five already-seen locations/cultural entries, gated behind completion of Chapter I.
+- Previous book *The Flight of the Eisenstein* preserved as a 17-chapter archive (including epilogue XVII), rating 3/5.
+- Local progress key remains `heresy-score-v01` with per-book `state.books[slug]` migration v3; do not wipe site data.
+- Sound direction rules: [Sound Direction Bible](docs/SOUND_DIRECTION_BIBLE_V1.md).
+- Active work/QA checklist: [Active Pipeline](docs/ACTIVE_PIPELINE.md).
 
 ## Main features
 
