@@ -2,17 +2,26 @@
   "slug": "fulgrim",
   "title": "Fulgrim",
   "number": 5,
-  "state": "chapter-one-prepared",
+  "state": "chapter-two-curated",
   "chapterCount": null,
   "chapters": [
     {
       "number": 1,
       "title": "CHAPTER 01",
-      "scoreStatus": "ready",
+      "scoreStatus": "logged",
       "estimatedMinutes": 33,
       "startCue": "Path of Trust"
+    },
+    {
+      "number": 2,
+      "title": "CHAPTER 02",
+      "scoreStatus": "ready",
+      "estimatedMinutes": 26,
+      "startCue": "Arrakeen",
+      "catalogRuntimeSeconds": 1539,
+      "spotifyVerified": false
     }
   ],
-  "personae": [],
-  "archiveRecords": []
+  "personae": "chapter-I-gated entries in data/fulgrim-score.js",
+  "archiveRecords": "chapter-I-gated entries in data/fulgrim-score.js"
 }
