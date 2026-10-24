@@ -1,7 +1,7 @@
 # Heresy Score — Technical and Musical Context
 
 Last updated: 2026-10-24
-Current patch protocol: **v0.11.5**
+Current patch protocol: **v0.11.6**
 Current book: **Fulgrim (Book V)**
 Correct chapter count: **17 (chapter XVII is a short epilogue)**
 Current reader clearance: **Book IV complete; Fulgrim Chapter I complete**
@@ -232,3 +232,14 @@ After Flight of the Eisenstein is finished, refactor rather than stacking more r
 - `index.html` now writes `app_version=0.11.5` to Supabase, and PWA cache updates with the new files. Static JS syntax and book-state regression checks passed, but live Spotify/device QA remains pending.
 - Timing: Chapter I actual 25 min vs ~3.5 unused cues; Chapter II Kindle forecast 26 min. 15 chapters of Eisenstein II–XVI median 33 min but not directly transferable due unequal chapter lengths. Reserve and trim remain disabled by default.
 - Soundtrack selection wider than Warhammer: Hans Zimmer (Dune), Piotr Musiał (Frostpunk), Jesper Kyd (Darktide). Protect narrative function, implied space and transitions; no literal opera mandate.
+
+## v0.11.6 — P2 Reliability and Sound Direction Feedback (2026-10-24)
+- Active score remains Fulgrim Chapter II seven-cue candidate. No music reorder or spoiler gate changes here.
+- Additional optional post-chapter ratings: `ending`, `ambience`, `transitions`, each shown in feedback form, debrief and field log; saved alongside existing fields in JSON `payload` and mirrored to Supabase with no schema change. Older logs remain readable, missing ratings are `—` / not evaluated.
+- Fixed **async cross-book cloud race**: requests capture slug+token; stale IV/V push or pull responses are ignored, and a changed record is not falsely marked synced.
+- Spotify score playlists now have stable book/chapter-scoped `state.spotify.playlists[slug+':'+chapter]` identifiers. The previous shared playlist is left intact rather than silently reassigned. `state.spotify.playlistId` is only the pointer to current synced chapter. Switch books clears the pointer and blocks switching during a pending Spotify session start.
+- Backup now exports **all books**, accurately assigns `legacyBookIVLogs` from Book IV, excludes sync credentials and Spotify tokens, and warns that private images are not included. No automatic import or destructive restore was added.
+- Added non-destructive Settings diagnostics, with Copy sanitized report, counts per book, connection booleans and PWA controller status, no reading notes or tokens.
+- `app_version=0.11.6`, offline SW cache `heresy-score-v0119`, new `scripts/feedback-direction.js` and `scripts/p2-diagnostics.js`.
+- Ran JS syntax and mock asynchronous cloud/Spotify regression tests. **Real account/device Spotify playback, Supabase round-trip, final cue/timer and PWA offline behavior are not yet verified.**
+- The authoritative user-device steps are in [P2 QA checklist](P2_QA_CHECKLIST.md). P2 must not be declared fully finished until user testing.
