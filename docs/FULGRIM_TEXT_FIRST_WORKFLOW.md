@@ -63,3 +63,11 @@ The app should expose only the current/unlocked score; the private 25-chapter na
 - **Private chapter text and scene maps require persistent private Project attachments.** A local file in one chat or temporary sandbox does not guarantee access from every future conversation.
 - The source-of-truth context should reference source location and reader clearance, not copy full chapters into an MD.
 - Keep Book IV backup separate and avoid altering the local-first book migration as part of music curation.
+
+## Private-map checkpoint — 2026-10-25
+- Chapters **III, IV and V** have been read from the reader-supplied private MOBI and segmented into chronological, paragraph-anchored narrative blocks. Narrative map files are kept PRIVATE in the project transfer pack, not in this public repository or PWA bundle.
+- Boundaries were checked for contiguous, nonoverlapping coverage; page/section headings are excluded from narrative timing.
+- Musical roles and rough segment-time allocations have been drafted from each actual passage, not from a fixed three-act template.
+- **No music was released** and no Spotify recording IDs, durations, or actual playback matches have yet been verified. Chapter III is the next score candidate for private QA.
+- Private handoff files: `FULGRIM_PRIVATE_CURATION_INDEX_v2.md` and `FULGRIM_PRIVATE_MAPS_III_V.zip`, supplied in the project conversation for user to attach to the private Warhammer Project.
+- Current spoiler ceiling stays at the reader's confirmed Chapter II. Do not expose later scene summaries, character names or music cues in public code or chat.
