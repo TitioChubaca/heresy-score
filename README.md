@@ -1,4 +1,4 @@
-# Heresy Score — v0.11.6
+# Heresy Score — v0.11.7
 
 Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 
@@ -142,3 +142,8 @@ This is an unofficial personal reading tool. Warhammer, The Horus Heresy and rel
 - Fulgrim Chapter I prepared in `data/fulgrim-score.js`. This is an **initial mood-first** playlist, not a chapter-text-verified, scene-by-scene timed score. Reader runtime target 33 minutes, Spotify real track resolution still untested.
 - Book switch loads a chapter I score while later chapters remain sealed. The Spotify active playlist name adapts to the current book and reuses the existing private playlist.
 - No future character descriptions or scenes embedded in the public player. Device/browser, API and playlist-length verification remain pending.
+
+## Fulgrim Chapter III — v0.11.7
+- Chapter III: source-driven cue sequencing from a **private** 9-segment narrative map, total **24:20** across 9 catalog-verified tracks. Live Spotify account duration/availability remains pending.
+- The next unread chapter has a **Check Spotify Runtime** button; it does not start playback, only resolves and populates its private chapter playlist. Chapters IV onward remain sealed.
+- No private source text or scene maps have been added to the public repo. Cache v0120. The user's previous 17-chapter Eisenstein archive remains separate and was smoke-tested for preservation.
