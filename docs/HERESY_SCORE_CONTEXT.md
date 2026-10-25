@@ -251,3 +251,13 @@ After Flight of the Eisenstein is finished, refactor rather than stacking more r
 - Keep PWA as canonical client. Do not suggest clearing data, reinstalling, migrating stale browser logs or cross-linking archive tokens unnecessarily.
 - Caveat: auto `cloudSyncAll` on boot/connect is push-first; if a stale second client is manually joined to the main token in the future, it can overwrite shared chapters. Track a non-destructive pull-first merge and sync reconciliation as a reliability item before enabling cross-device sharing.
 - Spotify run was confirmed by reader but real resolved track duration and final-cue correctness not provided. Remains partly unverified.
+
+
+## 2026-10-25 — Book V text-first source preservation
+- The reader supplied an accessible MOBI of Graham McNeill's **Fulgrim** in a private conversation. Its text and 25 chapter boundaries (five parts) were verified. **The copyrighted original and private scene maps are NOT checked into the public GitHub repository.**
+- Public metadata now lives at `data/fulgrim-chapter-metrics.json` (25 chapters with word counts/paragraph counts only).
+- Permanent public curation and spoiler-control methodology: `docs/FULGRIM_TEXT_FIRST_WORKFLOW.md`.
+- A private downloadable `FULGRIM_PRIVATE_CURATION_INDEX.md` and a private JSON scene-map scaffold were created in the conversation; these have empty future scene lists, **not 25 completed music scores**. Reader should add source MOBI and private index to Project files if they need guaranteed cross-chat access.
+- Editorial decision: analyze the real text of all chapters in privately stored scene maps, but publish/Spotify-QA soundtracks in batches of ~1–3 upcoming chapters; never use pre-set scene/act counts.
+- Observed Chapter I was 4,776 words and 25 minutes (reader reports ~3.5 unused tracks); Chapter II is 5,359 words, with a 26-minute Kindle estimate at the time. One-chapter reading pace is not a universal rate.
+- The existing Book V chapter I–II scores remain as-is. This documentation/metadata change is not a claim that future chapters have text-mapped, Spotify-verified scores.
