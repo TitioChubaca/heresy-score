@@ -2,8 +2,8 @@
   "slug": "fulgrim",
   "title": "Fulgrim",
   "number": 5,
-  "state": "chapter-two-curated",
-  "chapterCount": null,
+  "state": "chapter-three-catalog-curated",
+  "chapterCount": 25,
   "chapters": [
     {
       "number": 1,
@@ -20,6 +20,22 @@
       "startCue": "Arrakeen",
       "catalogRuntimeSeconds": 1539,
       "spotifyVerified": false
+    },
+    {
+      "number": 3,
+      "title": "CHAPTER 03",
+      "scoreStatus": "catalog-reviewed; Spotify preflight pending",
+      "estimatedMinutes": 24.3,
+      "startCue": "Severance Ambient",
+      "catalogRuntimeSeconds": 1460,
+      "spotifyVerified": false
+    },
+    {
+      "number": 4,
+      "title": "CHAPTER 04",
+      "scoreStatus": "sealed",
+      "estimatedMinutes": null,
+      "startCue": null
     }
   ],
   "personae": "chapter-I-gated entries in data/fulgrim-score.js",
