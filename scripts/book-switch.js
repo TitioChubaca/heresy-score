@@ -23,11 +23,14 @@ function setBanner(){
 const oldRender=render;render=function(){
  oldRender();
  setBanner();
- // Only the next chapter exposes an optional Spotify preflight. It edits the
- // active private playlist, but never starts a reading timer or playback.
- if(state.activeBookSlug===v&&state.done?.[1]&&!state.done?.[2]&&!state.active){
-  const card=[...document.querySelectorAll("#chapters .chapter")]
-   .find(x=>x.querySelector(".chname")?.textContent.includes("CHAPTER 02"));
+ // Only the next unread, scored chapter can be checked. The Spotify preflight
+ // resolves real tracks without starting a reading timer or playing music.
+ if(state.activeBookSlug===v&&!state.active){
+  const next=chapters.find(c=>!state.done?.[c.number]&&!!SCORES[c.number]&&
+    (c.number===1||!!state.done?.[c.number-1]));
+  const number=next?.number;
+  const card=number?[...document.querySelectorAll("#chapters .chapter")]
+   .find(x=>x.querySelector(".chname")?.textContent.includes("CHAPTER "+String(number).padStart(2,"0"))):null;
   const actions=card?.querySelector(".actions");
   if(actions){
    const check=document.createElement("button");
@@ -36,13 +39,19 @@ const oldRender=render;render=function(){
     check.disabled=true;check.textContent="Checking Spotify...";
     try{
      if(!spotifyConnected())throw Error("Spotify precisa estar conectado");
-     await spotifySyncChapter(2);
-     const r=state.spotify.chapterRuntime?.[2];
+     const sourceBook=state.activeBookSlug;
+     await spotifySyncChapter(number);
+     if(state.activeBookSlug!==sourceBook)throw Error("Livro alterado durante a verificacao");
+     const r=state.spotify.chapterRuntime?.[number];
      if(!r||!Number.isFinite(r.durationMs))throw Error("Duracao nao retornada pelo Spotify");
      const m=Math.floor(r.durationMs/60000),seconds=String(Math.floor(r.durationMs/1000)%60).padStart(2,"0");
      const info=card.querySelector(".details");
-     if(info){const line=document.createElement("span");line.textContent="Spotify runtime "+m+":"+seconds+" // final cue #"+(r.finalCueIndex+1);info.append(line)}
-     toast("Score validado no Spotify // "+m+":"+seconds);
+     if(info){
+      let line=card.querySelector(".hs-runtime-verified");
+      if(!line){line=document.createElement("span");line.className="hs-runtime-verified";info.append(line)}
+      line.textContent="Spotify runtime "+m+":"+seconds+" // final cue #"+(r.finalCueIndex+1);
+     }
+     toast("Score verificado no Spotify // "+m+":"+seconds);
     }catch(err){toast("Spotify QA: "+err.message)}
     finally{check.disabled=false;check.textContent="Check Spotify Runtime"}
    };
@@ -53,9 +62,9 @@ const oldRender=render;render=function(){
  if(state.activeBookSlug===v){
   const count=Object.keys(state.done||{}).length;
   const prog=document.getElementById("progress");if(prog)prog.style.width="0%";
-  const text=document.getElementById("progressText");if(text)text.textContent=count+" / 1 curated // Book V";
-  const label=document.getElementById("clearanceLabel");if(label)label.textContent="Book V // no chapters read";
-  const directive=document.getElementById("directive");if(directive&&!state.active)directive.textContent=count>=2?"FULGRIM // Next score remains sealed.":count===1?"FULGRIM // CHAPTER 02 SCORE READY.":"FULGRIM // CHAPTER 01 SCORE READY.";
+  const text=document.getElementById("progressText");if(text)text.textContent=count+" / 25 chapters // Book V";
+  const label=document.getElementById("clearanceLabel");if(label)label.textContent="Book V // "+(count?"through chapter "+String(Math.max(...Object.keys(state.done).map(Number))).padStart(2,"0"):"no chapters read");
+  const directive=document.getElementById("directive");if(directive&&!state.active){const next=chapters.find(c=>!state.done?.[c.number]);directive.textContent=next&&SCORES[next.number]?"FULGRIM // CHAPTER "+String(next.number).padStart(2,"0")+" SCORE PREPARED // CHECK SPOTIFY RUNTIME.":"FULGRIM // Next score remains sealed."}
   const archive=document.getElementById("bookArchiveProgress");if(archive)archive.textContent="17 chapters // completed";
   
   // Prevent chapter-I dossier records from appearing before the reader logs I.
@@ -85,12 +94,12 @@ function change(slug){
   save();render();applyView("reading");
   // Reapply any personal-only portraits that were imported before this book had a roster.
   Promise.resolve(window.HSPrivateArt?.refresh?.()).catch(()=>{});
-  toast(slug===iv?"Eisenstein archive loaded":"Fulgrim archive selected; score still sealed");
+  toast(slug===iv?"Eisenstein archive loaded":"Fulgrim archive selected; next score follows reader clearance");
  }catch(e){toast(e.message);const p=document.getElementById("hsBookSwitch");if(p)p.value=state.activeBookSlug}
 }
 const nav=document.querySelector('[data-view-panel="books"]');
 const panel=document.createElement("section");panel.id="hsBooksPanel";panel.className="panel";
-panel.innerHTML='<h2>Active Book // Library</h2><p class="small">O progresso, as anotações e a sincronização na nuvem são separados por livro. Não é possível trocar durante uma leitura ativa. Apenas o capítulo I de Fulgrim está preparado.</p><label class="small">Selected book <select id="hsBookSwitch" style="width:100%;margin-top:8px;background:#101a0f;color:#d2cbb7;padding:12px;border:1px solid #536746"><option value="flight-of-the-eisenstein">IV — The Flight of the Eisenstein</option><option value="fulgrim">V — Fulgrim (chapter I ready)</option></select></label>';
+panel.innerHTML='<h2>Active Book // Library</h2><p class="small">O progresso, as anotações e a sincronização na nuvem são separados por livro. Não é possível trocar durante uma leitura ativa. Trilhas dos capítulos I–III disponíveis conforme o progresso. Capítulos seguintes continuam selados.</p><label class="small">Selected book <select id="hsBookSwitch" style="width:100%;margin-top:8px;background:#101a0f;color:#d2cbb7;padding:12px;border:1px solid #536746"><option value="flight-of-the-eisenstein">IV — The Flight of the Eisenstein</option><option value="fulgrim">V — Fulgrim (chapter III prepared)</option></select></label>';
 nav.append(panel);
 document.getElementById("hsBookSwitch").onchange=e=>change(e.target.value);
 if(state.activeBookSlug===v)installData(v);
