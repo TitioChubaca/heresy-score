@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "book": "Fulgrim",
+  "author": "Graham McNeill",
+  "chaptersTotal": 25,
+  "partsTotal": 5,
+  "extractionSource": "Reader-provided MOBI file; source not committed",
+  "spoilerPolicy": "Metadata only; no plot or future names",
+  "measuredPace": {
+    "chapter": 1,
+    "loggedMinutes": 25,
+    "words": 4776,
+    "wordsPerMinute": 191,
+    "note": "One-chapter observation, not a fixed rate; chapter II Kindle reports 26 min."
+  },
+  "chapters": [
+    {
+      "number": 1,
+      "heading": "CHAPTER 01",
+      "paragraphs": 126,
+      "words": 4776,
+      "scoreStatus": "present_in_app",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 2,
+      "heading": "CHAPTER 02",
+      "paragraphs": 118,
+      "words": 5359,
+      "scoreStatus": "present_in_app",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 3,
+      "heading": "CHAPTER 03",
+      "paragraphs": 131,
+      "words": 4476,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 4,
+      "heading": "CHAPTER 04",
+      "paragraphs": 129,
+      "words": 5511,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 5,
+      "heading": "CHAPTER 05",
+      "paragraphs": 152,
+      "words": 6110,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 6,
+      "heading": "CHAPTER 06",
+      "paragraphs": 121,
+      "words": 5245,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 7,
+      "heading": "CHAPTER 07",
+      "paragraphs": 156,
+      "words": 5604,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 8,
+      "heading": "CHAPTER 08",
+      "paragraphs": 180,
+      "words": 5961,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 9,
+      "heading": "CHAPTER 09",
+      "paragraphs": 130,
+      "words": 4951,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 10,
+      "heading": "CHAPTER 10",
+      "paragraphs": 158,
+      "words": 6320,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 11,
+      "heading": "CHAPTER 11",
+      "paragraphs": 78,
+      "words": 4255,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 12,
+      "heading": "CHAPTER 12",
+      "paragraphs": 174,
+      "words": 5900,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 13,
+      "heading": "CHAPTER 13",
+      "paragraphs": 145,
+      "words": 4610,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 14,
+      "heading": "CHAPTER 14",
+      "paragraphs": 158,
+      "words": 4804,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 15,
+      "heading": "CHAPTER 15",
+      "paragraphs": 157,
+      "words": 6399,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 16,
+      "heading": "CHAPTER 16",
+      "paragraphs": 152,
+      "words": 4848,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 17,
+      "heading": "CHAPTER 17",
+      "paragraphs": 160,
+      "words": 5590,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 18,
+      "heading": "CHAPTER 18",
+      "paragraphs": 113,
+      "words": 4405,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 19,
+      "heading": "CHAPTER 19",
+      "paragraphs": 132,
+      "words": 5277,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 20,
+      "heading": "CHAPTER 20",
+      "paragraphs": 127,
+      "words": 5517,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 21,
+      "heading": "CHAPTER 21",
+      "paragraphs": 140,
+      "words": 5418,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 22,
+      "heading": "CHAPTER 22",
+      "paragraphs": 96,
+      "words": 5283,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 23,
+      "heading": "CHAPTER 23",
+      "paragraphs": 100,
+      "words": 5319,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 24,
+      "heading": "CHAPTER 24",
+      "paragraphs": 129,
+      "words": 5015,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    },
+    {
+      "number": 25,
+      "heading": "CHAPTER 25",
+      "paragraphs": 192,
+      "words": 5586,
+      "scoreStatus": "not_curated",
+      "narrativeMapStatus": "pending_private_analysis"
+    }
+  ]
+}
