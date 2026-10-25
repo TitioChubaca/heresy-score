@@ -15,12 +15,13 @@
       "slug": "fulgrim",
       "title": "Fulgrim",
       "number": 5,
-      "chapterCount": null,
-      "state": "in_progress",
+      "chapterCount": 25,
+      "state": "reading",
       "scoreSource": "data/fulgrim-score.js",
       "personaeSource": "data/fulgrim-score.js",
       "curatedThrough": 2,
-      "readerClearanceNotGlobal": true
+      "readerClearanceNotGlobal": true,
+      "preparedThroughChapter": 3
     }
   ]
 }
