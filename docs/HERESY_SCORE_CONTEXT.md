@@ -1,7 +1,7 @@
 # Heresy Score — Technical and Musical Context
 
 Last updated: 2026-10-24
-Current patch protocol: **v0.11.6**
+Current patch protocol: **v0.11.7**
 Current book: **Fulgrim (Book V)**
 Correct chapter count: **17 (chapter XVII is a short epilogue)**
 Current reader clearance: **Book IV complete; Fulgrim Chapter I complete**
@@ -261,3 +261,12 @@ After Flight of the Eisenstein is finished, refactor rather than stacking more r
 - Editorial decision: analyze the real text of all chapters in privately stored scene maps, but publish/Spotify-QA soundtracks in batches of ~1–3 upcoming chapters; never use pre-set scene/act counts.
 - Observed Chapter I was 4,776 words and 25 minutes (reader reports ~3.5 unused tracks); Chapter II is 5,359 words, with a 26-minute Kindle estimate at the time. One-chapter reading pace is not a universal rate.
 - The existing Book V chapter I–II scores remain as-is. This documentation/metadata change is not a claim that future chapters have text-mapped, Spotify-verified scores.
+
+
+## v0.11.7 — Fulgrim chapter III text-first score (2026-10-25)
+- The 9 passage map for Book V/Chapter III was reviewed privately from the supplied MOBI. The public app only contains 9 generic soundtrack title/artist cues; not plot summaries or future personae.
+- Catalog-based soundtrack 24m20s (1460s). Planning estimate from source text roughly 24m12s; actual Kindle/chapter reading runtime and Spotify logged-in recording durations remain pending.
+- Installed Chapter III; Chapter IV is a sealed placeholder. Preflight **Check Spotify Runtime** now targets the next eligible chapter rather than only Chapter II.
+- Book metadata set to 25 chapters (reader-provided MOBI); historical Book IV records and playlist IDs remain untouched. Service-worker cache v0120, new logging app_version v0.11.7.
+- Static module syntax, progression gating and book-state migration smoke tests PASS. Browser/device live Spotify synchronization still requires user verification before marking score fully validated.
+- Private editorial handoff: `FULGRIM_CH03_PRIVATE_CUE_PACKAGE.zip` should be stored among the private Project files, never on public GitHub.
