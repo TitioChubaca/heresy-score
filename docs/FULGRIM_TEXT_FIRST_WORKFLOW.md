@@ -71,3 +71,10 @@ The app should expose only the current/unlocked score; the private 25-chapter na
 - **No music was released** and no Spotify recording IDs, durations, or actual playback matches have yet been verified. Chapter III is the next score candidate for private QA.
 - Private handoff files: `FULGRIM_PRIVATE_CURATION_INDEX_v2.md` and `FULGRIM_PRIVATE_MAPS_III_V.zip`, supplied in the project conversation for user to attach to the private Warhammer Project.
 - Current spoiler ceiling stays at the reader's confirmed Chapter II. Do not expose later scene summaries, character names or music cues in public code or chat.
+
+## Chapter III catalog-curated score — 2026-10-25
+- Source: **private chapter III paragraph-anchored map (9 segments)**, analyzed against reader-supplied MOBI; detailed event-to-music placements kept in the private Warhammer Project, never in public GitHub/PWA.
+- Nine public track titles are in `data/fulgrim-score.js`, with **24:20 aggregate Spotify-catalog duration** (1460 seconds); corresponding word-weighted narrative estimate approximately 24:12, sensitivity range 21.8–25.8 min. These are estimates, not measured reader or exact Spotify account timings.
+- Playlist follows the actual nine-section timing without forcing one cue per short segment; no auto-fill or auto-trim. Protected ending is track #9.
+- The next unread chapter now has a dynamic **Check Spotify Runtime** preflight, rather than a chapter-II-only test. The control resolves tracks in the reader's Spotify market and can verify live duration; **we cannot claim this user-side test has occurred yet**.
+- Chapter IV remains spoiler-sealed; private maps IV/V must stay out of the public repository. Static JS checks and book IV/V isolation smoke tests passed.
