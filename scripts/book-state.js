@@ -17,7 +17,8 @@ function migrate(raw){
  const active=state.activeBookSlug===V?V:IV;
  const legacyDone=state.done&&typeof state.done==="object"?state.done:{};
  const iv=ensureBook(state.books,IV,"The Flight of the Eisenstein",17,"completed");
- const v=ensureBook(state.books,V,"Fulgrim",null,"preparing");
+ const v=ensureBook(state.books,V,"Fulgrim",25,"preparing");
+ if(v.chapterCount==null)v.chapterCount=25;
  iv.chapterCount=17;
  // Only the currently selected Book IV may replenish Book IV from legacy state.done.
  // This guards against a Book V reload polluting historical IV logs.
