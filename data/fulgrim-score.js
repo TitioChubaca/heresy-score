@@ -1,9 +1,20 @@
-/* Fulgrim / Book V: Chapter I only. Other chapters stay sealed. */
+/* Fulgrim / Book V: scores I-III. Chapter IV and later remain spoiler-sealed. */
 window.HS_FULGRIM_DATA={
   slug:"fulgrim",
   chapterCount:null,
-  chapters:[{number:1,title:"CHAPTER 01",estimatedMinutes:33,startCue:"Path of Trust",type:"chapter"},{number:2,title:"CHAPTER 02",estimatedMinutes:26,startCue:"Arrakeen",type:"chapter"}],
+  chapters:[{number:1,title:"CHAPTER 01",estimatedMinutes:33,startCue:"Path of Trust",type:"chapter"},{number:2,title:"CHAPTER 02",estimatedMinutes:26,startCue:"Arrakeen",type:"chapter"},{number:3,title:"CHAPTER 03",estimatedMinutes:24.3,startCue:"Severance Ambient",type:"chapter"},{number:4,title:"CHAPTER 04 // SCORE SEALED",estimatedMinutes:null,startCue:null,type:"chapter"}],
   scores:{
+    3:[
+      ["Severance Ambient","Steve Molitz"],
+      ["Data Interference","Jesper Kyd"],
+      ["The View of Palaven","Christopher Lennertz"],
+      ["Severance Combat","Steve Molitz"],
+      ["Disposal Unit - Imperium Mix","Jesper Kyd"],
+      ["The Scientists","Cris Velasco"],
+      ["Vigil","Jack Wall"],
+      ["The Royal Conservatory","Daniel Licht"],
+      ["Aristocrats of Karnaca (Suspense)","Daniel Licht"]
+    ],
     2:[["Arrakeen","Hans Zimmer"],["Streets of New London","Piotr Musiał"],["The Shepherd","Piotr Musiał"],["Herald of the Change","Hans Zimmer"],["Transmission Commences","Jesper Kyd"],["The City Must Survive","Piotr Musiał"],["Blood for Blood","Hans Zimmer"]],
     1:[
       ["Path of Trust","Jesper Kyd"],
@@ -20,6 +31,18 @@ window.HS_FULGRIM_DATA={
     ]
   },
   scoreMeta:{
+    3:{
+      type:"chapter",estimatedMinutes:24.3,stage:"catalog-reviewed; device QA pending",
+      startCue:"Severance Ambient",finalCueIndex:8,
+      reserveIndexes:[],trimIndexes:[],durationReserve:[],
+      reserveMode:"disabled",trimMode:"disabled",
+      publishedCatalogRuntimeSeconds:1460,
+      spotifyRuntimeStatus:"pending live resolve",
+      scoreSource:"reader-provided MOBI chapter III; private paragraph-anchored scene map v2",
+      musicMethod:"nine source-ordered transitions; bridge passages share one cue; short final dialogue resolves with theatrical chamber tension",
+      calibrationConfidence:"text-anchored, catalog-duration checked, Spotify market and exact recordings untested",
+      notes:"Reader-safe cue sheet only; no future narrative, characters or spoilers in this file."
+    },
     2:{type:"chapter",estimatedMinutes:26,stage:"ready",startCue:"Arrakeen",finalCueIndex:6,trimIndexes:[],durationReserve:[],reserveMode:"disabled",trimMode:"disabled",planningSource:"Kindle chapter II 26-minute forecast + logged chapter I 25 minutes",publishedCatalogRuntimeSeconds:1539,spotifyRuntimeStatus:"pending live resolve",calibrationConfidence:"editorial candidate; listener QA pending",notes:"Three-act score; narrative function and implied acoustics first. Protected last cue; no fillers."},
     1:{
       type:"chapter",
