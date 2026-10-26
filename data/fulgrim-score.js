@@ -40,7 +40,8 @@ window.HS_FULGRIM_DATA={
       spotifyRuntimeStatus:"pending live resolve",
       scoreSource:"reader-provided MOBI chapter III; private paragraph-anchored scene map v2",
       musicMethod:"nine source-ordered transitions; bridge passages share one cue; short final dialogue resolves with theatrical chamber tension",
-      calibrationConfidence:"text-anchored, catalog-duration checked, Spotify market and exact recordings untested",
+      calibrationConfidence:"text-anchored; reader-confirmed order, transition timing still requires calibration",
+      readerFeedback:{observedMinutes:21,overallFit:"good",sequenceFit:"improved",transitionIssue:"action often begins before battle cue or continues under dialogue after battle",loggedSource:"Supabase Fulgrim Chapter III, 2026-10-26",action:"preserve narrative order; measure transition offsets before moving cue boundaries"},
       notes:"Reader-safe cue sheet only; no future narrative, characters or spoilers in this file."
     },
     2:{type:"chapter",estimatedMinutes:26,stage:"ready",startCue:"Arrakeen",finalCueIndex:6,trimIndexes:[],durationReserve:[],reserveMode:"disabled",trimMode:"disabled",planningSource:"Kindle chapter II 26-minute forecast + logged chapter I 25 minutes",publishedCatalogRuntimeSeconds:1539,spotifyRuntimeStatus:"pending live resolve",calibrationConfidence:"editorial candidate; listener QA pending",notes:"Three-act score; narrative function and implied acoustics first. Protected last cue; no fillers."},
