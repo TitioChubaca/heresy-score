@@ -78,3 +78,11 @@ The app should expose only the current/unlocked score; the private 25-chapter na
 - Playlist follows the actual nine-section timing without forcing one cue per short segment; no auto-fill or auto-trim. Protected ending is track #9.
 - The next unread chapter now has a dynamic **Check Spotify Runtime** preflight, rather than a chapter-II-only test. The control resolves tracks in the reader's Spotify market and can verify live duration; **we cannot claim this user-side test has occurred yet**.
 - Chapter IV remains spoiler-sealed; private maps IV/V must stay out of the public repository. Static JS checks and book IV/V isolation smoke tests passed.
+
+
+## Reader field calibration — Chapter III (2026-10-26)
+- Supabase primary Fulgrim Chapter III: 21 min, overall score fit GOOD, sequence generally aligned; compared with 24:20 of catalog cue lengths.
+- Main discrepancy is *local scene-boundary drift*: combat can start while a calmer cue continues; the combat cue can persist into later dialogue. Do not treat this as proof the cue selection is wrong or cut exactly 3:20 only from the ending.
+- Runtime varies by the reading session; preserve uncertainty bands and editable transition positions. Re-analyze block-by-block if marker timestamps are collected, while retaining the text-derived event order.
+- A new optional marker UI captures timer offset plus current Spotify cue for **needs more energy** or **needs to calm down**. It is not required; chapter logs with no markers remain valid.
+- Visual asset coverage remains independent of score curation; the existing personal pack has only Fulgrim among Book V's currently available 6 named personae. Fill missing dossiers with verified spoiler-safe individual portrait assets later. Do not relabel art from unrelated people.
