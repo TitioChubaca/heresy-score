@@ -93,7 +93,7 @@ function change(slug){
   state.view="reading";
   save();render();applyView("reading");
   // Reapply any personal-only portraits that were imported before this book had a roster.
-  Promise.resolve(window.HSPrivateArt?.refresh?.()).catch(()=>{});
+  window.dispatchEvent(new Event("hs-book-changed"));
   toast(slug===iv?"Eisenstein archive loaded":"Fulgrim archive selected; next score follows reader clearance");
  }catch(e){toast(e.message);const p=document.getElementById("hsBookSwitch");if(p)p.value=state.activeBookSlug}
 }
@@ -104,4 +104,6 @@ nav.append(panel);
 document.getElementById("hsBookSwitch").onchange=e=>change(e.target.value);
 if(state.activeBookSlug===v)installData(v);
 render();
+// Initialization also needs a second portrait pass: private-art loads before the book router.
+window.dispatchEvent(new Event("hs-book-changed"));
 })();
