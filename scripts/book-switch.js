@@ -120,6 +120,41 @@ const panel=document.createElement("section");panel.id="hsBooksPanel";panel.clas
 panel.innerHTML='<h2>Active Book // Library</h2><p class="small">O progresso, as anotações e a sincronização na nuvem são separados por livro. Não é possível trocar durante uma leitura ativa. Capítulo V pode ser arquivado como lido sem tempo inventado. Scores VI–VIII preparados, liberados na sequência da leitura. IX e posteriores selados.</p><label class="small">Selected book <select id="hsBookSwitch" style="width:100%;margin-top:8px;background:#101a0f;color:#d2cbb7;padding:12px;border:1px solid #536746"><option value="flight-of-the-eisenstein">IV — The Flight of the Eisenstein</option><option value="fulgrim">V — Fulgrim (scores VI–VIII prepared)</option></select></label>';
 nav.append(panel);
 document.getElementById("hsBookSwitch").onchange=e=>change(e.target.value);
+
+// Optional single preflight batch: one manual click prepares all three private
+// per-chapter Spotify playlists. No playback, timer or future story is exposed.
+const batch=document.createElement("button");
+batch.type="button";batch.className="btn";batch.id="hsBatchSpotify";
+batch.textContent="Prepare Spotify Playlists VI–VIII";
+const batchReport=document.createElement("p");batchReport.className="small";
+batchReport.id="hsBatchSpotifyReport";batchReport.setAttribute("aria-live","polite");
+panel.append(batch,batchReport);
+batch.onclick=async()=>{
+ if(state.active||typeof beginPending!=="undefined"&&beginPending){batchReport.textContent="Finalize primeiro a sessão ativa.";return}
+ if(state.activeBookSlug!==v){batchReport.textContent="Selecione Fulgrim antes da checagem.";return}
+ if(!spotifyConnected()){batchReport.textContent="Conecte o Spotify nas configurações do app.";return}
+ batch.disabled=true;
+ const activeSlug=state.activeBookSlug,oldId=state.spotify.playlistId,oldURL=state.spotify.playlistUrl;
+ const outcomes=[];
+ try{
+  for(const n of [6,7,8]){
+   if(state.activeBookSlug!==activeSlug||state.active)break;
+   batchReport.textContent="Preparando capítulo "+String(n).padStart(2,"0")+"...";
+   try{
+    await spotifySyncChapter(n);
+    const runtime=state.spotify.chapterRuntime?.[n];
+    const sec=runtime?.durationMs?Math.round(runtime.durationMs/1000):null;
+    outcomes.push("CH "+String(n).padStart(2,"0")+": "+(sec!==null?Math.floor(sec/60)+":"+String(sec%60).padStart(2,"0"):"duração não informada"));
+   }catch(e){outcomes.push("CH "+String(n).padStart(2,"0")+": erro — "+(e.message||"Spotify"))}
+  }
+ }finally{
+  // Preflight never leaves the currently-active playlist pointer set to VIII.
+  if(state.activeBookSlug===activeSlug){state.spotify.playlistId=oldId||"";state.spotify.playlistUrl=oldURL||"";save()}
+  batchReport.textContent=outcomes.join(" | ")+" // Nenhuma reprodução iniciada.";
+  batch.disabled=false;
+ }
+};
+
 if(state.activeBookSlug===v)installData(v);
 render();
 // Initialization also needs a second portrait pass: private-art loads before the book router.
