@@ -14,7 +14,7 @@ roster.before(box);
 let fileInput=null;
 function update(){
  const isV=state.activeBookSlug==="fulgrim",read=!!state.done?.[1];
- box.hidden=!isV||!read;
+ box.hidden=!isV||!read;box.style.display=box.hidden?"none":"";
  if(box.hidden)return;
  const unlocked=people.filter(p=>(p.unlock||1)<=maxClearance()),count=unlocked.filter(p=>!!p.image).length;
  const missing=unlocked.length-count;
@@ -36,6 +36,7 @@ function update(){
   const upload=document.getElementById("hsPackButton");
   if(!fileInput||!upload){setView("settings");return}
   fileInput.onchange=()=>{if(fileInput.files?.length)upload.click();fileInput.onchange=null};
+  setView("settings"); // Open the panel before invoking the Android file picker.
   fileInput.click();
  };
 }
