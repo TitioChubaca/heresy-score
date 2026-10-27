@@ -89,3 +89,11 @@ The app should expose only the current/unlocked score; the private 25-chapter na
 
 ## Chapter IV release (2026-10-26)
 Chapter IV: 11 cue candidate tracks totaling 27:55 in published catalogs, aligned privately to 8 source-ordered passages. Spotify live runtime and exact recordings are not yet verified. The user's logged I–III durations (25, 28, 21 minutes) imply a provisional IV estimate near 28 minutes using source word count; the Kindle value remains unknown. Future scene details stay in private project files. Chapter V remains sealed. 
+
+
+## Text-first preparation batch VI–VIII (2026-10-26)
+- VI–VIII scene boundaries were derived directly from the reader-provided MOBI, validated for contiguous paragraph/word coverage, and mapped to functions without assuming fixed action cycles.
+- Final preflight scores in code use official OST catalog track runtimes, NOT a verified Spotify device. VI = 10/25:37, VII = 11/26:43, VIII = 12/28:43. Each ending cue is protected; no blind trimming or auto-filled reserves.
+- The chapter V library card is a manual no-time bridge because the reader reports V completed but no cloud log was found at the checkpoint.
+- Private detailed plot + paragraph maps are in project handoff `FULGRIM_PRIVATE_MAPS_VI_VIII.zip`. Public code contains track names only; no future scene descriptors.
+- Post-read feedback should record *local timing misalignment* rather than only total duration, especially combat-to-dialogue boundaries and intimate conversations that require quiet texture.
