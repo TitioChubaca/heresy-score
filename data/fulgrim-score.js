@@ -455,3 +455,6 @@ window.HS_FULGRIM_DATA.archive.push(
   {key:"legion-iron-hands",name:"Iron Hands",kind:"entity",kindLabel:"Legion // X",unlock:4,glyph:"⚙",visual:"HERALDRY // OFFICIAL REFERENCE PENDING",note:"Décima Legião dos Adeptus Astartes, apresentada no contexto de Ferrus Manus."},
   {key:"pride-apothecarion",name:"Pride of the Emperor // Apothecarion",kind:"theatre",kindLabel:"Medical bay // III Legion",unlock:4,glyph:"✚",visual:"INTERIOR // ART PENDING",note:"Instalações médicas da nave, apresentadas durante os cuidados e pesquisas dos apotecários."}
 );
+
+/* All chapters are shown by number only; unpublished material remains sealed. */
+for(let n=10;n<=25;n++)window.HS_FULGRIM_DATA.chapters.push({number:n,title:"CHAPTER "+String(n).padStart(2,"0")+" // SCORE SEALED",estimatedMinutes:null,startCue:null,type:"chapter"});
