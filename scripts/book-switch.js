@@ -99,7 +99,7 @@ function change(slug){
 }
 const nav=document.querySelector('[data-view-panel="books"]');
 const panel=document.createElement("section");panel.id="hsBooksPanel";panel.className="panel";
-panel.innerHTML='<h2>Active Book // Library</h2><p class="small">O progresso, as anotações e a sincronização na nuvem são separados por livro. Não é possível trocar durante uma leitura ativa. Trilhas dos capítulos I–III disponíveis conforme o progresso. Capítulos seguintes continuam selados.</p><label class="small">Selected book <select id="hsBookSwitch" style="width:100%;margin-top:8px;background:#101a0f;color:#d2cbb7;padding:12px;border:1px solid #536746"><option value="flight-of-the-eisenstein">IV — The Flight of the Eisenstein</option><option value="fulgrim">V — Fulgrim (chapter III prepared)</option></select></label>';
+panel.innerHTML='<h2>Active Book // Library</h2><p class="small">O progresso, as anotações e a sincronização na nuvem são separados por livro. Não é possível trocar durante uma leitura ativa. Trilhas disponíveis até o capítulo IV conforme o progresso. Capítulos posteriores continuam selados.</p><label class="small">Selected book <select id="hsBookSwitch" style="width:100%;margin-top:8px;background:#101a0f;color:#d2cbb7;padding:12px;border:1px solid #536746"><option value="flight-of-the-eisenstein">IV — The Flight of the Eisenstein</option><option value="fulgrim">V — Fulgrim (chapter IV prepared)</option></select></label>';
 nav.append(panel);
 document.getElementById("hsBookSwitch").onchange=e=>change(e.target.value);
 if(state.activeBookSlug===v)installData(v);
