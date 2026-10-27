@@ -19,9 +19,11 @@
       "state": "reading",
       "scoreSource": "data/fulgrim-score.js",
       "personaeSource": "data/fulgrim-score.js",
-      "curatedThrough": 2,
+      "curatedThrough": 4,
       "readerClearanceNotGlobal": true,
-      "preparedThroughChapter": 3
+      "preparedThroughChapter": 8,
+      "readerDeclaredThrough": 5,
+      "readerDeclaredChapter5CloudStatus": "not observed; manual archive action available"
     }
   ]
 }
