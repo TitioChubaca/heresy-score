@@ -1,7 +1,7 @@
 /* Fulgrim / Book V: I-IV existing; reader finished V outside score; VI-VIII preflight scores, IX+ sealed. */
 window.HS_FULGRIM_DATA={
   slug:"fulgrim",
-  chapterCount:null,
+  chapterCount:25,
   chapters:[{number:1,title:"CHAPTER 01",estimatedMinutes:33,startCue:"Path of Trust",type:"chapter"},{number:2,title:"CHAPTER 02",estimatedMinutes:26,startCue:"Arrakeen",type:"chapter"},{number:3,title:"CHAPTER 03",estimatedMinutes:24.3,startCue:"Severance Ambient",type:"chapter"},{number:4,title:"CHAPTER 04",estimatedMinutes:27.9,startCue:"Spires of the Hive",type:"chapter"},{number:5,title:"CHAPTER 05 // PREVIOUSLY READ",estimatedMinutes:null,startCue:null,type:"chapter"},{number:6,title:"CHAPTER 06",estimatedMinutes:25.7,startCue:"Caestus Metalican",type:"chapter"},{number:7,title:"CHAPTER 07",estimatedMinutes:26.7,startCue:"Streets of New London",type:"chapter"},{number:8,title:"CHAPTER 08",estimatedMinutes:28.8,startCue:"Imperial Advance",type:"chapter"},{number:9,title:"CHAPTER 09 // SCORE SEALED",estimatedMinutes:null,startCue:null,type:"chapter"}],
   scores:{
     6:[
