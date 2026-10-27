@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500" role="img" aria-label="Fulgrim - artistic reconstruction"><defs>
+<radialGradient id="amb" cx=".52" cy=".28" r=".8"><stop stop-color="#52325b"/><stop offset="1" stop-color="#171224"/></radialGradient>
+<radialGradient id="face" cx=".37" cy=".3" r=".78"><stop stop-color="#ddbdb0"/><stop offset=".6" stop-color="#ddbdb0"/><stop offset="1" stop-color="#61443c"/></radialGradient>
+<linearGradient id="wear" x2="1" y2="1"><stop stop-color="#652f7b"/><stop offset="1" stop-color="#161625"/></linearGradient>
+<filter id="noise"><feTurbulence type="fractalNoise" baseFrequency=".52" numOctaves="3" seed="14" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".13"/></feComponentTransfer></filter>
+</defs>
+<rect width="400" height="500" fill="url(#amb)"/><path d="M35 465V86Q35 42 68 42H332Q365 42 365 86V465" fill="none" stroke="#d8b064" stroke-opacity=".22" stroke-width="12"/>
+<path d="M80 315V118Q80 67 200 65Q320 67 320 118V315" fill="#0c1019" opacity=".3"/>
+<circle cx="200" cy="180" r="142" fill="#f0bb72" opacity=".07"/>
+<path d="M10 500Q25 347 118 318Q158 302 200 328Q244 302 288 315Q375 347 395 500" fill="url(#wear)" stroke="#d8b064" stroke-width="3"/>
+<path d="M20 510L24 384Q40 324 91 304L151 319Q163 348 121 406L113 510Z" fill="#652f7b" stroke="#d8b064" stroke-width="7"/><path d="M380 510L374 380Q354 316 305 302L253 320Q248 348 289 406L293 510Z" fill="#652f7b" stroke="#d8b064" stroke-width="7"/><ellipse cx="79" cy="382" rx="55" ry="72" fill="none" stroke="#d8b064" stroke-width="8"/><ellipse cx="321" cy="382" rx="55" ry="72" fill="none" stroke="#d8b064" stroke-width="8"/>
+<path d="M130 197Q105 83 200 81Q296 87 268 194L296 380Q270 416 247 384L237 273Q210 313 160 274L145 398Q109 424 106 372Z" fill="#e9d9c4" stroke="#392c30" stroke-width="5"/>
+<path d="M157 272l-15 53q54 44 116 0l-15-53" fill="#ddbdb0" stroke="#574137" stroke-width="3"/>
+<ellipse cx="200" cy="220" rx="71" ry="100" fill="url(#face)" stroke="#58453c" stroke-width="3"/>
+<path d="M138 173Q157 116 198 125Q248 119 270 175Q234 151 199 154Q154 147 138 173" fill="#e9d9c4"/>
+<path d="M155 213q16-10 31 0M212 213q18-11 36 0" stroke="#332b2a" stroke-width="4" fill="none"/>
+<path d="M189 228l-5 32 18 4" stroke="#74534a" stroke-width="3" fill="none"/>
+<path d="M177 287q23 10 46-2" stroke="#6c4b46" stroke-width="3" fill="none"/>
+<path d="M145 205l-17 30M255 206l19 33" stroke="#e9d9c4" stroke-width="9"/>
+<path d="M155 333q44 30 91 0" stroke="#d8b064" stroke-width="5" fill="none"/>
+<path d="M300 435l29-75 15 7-24 88" stroke="#bba678" stroke-width="8" fill="none"/>
+<path d="M150 426l51-38 49 38-49 42z" fill="#d8b064" opacity=".82"/><path d="M201 394v64m-35-32h69" stroke="#29202d" stroke-width="4"/>
+<rect width="400" height="500" fill="#dfceb3" opacity=".12" filter="url(#noise)"/>
+<path d="M12 12h376v476H12z" stroke="#d8b064" stroke-opacity=".44" stroke-width="3" fill="none"/>
+<rect x="0" y="463" width="400" height="37" fill="#090d14" opacity=".75"/>
+<text x="200" y="484" font-family="Georgia,serif" font-size="14" fill="#d3c29b" text-anchor="middle" letter-spacing="2">ARCHIVE RECONSTRUCTION</text>
+</svg>
