@@ -21,7 +21,7 @@ panel.querySelector("#hsPackButton").onclick=async()=>{
    for(let j=0;j<raw.length;j++)bytes[j]=raw.charCodeAt(j);
    const isPortrait=!!e.characterName&&!e.referenceOnly;
    const key=isPortrait?e.characterName:"reference:"+e.id;
-   await put(db,key,{file:new Blob([bytes],{type:"image/webp"}),artist:e.credit||"origem a verificar",source:"local-pack"});
+   await put(db,key,{file:new Blob([bytes],{type:e.format==="image/png"?"image/png":e.format==="image/jpeg"?"image/jpeg":"image/webp"}),artist:String(e.credit||"origem a verificar").slice(0,120),source:"local-pack",sourceKind:e.sourceCategory||"personal_reference",sourceProfile:typeof e.sourceProfile==="string"?e.sourceProfile:""});
    if(isPortrait)portraits++;else references++;
   }
   const report=await window.HSPrivateArt?.refresh?.();
