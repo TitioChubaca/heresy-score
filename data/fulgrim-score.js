@@ -54,7 +54,7 @@ window.HS_FULGRIM_DATA={
       readingEvidence:{fulgrimLoggedMinutes:[25,28,21],chapterBodyWords:5500,meanObservedWordsPerMinute:197.4,
         impliedMinutes:27.9,targetRangeMinutes:[26,31]},
       segmentDurationsPlannedSeconds:[208,316,187,119,233,166,241,205],
-      musicalMethod:"Eight text-anchored passages; intro is compressed military recollection, clinical discovery changes to dialogue tension, subdued comradeship, artistic frustration, formal reception and qualified ending. Actual scene map stays private.",
+      musicalMethod:"Eight source-ordered text-anchored blocks; all narrative mapping kept exclusively in private source files.",
       calibrationConfidence:"text-derived editorial score, catalog-reviewed; Spotify exact recordings and live runtime pending",
       notes:"Spoiler-safe tracklist. All chapter IV scenes and new characters remain unpublished until cleared by reader."
     },
