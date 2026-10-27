@@ -42,7 +42,10 @@ async function refresh(){
   const url=URL.createObjectURL(record.file);
   objectURLs.set(person.name,url);
   person.image=url;
-  person.visual="PERSONAL ART // "+(record.artist||"crédito pendente");
+  const kind=record.sourceKind==="archive_reconstruction"?"archive_reconstruction":"personal_reference";
+  const label=String(record.artist||"crédito pendente").replace(/[<>&\"\']/g,"").slice(0,100);
+  person.visual=(kind==="archive_reconstruction"?"ARCHIVE RECONSTRUCTION // ":"PERSONAL ART // ")+label;
+  person.art={kind,subjectExact:false};
   if(old)URL.revokeObjectURL(old);
   loaded.push(person.name);
  }
