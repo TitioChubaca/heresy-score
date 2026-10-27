@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "book": "fulgrim",
   "readerClearanceThrough": 5,
   "priorities": [
@@ -7,22 +7,36 @@
     "credited_safe_fanart",
     "original_reconstruction"
   ],
-  "assetPolicy": "Public repository contains provenance only; do not commit third-party art. Original reconstructions supplied through private hsartpack v2 and must not be portrayed as canonical.",
-  "autoInstallInPublicPWA": false,
+  "assetPolicy": "Only original generated paintings are uploaded to public repository; official/credited fanart shown by direct external image links, never rehosted. Local privately imported art retains priority. No vector head placeholders.",
+  "autoInstallInPublicPWA": true,
   "items": [
     {
       "name": "Fulgrim",
       "kind": "user_private_reference",
       "priority": 1,
       "availableIn": "personal hsartpack",
-      "status": "local import"
+      "status": "local import",
+      "selectedCategory": "official",
+      "selectedCredit": "Black Library — Fulgrim: The Palatine Phoenix",
+      "selectedImageURL": "https://grimdarkgamer.com/images/Fulgrim-The-Palatine-Phoenix.jpg",
+      "selectedFallback": "./assets/ui/portraits/fulgrim/fulgrim.webp",
+      "unlockedAtChapter": 1,
+      "currentStatus": "official/fanart direct image with original generated offline fallback",
+      "sourcePageCaution": "External source pages may contain later events; do not open from in-app Compendium."
     },
     {
       "name": "Ferrus Manus",
       "kind": "user_private_reference",
       "priority": 1,
       "availableIn": "personal hsartpack",
-      "status": "local import"
+      "status": "local import",
+      "selectedCategory": "official",
+      "selectedCredit": "Mikhail Savier — capa Black Library: Ferrus Manus, Gorgon of Medusa",
+      "selectedImageURL": "https://www.blacklibrary.com/Images/Product/DefaultBL/xlarge/BLPROCESSED-Ferrus-Manus-Cover.jpg",
+      "selectedFallback": "./assets/ui/portraits/fulgrim/ferrus-manus.webp",
+      "unlockedAtChapter": 4,
+      "currentStatus": "official/fanart direct image with original generated offline fallback",
+      "sourcePageCaution": "External source pages may contain later events; do not open from in-app Compendium."
     },
     {
       "name": "Fabius",
@@ -30,27 +44,55 @@
       "priority": 1,
       "sourcePage": "https://www.warhammer-community.com/en-gb/articles/fmeastqX/horus-heresy-history-the-age-of-darkness-has-been-inspiring-artists-for-decades/",
       "credit": "Sam Wood / Games Workshop early Apothecary illustration",
-      "status": "source identified; image extraction pending"
+      "status": "source identified; image extraction pending",
+      "selectedCategory": "generated",
+      "selectedCredit": "Heresy Score — pintura original gerada; aparência inicial, não versão futura",
+      "selectedImageURL": null,
+      "selectedFallback": "./assets/ui/portraits/fulgrim/fabius.webp",
+      "unlockedAtChapter": 3,
+      "currentStatus": "original generated painterly reconstruction",
+      "sourcePageCaution": "External source pages may contain later events; do not open from in-app Compendium."
     },
     {
       "name": "Saul Tarvitz",
       "kind": "official_candidate",
       "priority": 1,
-      "status": "safe era-specific artwork lookup pending"
+      "status": "safe era-specific artwork lookup pending",
+      "selectedCategory": "official",
+      "selectedCredit": "Games Workshop / Forge World — Captain Saul Tarvitz",
+      "selectedImageURL": "https://modelgeek.com/upload/media/entries/2020-12/27/60-entry-2-1609073583.jpg",
+      "selectedFallback": "./assets/ui/portraits/fulgrim/saul-tarvitz.webp",
+      "unlockedAtChapter": 4,
+      "currentStatus": "official/fanart direct image with original generated offline fallback",
+      "sourcePageCaution": "External source pages may contain later events; do not open from in-app Compendium."
     },
     {
       "name": "Lucius",
       "kind": "official_candidate",
       "priority": 1,
       "sourcePage": "https://miniset.net/sets/gw-99853002312",
-      "status": "temporal QA needed; sculpt may show later appearance"
+      "status": "temporal QA needed; sculpt may show later appearance",
+      "selectedCategory": "generated",
+      "selectedCredit": "Heresy Score — pintura original gerada; sem usar versões posteriores com spoilers",
+      "selectedImageURL": null,
+      "selectedFallback": "./assets/ui/portraits/fulgrim/lucius.webp",
+      "unlockedAtChapter": 4,
+      "currentStatus": "original generated painterly reconstruction",
+      "sourcePageCaution": "External source pages may contain later events; do not open from in-app Compendium."
     },
     {
       "name": "Eidolon",
       "kind": "official_candidate",
       "priority": 1,
       "sourcePage": "https://www.warhammer-community.com/en-gb/articles/EqAMmUo4/marc-collins-interview-is-the-pen-mightier-than-the-auric-hammer/",
-      "status": "temporal QA needed before using later-work art"
+      "status": "temporal QA needed before using later-work art",
+      "selectedCategory": "official",
+      "selectedCredit": "Games Workshop / Forge World — Lord Commander Eidolon",
+      "selectedImageURL": "https://miniset.net/files/set/gw-99560102232-8.jpg",
+      "selectedFallback": "./assets/ui/portraits/fulgrim/eidolon.webp",
+      "unlockedAtChapter": 2,
+      "currentStatus": "official/fanart direct image with original generated offline fallback",
+      "sourcePageCaution": "External source pages may contain later events; do not open from in-app Compendium."
     },
     {
       "name": "Solomon Demeter",
@@ -58,67 +100,137 @@
       "priority": 2,
       "sourcePage": "https://lillegendstudio.com/2019/10/16/solomon-demeter-comission/",
       "credit": "Myles / Lil Legend Studio",
-      "status": "exact model of named character; source page contains future spoilers; crop portrait only after private visual QA"
+      "status": "exact model of named character; source page contains future spoilers; crop portrait only after private visual QA",
+      "selectedCategory": "fanart",
+      "selectedCredit": "Myles — Lil Legend Studio (miniatura personalizada de Solomon)",
+      "selectedImageURL": "https://lillegendstudio.com/wp-content/uploads/2019/10/DSCF1353-1024x902.jpg",
+      "selectedFallback": "./assets/ui/portraits/fulgrim/solomon-demeter.webp",
+      "unlockedAtChapter": 1,
+      "currentStatus": "official/fanart direct image with original generated offline fallback",
+      "sourcePageCaution": "External source pages may contain later events; do not open from in-app Compendium."
     },
     {
       "name": "Ostian Delafour",
       "kind": "original_reconstruction",
       "priority": 3,
       "availableIn": "personal hsartpack v2",
-      "status": "ready for private import"
+      "status": "ready for private import",
+      "selectedCategory": "generated",
+      "selectedCredit": "Heresy Score — pintura original gerada",
+      "selectedImageURL": null,
+      "selectedFallback": "./assets/ui/portraits/fulgrim/ostian-delafour.webp",
+      "unlockedAtChapter": 1,
+      "currentStatus": "original generated painterly reconstruction",
+      "sourcePageCaution": "External source pages may contain later events; do not open from in-app Compendium."
     },
     {
       "name": "Serena d'Angelus",
       "kind": "original_reconstruction",
       "priority": 3,
       "availableIn": "personal hsartpack v2",
-      "status": "ready for private import"
+      "status": "ready for private import",
+      "selectedCategory": "generated",
+      "selectedCredit": "Heresy Score — pintura original gerada",
+      "selectedImageURL": null,
+      "selectedFallback": "./assets/ui/portraits/fulgrim/serena-dangelus.webp",
+      "unlockedAtChapter": 1,
+      "currentStatus": "original generated painterly reconstruction",
+      "sourcePageCaution": "External source pages may contain later events; do not open from in-app Compendium."
     },
     {
       "name": "Bequa Kynska",
       "kind": "original_reconstruction",
       "priority": 3,
       "availableIn": "personal hsartpack v2",
-      "status": "ready for private import"
+      "status": "ready for private import",
+      "selectedCategory": "generated",
+      "selectedCredit": "Heresy Score — pintura original gerada",
+      "selectedImageURL": null,
+      "selectedFallback": "./assets/ui/portraits/fulgrim/bequa-kynska.webp",
+      "unlockedAtChapter": 1,
+      "currentStatus": "original generated painterly reconstruction",
+      "sourcePageCaution": "External source pages may contain later events; do not open from in-app Compendium."
     },
     {
       "name": "Paljor Dorji",
       "kind": "original_reconstruction",
       "priority": 3,
       "availableIn": "personal hsartpack v2",
-      "status": "ready for private import"
+      "status": "ready for private import",
+      "selectedCategory": "generated",
+      "selectedCredit": "Heresy Score — pintura original gerada",
+      "selectedImageURL": null,
+      "selectedFallback": "./assets/ui/portraits/fulgrim/paljor-dorji.webp",
+      "unlockedAtChapter": 1,
+      "currentStatus": "original generated painterly reconstruction",
+      "sourcePageCaution": "External source pages may contain later events; do not open from in-app Compendium."
     },
     {
       "name": "Coraline Aseneca",
       "kind": "original_reconstruction",
       "priority": 3,
       "availableIn": "personal hsartpack v2",
-      "status": "ready for private import"
+      "status": "ready for private import",
+      "selectedCategory": "generated",
+      "selectedCredit": "Heresy Score — pintura original gerada",
+      "selectedImageURL": null,
+      "selectedFallback": "./assets/ui/portraits/fulgrim/coraline-aseneca.webp",
+      "unlockedAtChapter": 1,
+      "currentStatus": "original generated painterly reconstruction",
+      "sourcePageCaution": "External source pages may contain later events; do not open from in-app Compendium."
     },
     {
       "name": "Gaius Caphen",
       "kind": "original_reconstruction",
       "priority": 3,
       "availableIn": "personal hsartpack v2",
-      "status": "ready for private import"
+      "status": "ready for private import",
+      "selectedCategory": "generated",
+      "selectedCredit": "Heresy Score — pintura original gerada",
+      "selectedImageURL": null,
+      "selectedFallback": "./assets/ui/portraits/fulgrim/gaius-caphen.webp",
+      "unlockedAtChapter": 1,
+      "currentStatus": "original generated painterly reconstruction",
+      "sourcePageCaution": "External source pages may contain later events; do not open from in-app Compendium."
     },
     {
       "name": "Julius Kaesoron",
       "kind": "official_candidate",
       "priority": 1,
-      "status": "Horus Heresy Legions illustration to check; no verified safe direct source"
+      "status": "Horus Heresy Legions illustration to check; no verified safe direct source",
+      "selectedCategory": "generated",
+      "selectedCredit": "Heresy Score — pintura original gerada",
+      "selectedImageURL": null,
+      "selectedFallback": "./assets/ui/portraits/fulgrim/julius-kaesoron.webp",
+      "unlockedAtChapter": 1,
+      "currentStatus": "original generated painterly reconstruction",
+      "sourcePageCaution": "External source pages may contain later events; do not open from in-app Compendium."
     },
     {
       "name": "Marius Vairosean",
       "kind": "archive_reconstruction_pending",
       "priority": 3,
-      "status": "no verified exact period illustration"
+      "status": "no verified exact period illustration",
+      "selectedCategory": "generated",
+      "selectedCredit": "Heresy Score — pintura original gerada",
+      "selectedImageURL": null,
+      "selectedFallback": "./assets/ui/portraits/fulgrim/marius-vairosean.webp",
+      "unlockedAtChapter": 1,
+      "currentStatus": "original generated painterly reconstruction",
+      "sourcePageCaution": "External source pages may contain later events; do not open from in-app Compendium."
     },
     {
       "name": "Vespasian",
       "kind": "archive_reconstruction_pending",
       "priority": 3,
-      "status": "no verified exact period illustration"
+      "status": "no verified exact period illustration",
+      "selectedCategory": "generated",
+      "selectedCredit": "Heresy Score — pintura original gerada",
+      "selectedImageURL": null,
+      "selectedFallback": "./assets/ui/portraits/fulgrim/vespasian.webp",
+      "unlockedAtChapter": 2,
+      "currentStatus": "original generated painterly reconstruction",
+      "sourcePageCaution": "External source pages may contain later events; do not open from in-app Compendium."
     },
     {
       "name": "Pride of the Emperor",
@@ -127,7 +239,10 @@
       "priority": 2,
       "sourcePage": "https://www.deviantart.com/terraluna5/art/Pride-of-the-Emperor-165174336",
       "credit": "terraluna5 (2010), exact ship concept art",
-      "status": "source identified; binary not imported; do not use unrelated Gloriana ship as exact portrait"
+      "status": "source identified; binary not imported; do not use unrelated Gloriana ship as exact portrait",
+      "selectedCategory": "fanart",
+      "selectedCredit": "terraluna5 (2010)",
+      "currentStatus": "external artist image on runtime preflight; original source linked without rehosting"
     },
     {
       "name": "Laeran",
@@ -150,5 +265,12 @@
       "priority": 3,
       "status": "no verified exact venue artwork"
     }
-  ]
+  ],
+  "implementation": {
+    "characters": "data/fulgrim-curated-art.js",
+    "archives": "scripts/fulgrim-archive-curated.js",
+    "offlineFallbacks": "assets/ui/portraits/fulgrim/*.webp",
+    "PwaCache": "heresy-score-v0129",
+    "liveMobileQA": "pending"
+  }
 }
