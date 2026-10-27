@@ -301,3 +301,7 @@ After Flight of the Eisenstein is finished, refactor rather than stacking more r
 - The script remains source-verified, but LIVE Spotify API resolution for all 33 song instances awaits the user pressing this button with Spotify connected. When any track fails, its corresponding error is presented in the Books panel; no fake success should be reported.
 - Offline SW cache latest: **`heresy-score-v0124`** after batch preflight change (supersedes earlier v0123 text).
 - The personalized art pack v2 is a private downloadable artifact produced in this conversation; adding it to Project ChatGPT files does NOT install it in PWA IndexedDB. Reader said existing art will be imported later; maintain local-only art, no private artist binaries to GitHub.
+
+### Final v0.12.0 patch checkpoint
+- All **25** chapter numbers are now rendered in Fulgrim's archive: VI–VIII are score candidates, IX–XXV remain sealed and carry no narrative data. Chapter V remains manual-log-only if not recorded.
+- Final offline service worker asset cache is `heresy-score-v0125` (supersedes intermediate v0123/v0124 notes). Spotify preflight batch in Books prepares VI–VIII playlists but does not play music or create a timer.
