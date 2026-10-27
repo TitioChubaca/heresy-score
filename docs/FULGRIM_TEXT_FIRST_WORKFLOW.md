@@ -86,3 +86,6 @@ The app should expose only the current/unlocked score; the private 25-chapter na
 - Runtime varies by the reading session; preserve uncertainty bands and editable transition positions. Re-analyze block-by-block if marker timestamps are collected, while retaining the text-derived event order.
 - A new optional marker UI captures timer offset plus current Spotify cue for **needs more energy** or **needs to calm down**. It is not required; chapter logs with no markers remain valid.
 - Visual asset coverage remains independent of score curation; the existing personal pack has only Fulgrim among Book V's currently available 6 named personae. Fill missing dossiers with verified spoiler-safe individual portrait assets later. Do not relabel art from unrelated people.
+
+## Chapter IV release (2026-10-26)
+Chapter IV: 11 cue candidate tracks totaling 27:55 in published catalogs, aligned privately to 8 source-ordered passages. Spotify live runtime and exact recordings are not yet verified. The user's logged I–III durations (25, 28, 21 minutes) imply a provisional IV estimate near 28 minutes using source word count; the Kindle value remains unknown. Future scene details stay in private project files. Chapter V remains sealed. 
