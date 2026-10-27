@@ -1,9 +1,48 @@
-/* Fulgrim / Book V: scores I-IV. Chapter V and later remain spoiler-sealed. */
+/* Fulgrim / Book V: I-IV existing; reader finished V outside score; VI-VIII preflight scores, IX+ sealed. */
 window.HS_FULGRIM_DATA={
   slug:"fulgrim",
   chapterCount:null,
-  chapters:[{number:1,title:"CHAPTER 01",estimatedMinutes:33,startCue:"Path of Trust",type:"chapter"},{number:2,title:"CHAPTER 02",estimatedMinutes:26,startCue:"Arrakeen",type:"chapter"},{number:3,title:"CHAPTER 03",estimatedMinutes:24.3,startCue:"Severance Ambient",type:"chapter"},{number:4,title:"CHAPTER 04",estimatedMinutes:27.9,startCue:"Spires of the Hive",type:"chapter"},{number:5,title:"CHAPTER 05 // SCORE SEALED",estimatedMinutes:null,startCue:null,type:"chapter"}],
+  chapters:[{number:1,title:"CHAPTER 01",estimatedMinutes:33,startCue:"Path of Trust",type:"chapter"},{number:2,title:"CHAPTER 02",estimatedMinutes:26,startCue:"Arrakeen",type:"chapter"},{number:3,title:"CHAPTER 03",estimatedMinutes:24.3,startCue:"Severance Ambient",type:"chapter"},{number:4,title:"CHAPTER 04",estimatedMinutes:27.9,startCue:"Spires of the Hive",type:"chapter"},{number:5,title:"CHAPTER 05 // PREVIOUSLY READ",estimatedMinutes:null,startCue:null,type:"chapter"},{number:6,title:"CHAPTER 06",estimatedMinutes:25.7,startCue:"Caestus Metalican",type:"chapter"},{number:7,title:"CHAPTER 07",estimatedMinutes:26.7,startCue:"Streets of New London",type:"chapter"},{number:8,title:"CHAPTER 08",estimatedMinutes:28.8,startCue:"Imperial Advance",type:"chapter"},{number:9,title:"CHAPTER 09 // SCORE SEALED",estimatedMinutes:null,startCue:null,type:"chapter"}],
   scores:{
+    6:[
+      ["Caestus Metalican","Guillaume David"],
+      ["Unrest in Throneside","Jesper Kyd"],
+      ["Waiting to Strike","Jesper Kyd"],
+      ["Onslaught","Nima Fakhrara"],
+      ["Nightsider","Jesper Kyd"],
+      ["Fates of the Lowest","Nikolay Filipovich"],
+      ["Forge Manufactorum","Jesper Kyd"],
+      ["The Imperium Unites","Jesper Kyd"],
+      ["Path of Trust","Jesper Kyd"],
+      ["Courage and Honour","Nima Fakhrara"]
+    ],
+    7:[
+      ["Streets of New London","Piotr Musiał"],
+      ["Late Night Entertainment","Jesper Kyd"],
+      ["He Who Holds the Key","Pavel Lipski"],
+      ["Cutting Threads","Nikolay Filipovich"],
+      ["Dust in Armour","Steve Molitz"],
+      ["The Mourningstar","Jesper Kyd"],
+      ["Debriefing","Jesper Kyd"],
+      ["Sub-orbital Drop","Nima Fakhrara"],
+      ["Immortal Imperium","Jesper Kyd"],
+      ["Courage and Honour","Nima Fakhrara"],
+      ["Chapter Master","Nima Fakhrara"]
+    ],
+    8:[
+      ["Imperial Advance","Jesper Kyd"],
+      ["Tenets of the Web","Nikolay Filipovich"],
+      ["Path of Trust","Jesper Kyd"],
+      ["The Will of the Imperium","Jesper Kyd"],
+      ["Apparatus Receiving","Jesper Kyd"],
+      ["Sublevel Data Interrogation","Jesper Kyd"],
+      ["Unrest in Throneside","Jesper Kyd"],
+      ["His Whispers","Pavel Lipski"],
+      ["Discordant Feast","Pavel Lipski"],
+      ["Short Circuit in the Dark","Pavel Lipski"],
+      ["Demerium Battle Plan","Steve Molitz"],
+      ["Dust in Armour","Steve Molitz"]
+    ],
     4:[
       ["Spires of the Hive","Dmitry V. Silantyev"],
       ["The Imperium","Dmitry V. Silantyev"],
@@ -44,6 +83,9 @@ window.HS_FULGRIM_DATA={
     ]
   },
   scoreMeta:{
+    6:{type:"chapter",estimatedMinutes:25.7,stage:"preflight-ready",startCue:"Caestus Metalican",finalCueIndex:9,trimIndexes:[],durationReserve:[],reserveMode:"disabled",trimMode:"disabled",publishedCatalogRuntimeSeconds:1537,spotifyRuntimeStatus:"pending user-device resolve",cueSource:"reader-provided MOBI chapter 6, private paragraph-anchored chronological map",catalogSources:"Steam: Mechanicus OST, Darktide OST, Space Marine 2 OST, Rogue Trader Expansions I",calibrationConfidence:"source-order reviewed, published OST timing, exact Spotify track IDs unverified",notes:"Scene identities and chronology are private. No future chapter names/plot data are published."},
+    7:{type:"chapter",estimatedMinutes:26.7,stage:"preflight-ready",startCue:"Streets of New London",finalCueIndex:10,trimIndexes:[],durationReserve:[],reserveMode:"disabled",trimMode:"disabled",publishedCatalogRuntimeSeconds:1603,spotifyRuntimeStatus:"pending user-device resolve",cueSource:"reader-provided MOBI chapter 7, private paragraph-anchored chronological map",catalogSources:"Steam and Spotify OST track lengths: Frostpunk, Darktide, Space Marine 2, Rogue Trader Expansions I",calibrationConfidence:"source-order reviewed, published OST timing, exact Spotify track IDs unverified",notes:"Scene identities and chronology are private. No future chapter names/plot data are published."},
+    8:{type:"chapter",estimatedMinutes:28.8,stage:"preflight-ready",startCue:"Imperial Advance",finalCueIndex:11,trimIndexes:[],durationReserve:[],reserveMode:"disabled",trimMode:"disabled",publishedCatalogRuntimeSeconds:1723,spotifyRuntimeStatus:"pending user-device resolve",cueSource:"reader-provided MOBI chapter 8, private paragraph-anchored chronological map",catalogSources:"Steam and Spotify OST track lengths: Darktide, Space Marine 2, Rogue Trader Expansions I",calibrationConfidence:"source-order reviewed, published OST timing, exact Spotify track IDs unverified",notes:"Scene identities and chronology are private. No future chapter names/plot data are published."},
     4:{
       type:"chapter",estimatedMinutes:27.9,
       stage:"catalog-reviewed; Spotify preflight pending",
