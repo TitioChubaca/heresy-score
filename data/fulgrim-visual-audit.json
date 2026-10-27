@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "book": "fulgrim",
+  "readerClearanceThrough": 5,
+  "priorities": [
+    "official_pre_heresy_exact_subject",
+    "credited_safe_fanart",
+    "original_reconstruction"
+  ],
+  "assetPolicy": "Public repository contains provenance only; do not commit third-party art. Original reconstructions supplied through private hsartpack v2 and must not be portrayed as canonical.",
+  "autoInstallInPublicPWA": false,
+  "items": [
+    {
+      "name": "Fulgrim",
+      "kind": "user_private_reference",
+      "priority": 1,
+      "availableIn": "personal hsartpack",
+      "status": "local import"
+    },
+    {
+      "name": "Ferrus Manus",
+      "kind": "user_private_reference",
+      "priority": 1,
+      "availableIn": "personal hsartpack",
+      "status": "local import"
+    },
+    {
+      "name": "Fabius",
+      "kind": "official_era_reference",
+      "priority": 1,
+      "sourcePage": "https://www.warhammer-community.com/en-gb/articles/fmeastqX/horus-heresy-history-the-age-of-darkness-has-been-inspiring-artists-for-decades/",
+      "credit": "Sam Wood / Games Workshop early Apothecary illustration",
+      "status": "source identified; image extraction pending"
+    },
+    {
+      "name": "Saul Tarvitz",
+      "kind": "official_candidate",
+      "priority": 1,
+      "status": "safe era-specific artwork lookup pending"
+    },
+    {
+      "name": "Lucius",
+      "kind": "official_candidate",
+      "priority": 1,
+      "sourcePage": "https://miniset.net/sets/gw-99853002312",
+      "status": "temporal QA needed; sculpt may show later appearance"
+    },
+    {
+      "name": "Eidolon",
+      "kind": "official_candidate",
+      "priority": 1,
+      "sourcePage": "https://www.warhammer-community.com/en-gb/articles/EqAMmUo4/marc-collins-interview-is-the-pen-mightier-than-the-auric-hammer/",
+      "status": "temporal QA needed before using later-work art"
+    },
+    {
+      "name": "Solomon Demeter",
+      "kind": "credited_fanwork",
+      "priority": 2,
+      "sourcePage": "https://lillegendstudio.com/2019/10/16/solomon-demeter-comission/",
+      "credit": "Myles / Lil Legend Studio",
+      "status": "exact model of named character; source page contains future spoilers; crop portrait only after private visual QA"
+    },
+    {
+      "name": "Ostian Delafour",
+      "kind": "original_reconstruction",
+      "priority": 3,
+      "availableIn": "personal hsartpack v2",
+      "status": "ready for private import"
+    },
+    {
+      "name": "Serena d'Angelus",
+      "kind": "original_reconstruction",
+      "priority": 3,
+      "availableIn": "personal hsartpack v2",
+      "status": "ready for private import"
+    },
+    {
+      "name": "Bequa Kynska",
+      "kind": "original_reconstruction",
+      "priority": 3,
+      "availableIn": "personal hsartpack v2",
+      "status": "ready for private import"
+    },
+    {
+      "name": "Paljor Dorji",
+      "kind": "original_reconstruction",
+      "priority": 3,
+      "availableIn": "personal hsartpack v2",
+      "status": "ready for private import"
+    },
+    {
+      "name": "Coraline Aseneca",
+      "kind": "original_reconstruction",
+      "priority": 3,
+      "availableIn": "personal hsartpack v2",
+      "status": "ready for private import"
+    },
+    {
+      "name": "Gaius Caphen",
+      "kind": "original_reconstruction",
+      "priority": 3,
+      "availableIn": "personal hsartpack v2",
+      "status": "ready for private import"
+    },
+    {
+      "name": "Julius Kaesoron",
+      "kind": "official_candidate",
+      "priority": 1,
+      "status": "Horus Heresy Legions illustration to check; no verified safe direct source"
+    },
+    {
+      "name": "Marius Vairosean",
+      "kind": "archive_reconstruction_pending",
+      "priority": 3,
+      "status": "no verified exact period illustration"
+    },
+    {
+      "name": "Vespasian",
+      "kind": "archive_reconstruction_pending",
+      "priority": 3,
+      "status": "no verified exact period illustration"
+    },
+    {
+      "name": "Pride of the Emperor",
+      "category": "archive",
+      "kind": "credited_fanwork",
+      "priority": 2,
+      "sourcePage": "https://www.deviantart.com/terraluna5/art/Pride-of-the-Emperor-165174336",
+      "credit": "terraluna5 (2010), exact ship concept art",
+      "status": "source identified; binary not imported; do not use unrelated Gloriana ship as exact portrait"
+    },
+    {
+      "name": "Laeran",
+      "category": "archive",
+      "kind": "reconstruction_pending",
+      "priority": 3,
+      "status": "no verified planet-specific art"
+    },
+    {
+      "name": "Atoll 19",
+      "category": "archive",
+      "kind": "reconstruction_pending",
+      "priority": 3,
+      "status": "no verified battlefield-specific artwork"
+    },
+    {
+      "name": "Recital of Bequa Kynska",
+      "category": "archive",
+      "kind": "reconstruction_pending",
+      "priority": 3,
+      "status": "no verified exact venue artwork"
+    }
+  ]
+}
