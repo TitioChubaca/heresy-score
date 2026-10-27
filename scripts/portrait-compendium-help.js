@@ -21,13 +21,13 @@ function update(){
  if(!unlocked.length){text.textContent="Ainda não há personagens liberados.";button.hidden=true;return}
  button.hidden=false;
  if(count===unlocked.length){
-  text.textContent="Todos os retratos disponíveis deste capítulo foram carregados.";
+  text.textContent="As fichas exibem imagens: oficiais ou fanart quando acessíveis, reconstruções pictóricas nos demais casos. Nenhuma dessas reconstruções é canônica.";
   button.textContent="Gerenciar coleção local";
  }else if(count===0){
   text.textContent="Nenhum retrato deste livro está carregado. As imagens anexadas ao projeto ChatGPT não são instaladas automaticamente no navegador.";
   button.textContent="Importar arquivo .hsartpack";
  }else{
-  text.textContent=count+" de "+unlocked.length+" retratos aparecem neste livro. "+missing+" personagens ainda não possuem imagens individuais aprovadas.";
+  text.textContent=count+" de "+unlocked.length+" retratos aparecem neste livro. "+missing+" personagens ainda estão sem imagem; nenhuma arte de outro personagem será usada como substituta oficial.";
   button.textContent="Gerenciar retratos pendentes";
  }
  button.onclick=()=>{
