@@ -157,4 +157,21 @@ function attach(p){
  preflight.src=a.url;
 }
 for(const p of d.people)attach(p);
+// A source label also follows the enlarged dossier, where users most need
+// to distinguish an actual official likeness from artist interpretation.
+const artDialog=document.getElementById("personDialog");
+const artDialogImg=document.getElementById("personDialogImg");
+if(artDialog&&artDialogImg&&typeof openPerson==="function"){
+ const credit=document.createElement("p");credit.id="hsArtProvenance";credit.className="small";
+ credit.style.cssText="margin:9px 0;color:#c7b48e;font-size:11px";
+ artDialogImg.after(credit);
+ const oldOpen=openPerson;
+ openPerson=function(p){
+  oldOpen(p);
+  if(state.activeBookSlug!=="fulgrim"||!p.art){credit.style.display="none";return}
+  credit.style.display="block";
+  const t=p.art.kind==="official"?"ARTE OFICIAL":p.art.kind==="fanart"?"FANART CREDITADA":p.art.kind==="personal_reference"?"ARTE PESSOAL":"RECONSTRUÇÃO NÃO CANÔNICA";
+  credit.textContent=t+" // "+String(p.art.credit||p.visual||"origem não identificada");
+ };
+}
 })();
