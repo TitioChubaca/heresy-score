@@ -267,3 +267,191 @@ window.HS_FULGRIM_DATA={
   }
 ]
 };
+
+/* Reader clearance through Chapter V: safe character dossier additions. */
+window.HS_FULGRIM_DATA.people.push(...[
+  {
+    "name": "Julius Kaesoron",
+    "role": "Captain // I Company, Emperor's Children",
+    "unlock": 1,
+    "visual": "PORTRAIT PENDING // OFFICIAL ART CANDIDATE",
+    "image": null,
+    "art": {
+      "kind": "official_art_candidate",
+      "subjectExact": false
+    },
+    "facts": [
+      {
+        "ch": 1,
+        "text": "Capitão da Primeira Companhia, presente nas ações iniciais da Legião."
+      }
+    ],
+    "note": "Ficha limitada aos acontecimentos já apresentados até o capítulo V."
+  },
+  {
+    "name": "Marius Vairosean",
+    "role": "Captain // III Company, Emperor's Children",
+    "unlock": 1,
+    "visual": "PORTRAIT PENDING // OFFICIAL ART CANDIDATE",
+    "image": null,
+    "art": {
+      "kind": "official_art_candidate",
+      "subjectExact": false
+    },
+    "facts": [
+      {
+        "ch": 1,
+        "text": "Capitão da Terceira Companhia, companheiro de Solomon e de outros oficiais da Legião."
+      }
+    ],
+    "note": "Ficha limitada aos acontecimentos já apresentados até o capítulo V."
+  },
+  {
+    "name": "Gaius Caphen",
+    "role": "Lieutenant // Emperor's Children",
+    "unlock": 1,
+    "visual": "ARCHIVE RECONSTRUCTION // PERSONAL ART",
+    "image": null,
+    "art": {
+      "kind": "original_reconstruction",
+      "subjectExact": false
+    },
+    "facts": [
+      {
+        "ch": 1,
+        "text": "Tenente que serve ao lado de Solomon Demeter nas operações da Legião."
+      }
+    ],
+    "note": "Ficha limitada aos acontecimentos já apresentados até o capítulo V."
+  },
+  {
+    "name": "Coraline Aseneca",
+    "role": "Remembrancer // theatrical performer",
+    "unlock": 1,
+    "visual": "ARCHIVE RECONSTRUCTION // PERSONAL ART",
+    "image": null,
+    "art": {
+      "kind": "original_reconstruction",
+      "subjectExact": false
+    },
+    "facts": [
+      {
+        "ch": 1,
+        "text": "Integrante da comitiva artística dos remembrancers."
+      }
+    ],
+    "note": "Ficha limitada aos acontecimentos já apresentados até o capítulo V."
+  },
+  {
+    "name": "Eidolon",
+    "role": "Lord Commander // Emperor's Children",
+    "unlock": 2,
+    "visual": "PORTRAIT PENDING // OFFICIAL ART CANDIDATE",
+    "image": null,
+    "art": {
+      "kind": "official_art_candidate",
+      "subjectExact": false
+    },
+    "facts": [
+      {
+        "ch": 2,
+        "text": "Lord Commander da III Legião, conhecido por sua posição de comando na frota."
+      }
+    ],
+    "note": "Ficha limitada aos acontecimentos já apresentados até o capítulo V."
+  },
+  {
+    "name": "Vespasian",
+    "role": "Lord Commander // Emperor's Children",
+    "unlock": 2,
+    "visual": "PORTRAIT PENDING // OFFICIAL ART CANDIDATE",
+    "image": null,
+    "art": {
+      "kind": "official_art_candidate",
+      "subjectExact": false
+    },
+    "facts": [
+      {
+        "ch": 2,
+        "text": "Outro Lord Commander da III Legião e integrante da hierarquia militar."
+      }
+    ],
+    "note": "Ficha limitada aos acontecimentos já apresentados até o capítulo V."
+  },
+  {
+    "name": "Fabius",
+    "role": "Chief Apothecary // Emperor's Children",
+    "unlock": 3,
+    "visual": "PORTRAIT PENDING // HISTORICAL OFFICIAL CANDIDATE",
+    "image": null,
+    "art": {
+      "kind": "historical_official_candidate",
+      "subjectExact": false
+    },
+    "facts": [
+      {
+        "ch": 3,
+        "text": "Apotecário da III Legião envolvido nos trabalhos médicos apresentados nos capítulos iniciais."
+      }
+    ],
+    "note": "Ficha limitada aos acontecimentos já apresentados até o capítulo V."
+  },
+  {
+    "name": "Saul Tarvitz",
+    "role": "Captain // X Company, Emperor's Children",
+    "unlock": 4,
+    "visual": "PORTRAIT PENDING // OFFICIAL ART CANDIDATE",
+    "image": null,
+    "art": {
+      "kind": "official_art_candidate",
+      "subjectExact": false
+    },
+    "facts": [
+      {
+        "ch": 4,
+        "text": "Capitão da Décima Companhia, já apresentado no comando da Legião."
+      }
+    ],
+    "note": "Ficha limitada aos acontecimentos já apresentados até o capítulo V."
+  },
+  {
+    "name": "Lucius",
+    "role": "Captain // XIII Company, Emperor's Children",
+    "unlock": 4,
+    "visual": "PORTRAIT PENDING // OFFICIAL ART CANDIDATE",
+    "image": null,
+    "art": {
+      "kind": "official_art_candidate",
+      "subjectExact": false
+    },
+    "facts": [
+      {
+        "ch": 4,
+        "text": "Capitão da Décima Terceira Companhia, conhecido entre seus irmãos por sua habilidade marcial."
+      }
+    ],
+    "note": "Ficha limitada aos acontecimentos já apresentados até o capítulo V."
+  },
+  {
+    "name": "Ferrus Manus",
+    "role": "Primarch // X Legion Iron Hands",
+    "unlock": 4,
+    "visual": "PORTRAIT PENDING // OFFICIAL ART CANDIDATE",
+    "image": null,
+    "art": {
+      "kind": "official_art_candidate",
+      "subjectExact": false
+    },
+    "facts": [
+      {
+        "ch": 4,
+        "text": "Primarca dos Iron Hands, reconhecido por sua força e sua ligação com Fulgrim."
+      }
+    ],
+    "note": "Ficha limitada aos acontecimentos já apresentados até o capítulo V."
+  }
+]);
+window.HS_FULGRIM_DATA.archive.push(
+  {key:"legion-iron-hands",name:"Iron Hands",kind:"entity",kindLabel:"Legion // X",unlock:4,glyph:"⚙",visual:"HERALDRY // OFFICIAL REFERENCE PENDING",note:"Décima Legião dos Adeptus Astartes, apresentada no contexto de Ferrus Manus."},
+  {key:"pride-apothecarion",name:"Pride of the Emperor // Apothecarion",kind:"theatre",kindLabel:"Medical bay // III Legion",unlock:4,glyph:"✚",visual:"INTERIOR // ART PENDING",note:"Instalações médicas da nave, apresentadas durante os cuidados e pesquisas dos apotecários."}
+);
