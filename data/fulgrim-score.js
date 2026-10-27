@@ -1,9 +1,22 @@
-/* Fulgrim / Book V: scores I-III. Chapter IV and later remain spoiler-sealed. */
+/* Fulgrim / Book V: scores I-IV. Chapter V and later remain spoiler-sealed. */
 window.HS_FULGRIM_DATA={
   slug:"fulgrim",
   chapterCount:null,
-  chapters:[{number:1,title:"CHAPTER 01",estimatedMinutes:33,startCue:"Path of Trust",type:"chapter"},{number:2,title:"CHAPTER 02",estimatedMinutes:26,startCue:"Arrakeen",type:"chapter"},{number:3,title:"CHAPTER 03",estimatedMinutes:24.3,startCue:"Severance Ambient",type:"chapter"},{number:4,title:"CHAPTER 04 // SCORE SEALED",estimatedMinutes:null,startCue:null,type:"chapter"}],
+  chapters:[{number:1,title:"CHAPTER 01",estimatedMinutes:33,startCue:"Path of Trust",type:"chapter"},{number:2,title:"CHAPTER 02",estimatedMinutes:26,startCue:"Arrakeen",type:"chapter"},{number:3,title:"CHAPTER 03",estimatedMinutes:24.3,startCue:"Severance Ambient",type:"chapter"},{number:4,title:"CHAPTER 04",estimatedMinutes:27.9,startCue:"Spires of the Hive",type:"chapter"},{number:5,title:"CHAPTER 05 // SCORE SEALED",estimatedMinutes:null,startCue:null,type:"chapter"}],
   scores:{
+    4:[
+      ["Spires of the Hive","Dmitry V. Silantyev"],
+      ["The Imperium","Dmitry V. Silantyev"],
+      ["Catalogued Fates","Pavel Lipski"],
+      ["He Who Holds the Key","Pavel Lipski"],
+      ["Rannoch","Cris Velasco"],
+      ["Fates of the Lowest","Nikolay Filipovich"],
+      ["Are We Alone?","Piotr Musiał"],
+      ["Aristocrats of Karnaca (Suspense)","Daniel Licht"],
+      ["Brave New World","Piotr Musiał"],
+      ["Discordant Feast","Pavel Lipski"],
+      ["Epilogue Karnaca","Daniel Licht"]
+    ],
     3:[
       ["Severance Ambient","Steve Molitz"],
       ["Data Interference","Jesper Kyd"],
@@ -31,6 +44,20 @@ window.HS_FULGRIM_DATA={
     ]
   },
   scoreMeta:{
+    4:{
+      type:"chapter",estimatedMinutes:27.9,
+      stage:"catalog-reviewed; Spotify preflight pending",
+      startCue:"Spires of the Hive",finalCueIndex:10,
+      trimIndexes:[],durationReserve:[],reserveMode:"disabled",trimMode:"disabled",
+      publishedCatalogRuntimeSeconds:1675,spotifyRuntimeStatus:"pending live resolve",
+      scoreSource:"reader-supplied MOBI chapter IV; private paragraph-anchored scene map v2",
+      readingEvidence:{fulgrimLoggedMinutes:[25,28,21],chapterBodyWords:5500,meanObservedWordsPerMinute:197.4,
+        impliedMinutes:27.9,targetRangeMinutes:[26,31]},
+      segmentDurationsPlannedSeconds:[208,316,187,119,233,166,241,205],
+      musicalMethod:"Eight text-anchored passages; intro is compressed military recollection, clinical discovery changes to dialogue tension, subdued comradeship, artistic frustration, formal reception and qualified ending. Actual scene map stays private.",
+      calibrationConfidence:"text-derived editorial score, catalog-reviewed; Spotify exact recordings and live runtime pending",
+      notes:"Spoiler-safe tracklist. All chapter IV scenes and new characters remain unpublished until cleared by reader."
+    },
     3:{
       type:"chapter",estimatedMinutes:24.3,stage:"catalog-reviewed; device QA pending",
       startCue:"Severance Ambient",finalCueIndex:8,
