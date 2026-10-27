@@ -2,7 +2,7 @@
   "slug": "fulgrim",
   "title": "Fulgrim",
   "number": 5,
-  "state": "chapter-three-catalog-curated",
+  "state": "chapters-six-to-eight-prepared",
   "chapterCount": 25,
   "chapters": [
     {
@@ -33,11 +33,55 @@
     {
       "number": 4,
       "title": "CHAPTER 04",
+      "scoreStatus": "logged",
+      "estimatedMinutes": 27.9,
+      "startCue": "Spires of the Hive",
+      "catalogRuntimeSeconds": 1675,
+      "spotifyVerified": false
+    },
+    {
+      "number": 5,
+      "title": "CHAPTER 05",
+      "scoreStatus": "reader-reports-completed; cloud-log-not-confirmed",
+      "estimatedMinutes": null,
+      "startCue": null
+    },
+    {
+      "number": 6,
+      "title": "CHAPTER 06",
+      "scoreStatus": "catalog-reviewed; user Spotify preflight pending",
+      "estimatedMinutes": 25.7,
+      "startCue": "Caestus Metalican",
+      "catalogRuntimeSeconds": 1537,
+      "spotifyVerified": false
+    },
+    {
+      "number": 7,
+      "title": "CHAPTER 07",
+      "scoreStatus": "catalog-reviewed; user Spotify preflight pending",
+      "estimatedMinutes": 26.7,
+      "startCue": "Streets of New London",
+      "catalogRuntimeSeconds": 1603,
+      "spotifyVerified": false
+    },
+    {
+      "number": 8,
+      "title": "CHAPTER 08",
+      "scoreStatus": "catalog-reviewed; user Spotify preflight pending",
+      "estimatedMinutes": 28.8,
+      "startCue": "Imperial Advance",
+      "catalogRuntimeSeconds": 1723,
+      "spotifyVerified": false
+    },
+    {
+      "number": 9,
+      "title": "CHAPTER 09",
       "scoreStatus": "sealed",
       "estimatedMinutes": null,
       "startCue": null
     }
   ],
   "personae": "chapter-I-gated entries in data/fulgrim-score.js",
-  "archiveRecords": "chapter-I-gated entries in data/fulgrim-score.js"
+  "archiveRecords": "chapter-I-gated entries in data/fulgrim-score.js",
+  "readerDeclaredThrough": 5
 }
