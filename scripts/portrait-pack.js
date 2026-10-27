@@ -2,7 +2,7 @@
 (()=>{
 const settings=document.querySelector('[data-view-panel="settings"]');if(!settings)return;
 const panel=document.createElement("section");panel.className="panel";
-panel.innerHTML='<h2>Importar coleção pessoal</h2><p class="small">O pacote da conversa não aparece sozinho: selecione o arquivo .hsartpack neste dispositivo. Nada é enviado ao servidor. Nem todos os personagens do livro têm imagens no pacote.</p><input type="file" accept=".hsartpack,application/json" id="hsPackFile"><button type="button" class="btn" id="hsPackButton">Importar coleção</button><p class="small" id="hsPackStatus"></p>';
+panel.innerHTML='<h2>Importar coleção pessoal</h2><p class="small">O pacote da conversa não aparece sozinho: selecione o arquivo .hsartpack neste dispositivo. Nada é enviado ao servidor. Nem todos os personagens do livro têm imagens no pacote.</p><input type="file"  id="hsPackFile"><button type="button" class="btn" id="hsPackButton">Importar coleção</button><p class="small" id="hsPackStatus"></p>';
 settings.append(panel);
 const status=panel.querySelector("#hsPackStatus");
 const open=()=>new Promise((ok,no)=>{const r=indexedDB.open("hs-private-portraits",1);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains("images"))r.result.createObjectStore("images")};r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)});
