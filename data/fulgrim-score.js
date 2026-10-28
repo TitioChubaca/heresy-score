@@ -1,4 +1,4 @@
-/* Fulgrim / Book V: I-IV existing; reader finished V outside score; VI-VIII preflight scores, IX+ sealed. */
+/* Fulgrim / Book V: I-IV completed; V NOT YET READ. Music precurated for V-XXV, unlocked sequentially. */
 window.HS_FULGRIM_DATA={
   slug:"fulgrim",
   chapterCount:25,
