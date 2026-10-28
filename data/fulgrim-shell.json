@@ -2,7 +2,7 @@
   "slug": "fulgrim",
   "title": "Fulgrim",
   "number": 5,
-  "state": "chapters-six-to-eight-prepared",
+  "state": "all-chapters-source-curated-spoiler-gated",
   "chapterCount": 25,
   "chapters": [
     {
@@ -42,9 +42,10 @@
     {
       "number": 5,
       "title": "CHAPTER 05",
-      "scoreStatus": "reader-reports-completed; cloud-log-not-confirmed",
-      "estimatedMinutes": null,
-      "startCue": null
+      "scoreStatus": "prepared; reader has NOT completed; Spotify verification pending",
+      "estimatedMinutes": 31,
+      "startCue": "The Imperium Unites",
+      "spotifyVerified": false
     },
     {
       "number": 6,
@@ -76,124 +77,125 @@
     {
       "number": 9,
       "title": "CHAPTER 09",
-      "scoreStatus": "sealed",
+      "scoreStatus": "precurated; locked until previous completed; Spotify verification pending",
       "estimatedMinutes": null,
       "startCue": null
     },
     {
       "number": 10,
       "title": "CHAPTER 10",
-      "scoreStatus": "sealed",
+      "scoreStatus": "precurated; locked until previous completed; Spotify verification pending",
       "estimatedMinutes": null,
       "startCue": null
     },
     {
       "number": 11,
       "title": "CHAPTER 11",
-      "scoreStatus": "sealed",
+      "scoreStatus": "precurated; locked until previous completed; Spotify verification pending",
       "estimatedMinutes": null,
       "startCue": null
     },
     {
       "number": 12,
       "title": "CHAPTER 12",
-      "scoreStatus": "sealed",
+      "scoreStatus": "precurated; locked until previous completed; Spotify verification pending",
       "estimatedMinutes": null,
       "startCue": null
     },
     {
       "number": 13,
       "title": "CHAPTER 13",
-      "scoreStatus": "sealed",
+      "scoreStatus": "precurated; locked until previous completed; Spotify verification pending",
       "estimatedMinutes": null,
       "startCue": null
     },
     {
       "number": 14,
       "title": "CHAPTER 14",
-      "scoreStatus": "sealed",
+      "scoreStatus": "precurated; locked until previous completed; Spotify verification pending",
       "estimatedMinutes": null,
       "startCue": null
     },
     {
       "number": 15,
       "title": "CHAPTER 15",
-      "scoreStatus": "sealed",
+      "scoreStatus": "precurated; locked until previous completed; Spotify verification pending",
       "estimatedMinutes": null,
       "startCue": null
     },
     {
       "number": 16,
       "title": "CHAPTER 16",
-      "scoreStatus": "sealed",
+      "scoreStatus": "precurated; locked until previous completed; Spotify verification pending",
       "estimatedMinutes": null,
       "startCue": null
     },
     {
       "number": 17,
       "title": "CHAPTER 17",
-      "scoreStatus": "sealed",
+      "scoreStatus": "precurated; locked until previous completed; Spotify verification pending",
       "estimatedMinutes": null,
       "startCue": null
     },
     {
       "number": 18,
       "title": "CHAPTER 18",
-      "scoreStatus": "sealed",
+      "scoreStatus": "precurated; locked until previous completed; Spotify verification pending",
       "estimatedMinutes": null,
       "startCue": null
     },
     {
       "number": 19,
       "title": "CHAPTER 19",
-      "scoreStatus": "sealed",
+      "scoreStatus": "precurated; locked until previous completed; Spotify verification pending",
       "estimatedMinutes": null,
       "startCue": null
     },
     {
       "number": 20,
       "title": "CHAPTER 20",
-      "scoreStatus": "sealed",
+      "scoreStatus": "precurated; locked until previous completed; Spotify verification pending",
       "estimatedMinutes": null,
       "startCue": null
     },
     {
       "number": 21,
       "title": "CHAPTER 21",
-      "scoreStatus": "sealed",
+      "scoreStatus": "precurated; locked until previous completed; Spotify verification pending",
       "estimatedMinutes": null,
       "startCue": null
     },
     {
       "number": 22,
       "title": "CHAPTER 22",
-      "scoreStatus": "sealed",
+      "scoreStatus": "precurated; locked until previous completed; Spotify verification pending",
       "estimatedMinutes": null,
       "startCue": null
     },
     {
       "number": 23,
       "title": "CHAPTER 23",
-      "scoreStatus": "sealed",
+      "scoreStatus": "precurated; locked until previous completed; Spotify verification pending",
       "estimatedMinutes": null,
       "startCue": null
     },
     {
       "number": 24,
       "title": "CHAPTER 24",
-      "scoreStatus": "sealed",
+      "scoreStatus": "precurated; locked until previous completed; Spotify verification pending",
       "estimatedMinutes": null,
       "startCue": null
     },
     {
       "number": 25,
       "title": "CHAPTER 25",
-      "scoreStatus": "sealed",
+      "scoreStatus": "precurated; locked until previous completed; Spotify verification pending",
       "estimatedMinutes": null,
       "startCue": null
     }
   ],
   "personae": "chapter-I-gated entries in data/fulgrim-score.js",
   "archiveRecords": "chapter-I-gated entries in data/fulgrim-score.js",
-  "readerDeclaredThrough": 5
+  "readerDeclaredThrough": 4,
+  "scoresPrecuratedThrough": 25
 }
