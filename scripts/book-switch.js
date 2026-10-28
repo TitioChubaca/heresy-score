@@ -81,7 +81,7 @@ const oldRender=render;render=function(){
 
  if(state.activeBookSlug===v){
   const count=Object.keys(state.done||{}).length;
-  const prog=document.getElementById("progress");if(prog)prog.style.width="0%";
+  const prog=document.getElementById("progress");if(prog)prog.style.width=Math.min(100,(count/25)*100)+"%";
   const text=document.getElementById("progressText");if(text)text.textContent=count+" / 25 chapters // Book V";
   const label=document.getElementById("clearanceLabel");if(label)label.textContent="Book V // "+(count?"through chapter "+String(Math.max(...Object.keys(state.done).map(Number))).padStart(2,"0"):"no chapters read");
   const directive=document.getElementById("directive");if(directive&&!state.active){const next=chapters.find(c=>!state.done?.[c.number]);directive.textContent=next&&SCORES[next.number]?"FULGRIM // CHAPTER "+String(next.number).padStart(2,"0")+" SCORE PREPARED // CHECK SPOTIFY RUNTIME.":"FULGRIM // Next score remains sealed."}
