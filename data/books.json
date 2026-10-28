@@ -21,9 +21,14 @@
       "personaeSource": "data/fulgrim-score.js",
       "curatedThrough": 4,
       "readerClearanceNotGlobal": true,
-      "preparedThroughChapter": 8,
-      "readerDeclaredThrough": 5,
-      "readerDeclaredChapter5CloudStatus": "not observed; manual archive action available"
+      "preparedThroughChapter": 25,
+      "readerDeclaredThrough": 4,
+      "readerDeclaredChapter5CloudStatus": "not read; false accidental manual completion auto-repaired",
+      "preparationMethod": "Private reader-supplied MOBI; all 25 source-anchored first-edition cue sheets in app; Spotify market recordings require user authentication",
+      "scoreSources": [
+        "data/fulgrim-score.js",
+        "data/fulgrim-future-scores.js"
+      ]
     }
   ]
 }
