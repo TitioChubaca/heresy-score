@@ -20,27 +20,29 @@ function setBanner(){
  const locked=slug===v&&!state.done?.[1];
  for(const el of document.querySelectorAll('[data-view="personae"],[data-view="archive"]'))el.disabled=locked;
 }
+// Reader corrected an accidental "already read" click for chapter V.
+// Remove ONLY the artificial record created by the old bridge button.
+function restoreUnreadChapterV(){
+ const book=state.books?.[v];
+ const fake=r=>r&&r.readingType==="read_outside_app"&&r.minutes==null;
+ let dirty=false;
+ if(fake(book?.done?.[5])){delete book.done[5];dirty=true}
+ if(state.activeBookSlug===v&&fake(state.done?.[5])){delete state.done[5];dirty=true}
+ if(dirty)save();
+ return dirty;
+}
+restoreUnreadChapterV();
+// An old artificial record may still exist in the cloud; never let a pull
+// restore it. Real finished reading logs (with measured time) remain untouched.
+const originalCloudPull=cloudPullLogs;
+cloudPullLogs=async function(...args){
+ const result=await originalCloudPull(...args);
+ if(state.activeBookSlug===v&&restoreUnreadChapterV())render();
+ return result;
+};
 const oldRender=render;render=function(){
  oldRender();
  setBanner();
- // Reader completed Chapter V without a score in the public app. Archive it
- // only through an explicit click: never fabricate reading minutes or finish date.
- if(state.activeBookSlug===v&&state.done?.[4]&&!state.done?.[5]&&!state.active){
-  const card=[...document.querySelectorAll("#chapters .chapter")].find(el=>el.querySelector(".chname")?.textContent.includes("CHAPTER 05"));
-  const action=card?.querySelector(".actions");
-  if(action){
-   const btn=document.createElement("button");btn.type="button";btn.className="btn primary";
-   btn.textContent="Mark Chapter V Already Read";
-   btn.onclick=()=>{
-    if(state.active||state.activeBookSlug!==v||state.done?.[5])return;
-    state.done[5]={minutes:null,length:"not_measured",readingType:"read_outside_app",
-     notes:"Capítulo V concluído antes de haver score; tempo individual não medido no Heresy Score.",
-     cloudSynced:false};
-    save();render();toast("Chapter V archived without invented timing // VI available");
-   };
-   action.replaceChildren(btn);
-  }
- }
  // Only the next unread, scored chapter can be checked. The Spotify preflight
  // resolves real tracks without starting a reading timer or playing music.
  if(state.activeBookSlug===v&&!state.active){
@@ -103,6 +105,7 @@ function change(slug){
  try{
   HSBooks.switchBook(state,slug);
   installData(slug);
+  restoreUnreadChapterV();
   state.spotify.scoreDurations={};state.spotify.chapterRuntime={};
   // Per-chapter playlists live in state.spotify.playlists. Clear the active
   // pointer on switches; do not let Open Spotify link to another book's score.
@@ -117,7 +120,7 @@ function change(slug){
 }
 const nav=document.querySelector('[data-view-panel="books"]');
 const panel=document.createElement("section");panel.id="hsBooksPanel";panel.className="panel";
-panel.innerHTML='<h2>Active Book // Library</h2><p class="small">O progresso, as anotações e a sincronização na nuvem são separados por livro. Não é possível trocar durante uma leitura ativa. Capítulo V pode ser arquivado como lido sem tempo inventado. Scores VI–VIII preparados, liberados na sequência da leitura. IX e posteriores selados.</p><label class="small">Selected book <select id="hsBookSwitch" style="width:100%;margin-top:8px;background:#101a0f;color:#d2cbb7;padding:12px;border:1px solid #536746"><option value="flight-of-the-eisenstein">IV — The Flight of the Eisenstein</option><option value="fulgrim">V — Fulgrim (scores VI–VIII prepared)</option></select></label>';
+panel.innerHTML='<h2>Active Book // Library</h2><p class="small">O progresso, as anotações e a sincronização na nuvem são separados por livro. Não é possível trocar durante uma leitura ativa. Capítulo V está preparado para leitura com trilha. Scores VI–VIII preparados para depois, liberados em sequência. IX e posteriores selados.</p><label class="small">Selected book <select id="hsBookSwitch" style="width:100%;margin-top:8px;background:#101a0f;color:#d2cbb7;padding:12px;border:1px solid #536746"><option value="flight-of-the-eisenstein">IV — The Flight of the Eisenstein</option><option value="fulgrim">V — Fulgrim (scores VI–VIII prepared)</option></select></label>';
 nav.append(panel);
 document.getElementById("hsBookSwitch").onchange=e=>change(e.target.value);
 
