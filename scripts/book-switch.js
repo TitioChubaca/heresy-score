@@ -120,28 +120,28 @@ function change(slug){
 }
 const nav=document.querySelector('[data-view-panel="books"]');
 const panel=document.createElement("section");panel.id="hsBooksPanel";panel.className="panel";
-panel.innerHTML='<h2>Active Book // Library</h2><p class="small">O progresso, as anotações e a sincronização na nuvem são separados por livro. Não é possível trocar durante uma leitura ativa. Capítulo V está preparado para leitura com trilha. Scores VI–VIII preparados para depois, liberados em sequência. IX e posteriores selados.</p><label class="small">Selected book <select id="hsBookSwitch" style="width:100%;margin-top:8px;background:#101a0f;color:#d2cbb7;padding:12px;border:1px solid #536746"><option value="flight-of-the-eisenstein">IV — The Flight of the Eisenstein</option><option value="fulgrim">V — Fulgrim (scores VI–VIII prepared)</option></select></label>';
+panel.innerHTML='<h2>Active Book // Library</h2><p class="small">O progresso, as anotações e a sincronização na nuvem são separados por livro. Não é possível trocar durante uma leitura ativa. Capítulo V está preparado para leitura com trilha. Scores VI–VIII preparados para depois, liberados em sequência. IX e posteriores selados.</p><label class="small">Selected book <select id="hsBookSwitch" style="width:100%;margin-top:8px;background:#101a0f;color:#d2cbb7;padding:12px;border:1px solid #536746"><option value="flight-of-the-eisenstein">IV — The Flight of the Eisenstein</option><option value="fulgrim">V — Fulgrim (scores I–XXV precurados)</option></select></label>';
 nav.append(panel);
 document.getElementById("hsBookSwitch").onchange=e=>change(e.target.value);
 
-// Optional single preflight batch: one manual click prepares all three private
-// per-chapter Spotify playlists. No playback, timer or future story is exposed.
+// Optional preflight for all prepared chapters. Does not start music, timers or readings.
 const batch=document.createElement("button");
 batch.type="button";batch.className="btn";batch.id="hsBatchSpotify";
-batch.textContent="Prepare Spotify Playlists VI–VIII";
+batch.textContent="Preparar playlists V–XXV (opcional)";
+const cancelBatch=document.createElement("button");cancelBatch.type="button";cancelBatch.className="btn";cancelBatch.textContent="Parar preparo";cancelBatch.style.marginLeft="8px";cancelBatch.hidden=true;let batchStopped=false;
 const batchReport=document.createElement("p");batchReport.className="small";
 batchReport.id="hsBatchSpotifyReport";batchReport.setAttribute("aria-live","polite");
-panel.append(batch,batchReport);
+panel.append(batch,cancelBatch,batchReport);cancelBatch.onclick=()=>{batchStopped=true;cancelBatch.disabled=true;batchReport.textContent="Parando após a faixa em andamento..."};
 batch.onclick=async()=>{
  if(state.active||typeof beginPending!=="undefined"&&beginPending){batchReport.textContent="Finalize primeiro a sessão ativa.";return}
  if(state.activeBookSlug!==v){batchReport.textContent="Selecione Fulgrim antes da checagem.";return}
  if(!spotifyConnected()){batchReport.textContent="Conecte o Spotify nas configurações do app.";return}
- batch.disabled=true;
+ batch.disabled=true;batchStopped=false;cancelBatch.hidden=false;cancelBatch.disabled=false;
  const activeSlug=state.activeBookSlug,oldId=state.spotify.playlistId,oldURL=state.spotify.playlistUrl;
  const outcomes=[];
  try{
-  for(const n of [6,7,8]){
-   if(state.activeBookSlug!==activeSlug||state.active)break;
+  for(let n=5;n<=25;n++){
+   if(batchStopped||state.activeBookSlug!==activeSlug||state.active)break;
    batchReport.textContent="Preparando capítulo "+String(n).padStart(2,"0")+"...";
    try{
     await spotifySyncChapter(n);
@@ -153,8 +153,8 @@ batch.onclick=async()=>{
  }finally{
   // Preflight never leaves the currently-active playlist pointer set to VIII.
   if(state.activeBookSlug===activeSlug){state.spotify.playlistId=oldId||"";state.spotify.playlistUrl=oldURL||"";save()}
-  batchReport.textContent=outcomes.join(" | ")+" // Nenhuma reprodução iniciada.";
-  batch.disabled=false;
+  batchReport.textContent=outcomes.join(" | ")+(batchStopped?" // Preparo interrompido.":" // Nenhuma reprodução iniciada.");
+  batch.disabled=false;cancelBatch.hidden=true;cancelBatch.disabled=false;
  }
 };
 
