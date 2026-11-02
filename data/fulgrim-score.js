@@ -9,7 +9,7 @@ window.HS_FULGRIM_DATA={
       ["Caestus Metalican","Guillaume David"],
       ["Unrest in Throneside","Jesper Kyd"],
       ["Waiting to Strike","Jesper Kyd"],
-      ["Onslaught","Nima Fakhrara"],
+      ["The End Run","Jack Wall"],
       ["Nightsider","Jesper Kyd"],
       ["Fates of the Lowest","Nikolay Filipovich"],
       ["Forge Manufactorum","Jesper Kyd"],
@@ -39,7 +39,7 @@ window.HS_FULGRIM_DATA={
       ["Sublevel Data Interrogation","Jesper Kyd"],
       ["Unrest in Throneside","Jesper Kyd"],
       ["His Whispers","Pavel Lipski"],
-      ["Discordant Feast","Pavel Lipski"],
+      ["The Royal Conservatory","Daniel Licht"],
       ["Short Circuit in the Dark","Pavel Lipski"],
       ["Demerium Battle Plan","Steve Molitz"],
       ["Dust in Armour","Steve Molitz"]
@@ -85,9 +85,9 @@ window.HS_FULGRIM_DATA={
   },
   scoreMeta:{
     5:{type:"chapter",estimatedMinutes:31,stage:"reader-ready; Spotify live check pending",startCue:"The Imperium Unites",finalCueIndex:13,trimIndexes:[],durationReserve:[],reserveMode:"disabled",trimMode:"disabled",scoreSource:"private reader-provided MOBI chapter V map",sourceOrderSegments:11,spotifyRuntimeStatus:"device preflight pending",notes:"Music only; spoiler-safe. Chapter V not yet read."},
-    6:{type:"chapter",estimatedMinutes:25.7,stage:"preflight-ready",startCue:"Caestus Metalican",finalCueIndex:9,trimIndexes:[],durationReserve:[],reserveMode:"disabled",trimMode:"disabled",publishedCatalogRuntimeSeconds:1537,spotifyRuntimeStatus:"pending user-device resolve",cueSource:"reader-provided MOBI chapter 6, private paragraph-anchored chronological map",catalogSources:"Steam: Mechanicus OST, Darktide OST, Space Marine 2 OST, Rogue Trader Expansions I",calibrationConfidence:"source-order reviewed, published OST timing, exact Spotify track IDs unverified",notes:"Scene identities and chronology are private. No future chapter names/plot data are published."},
+    6:{readerFeedbackCorrection:{original:"Onslaught",replacement:"The End Run",reason:"Provisional adjustment for fleet combat; verify actual song mismatch on reread",verifiedPlayback:false},type:"chapter",estimatedMinutes:25.7,stage:"preflight-ready",startCue:"Caestus Metalican",finalCueIndex:9,trimIndexes:[],durationReserve:[],reserveMode:"disabled",trimMode:"disabled",publishedCatalogRuntimeSeconds:1537,spotifyRuntimeStatus:"pending user-device resolve",cueSource:"reader-provided MOBI chapter 6, private paragraph-anchored chronological map",catalogSources:"Steam: Mechanicus OST, Darktide OST, Space Marine 2 OST, Rogue Trader Expansions I",calibrationConfidence:"source-order reviewed, published OST timing, exact Spotify track IDs unverified",notes:"Scene identities and chronology are private. No future chapter names/plot data are published."},
     7:{type:"chapter",estimatedMinutes:26.7,stage:"preflight-ready",startCue:"Streets of New London",finalCueIndex:10,trimIndexes:[],durationReserve:[],reserveMode:"disabled",trimMode:"disabled",publishedCatalogRuntimeSeconds:1603,spotifyRuntimeStatus:"pending user-device resolve",cueSource:"reader-provided MOBI chapter 7, private paragraph-anchored chronological map",catalogSources:"Steam and Spotify OST track lengths: Frostpunk, Darktide, Space Marine 2, Rogue Trader Expansions I",calibrationConfidence:"source-order reviewed, published OST timing, exact Spotify track IDs unverified",notes:"Scene identities and chronology are private. No future chapter names/plot data are published."},
-    8:{type:"chapter",estimatedMinutes:28.8,stage:"preflight-ready",startCue:"Imperial Advance",finalCueIndex:11,trimIndexes:[],durationReserve:[],reserveMode:"disabled",trimMode:"disabled",publishedCatalogRuntimeSeconds:1723,spotifyRuntimeStatus:"pending user-device resolve",cueSource:"reader-provided MOBI chapter 8, private paragraph-anchored chronological map",catalogSources:"Steam and Spotify OST track lengths: Darktide, Space Marine 2, Rogue Trader Expansions I",calibrationConfidence:"source-order reviewed, published OST timing, exact Spotify track IDs unverified",notes:"Scene identities and chronology are private. No future chapter names/plot data are published."},
+    8:{readerFeedbackCorrection:{songReplaced:"Discordant Feast",replacement:"The Royal Conservatory",reason:"Reader reported Discordant Feast did not match chapter VIII; restrained thematic return to art/creative unease",verifiedPlayback:false},type:"chapter",estimatedMinutes:28.8,stage:"preflight-ready",startCue:"Imperial Advance",finalCueIndex:11,trimIndexes:[],durationReserve:[],reserveMode:"disabled",trimMode:"disabled",publishedCatalogRuntimeSeconds:1723,spotifyRuntimeStatus:"pending user-device resolve",cueSource:"reader-provided MOBI chapter 8, private paragraph-anchored chronological map",catalogSources:"Steam and Spotify OST track lengths: Darktide, Space Marine 2, Rogue Trader Expansions I",calibrationConfidence:"source-order reviewed, published OST timing, exact Spotify track IDs unverified",notes:"Scene identities and chronology are private. No future chapter names/plot data are published."},
     4:{
       type:"chapter",estimatedMinutes:27.9,
       stage:"catalog-reviewed; Spotify preflight pending",
