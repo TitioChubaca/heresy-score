@@ -32,7 +32,7 @@ Recomendação experimental: Spotify celular > Configurações e privacidade > R
 - **Repetições altas ainda sem aprovação de leitmotif:** Ancient Mystery (7), Path of Trust (6), Onslaught (6 antes da correção do VI), Vigil (6), Discordant Feast (6 antes da correção do VIII), Waiting to Strike (6), Our Enemies Approach (6), Death's Play (6).
 - Repetição **não é automaticamente leitmotif**. Só declarar motivação recorrente quando o `docs/SOUND_DIRECTION_BIBLE_V1.md` e mapa privado sustentarem uma função dramática deliberada e o leitor confirmar encaixe. Não confundir a recorrência do mesmo compositor com leitmotif.
 - **Candidato de retorno intencional:** The Royal Conservatory (Daniel Licht) para desconforto artístico em VIII, por função estética já explorada. É candidato editorial, não motivo plenamente validado.
-- A trilha não é 100% Warhammer: cerca de **47 das 255 posições (18,4%)** usam compositores/obras identificados nas seleções externas (Frostpunk, Dishonored, Mass Effect e Dune), com 208/255 posições dentro do pool principal associado às OSTs Warhammer. A predominância de Warhammer nas trilhas VI–VIII é uma consequência do pool repetido, NÃO uma instrução permanente do leitor.
+- A trilha não é 100% Warhammer: na primeira auditoria, cerca de **47 das 255 posições (18,4%)** usavam compositores/obras identificados nas seleções externas (Frostpunk, Dishonored, Mass Effect e Dune), Após as duas substituições VI e VIII, são **49/255 posições (19,2%)** do pool externo e **206/255** do pool principal associado às OSTs Warhammer (classificação aproximada por faixa/compositor). A predominância de Warhammer nas trilhas VI–VIII é uma consequência do pool repetido, NÃO uma instrução permanente do leitor.
 - A versão anterior do MD **já dizia** que leitmotifs exigem função e que o universo de compositores é irrestrito; a geração em lote não aplicou a revisão seletiva exigida.
 
 ## Correções pontuais após feedback
@@ -45,3 +45,7 @@ Recomendação experimental: Spotify celular > Configurações e privacidade > R
 - Testar o que a API retorna em `/playlists/{id}/items` na conta e dispositivo do leitor.
 - Saber se o intervalo sentido é silêncio de reprodução ou cauda musical/composição.
 - Auditar leitmotifs e candidatos de outras fontes por capítulo **sem divulgar spoilers futuros**, sem reescrever automaticamente a trilha ativa.
+
+## Atualização de entrega
+- Versão corrente: app 0.13.3, PWA cache `heresy-score-v0135`. O botão existente **Open Spotify** durante uma sessão ativa agora chama o mesmo restaurador por contexto/posição; fora de sessão mantém o comportamento anterior.
+- Teste com Spotify simulado: sessão pausada em 08:10 com durações de 03:00, 05:00, 03:40 posiciona a terceira faixa em 00:10; despausa somente após aceitar a reprodução. Teste no dispositivo e disponibilidade real do Spotify permanecem pendentes.
