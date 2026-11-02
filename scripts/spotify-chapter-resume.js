@@ -107,12 +107,20 @@ toggleSessionPause=async function(){
 };
 const pauseButton=document.getElementById("pauseBtn");
 if(pauseButton)pauseButton.onclick=toggleSessionPause;
+// The original "Open Spotify" action used to open the playlist at its start.
+// During an active reading session it now restores the correct cue first.
+const openBtn=document.getElementById("openSpotifyBtn");
+if(openBtn){
+ const oldOpen=openBtn.onclick;
+ openBtn.onclick=()=>state.active&&spotifyConnected()?restore(0):oldOpen?.();
+}
 b.onclick=()=>restore(0);
 minus.onclick=()=>restore(-30000);plus.onclick=()=>restore(30000);
 const previousRender=renderNow;
 renderNow=function(){
  previousRender();
  const active=!!state.active;
+ if(openBtn)openBtn.textContent=active&&spotifyConnected()?"Abrir trilha no ponto da leitura":"Open Spotify";
  b.style.display=controls.style.display=active?"":"none";
  info.style.display=active?"":"none";
  if(!active){lastTarget=null;minus.disabled=plus.disabled=true}
