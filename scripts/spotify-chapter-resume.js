@@ -99,6 +99,14 @@ async function restore(delta){
   info.textContent="Não foi possível posicionar a trilha: "+(e.message||e)+". O cronômetro foi preservado.";
  }finally{busy=false;b.disabled=false;b.textContent="Retomar trilha no ponto da leitura"}
 }
+// The existing Resume button must NOT resume unrelated Spotify music.
+const originalToggle=toggleSessionPause;
+toggleSessionPause=async function(){
+ if(state.active?.paused&&spotifyConnected())return restore(0);
+ return originalToggle();
+};
+const pauseButton=document.getElementById("pauseBtn");
+if(pauseButton)pauseButton.onclick=toggleSessionPause;
 b.onclick=()=>restore(0);
 minus.onclick=()=>restore(-30000);plus.onclick=()=>restore(30000);
 const previousRender=renderNow;
