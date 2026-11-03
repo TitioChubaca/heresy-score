@@ -21,6 +21,24 @@ const candidates={
 24:[7,["A Cerberus Agent","Sam Hulick"],"tense action bridge"],
 25:[8,["I Was Lost Without You","Sam Hulick"],"reflective bridge"]
 };
+const alternatives={
+10:[["Aralakh Company","Cris Velasco"],["The End Run","Jack Wall"]],
+11:[["I Was Lost Without You","Sam Hulick"],["Leaving Earth","Clint Mansell"]],
+12:[["I Was Lost Without You","Sam Hulick"],["The Still, Cold World (Bonus Track)","Piotr Musiał"]],
+13:[["Prothean Beacon","Cris Velasco"],["The Still, Cold World (Bonus Track)","Piotr Musiał"]],
+14:[["Surkesh","Christopher Lennertz"],["The Still, Cold World (Bonus Track)","Piotr Musiał"]],
+15:[["Aralakh Company","Cris Velasco"],["The End Run","Jack Wall"]],
+16:[["The Still, Cold World (Bonus Track)","Piotr Musiał"],["Prothean Beacon","Cris Velasco"]],
+17:[["I Was Lost Without You","Sam Hulick"],["Leaving Earth","Clint Mansell"]],
+18:[["Reaper Chase","Cris Velasco"],["Aralakh Company","Cris Velasco"]],
+19:[["Prothean Beacon","Cris Velasco"],["Surkesh","Christopher Lennertz"]],
+20:[["I Was Lost Without You","Sam Hulick"],["The Still, Cold World (Bonus Track)","Piotr Musiał"]],
+21:[["Leaving Earth","Clint Mansell"],["The Still, Cold World (Bonus Track)","Piotr Musiał"]],
+22:[["Surkesh","Christopher Lennertz"],["I'm Sorry","Cris Velasco"]],
+23:[["The End Run","Jack Wall"],["Aralakh Company","Cris Velasco"]],
+24:[["Aralakh Company","Cris Velasco"],["Reaper Chase","Cris Velasco"]],
+25:[["Leaving Earth","Clint Mansell"],["The Still, Cold World (Bonus Track)","Piotr Musiał"]]
+};
 window.HSApprovedBridges=candidates;
 const original=spotifySyncChapter;
 spotifySyncChapter=async function(n){
@@ -32,7 +50,7 @@ spotifySyncChapter=async function(n){
  const play=state.spotify.playlists?.["fulgrim:"+n];
  if(!runtime||!play)return id;
  if(session){runtime.autoFitResult="Leitura ativa: trilha preservada";return id;}
- const signature=JSON.stringify(SCORES[n]||[]);
+ const signature=JSON.stringify({score:SCORES[n]||[],policy,options:alternatives[n]||[]});
  if(play.autoFitSignature===signature){
   runtime.autoFitResult=play.autoFitResult||"Verificado";return id;
  }
@@ -50,38 +68,49 @@ spotifySyncChapter=async function(n){
   return id;
  }
  const [position,track,role]=policy;
- const beforeFinal=SCORES[n]?.length-1;
- if(position<1||position>beforeFinal||SCORES[n].some(c=>c[0]===track[0]&&c[1]===track[1])){
-  runtime.autoFitResult="Sem ponte extra aprovada";return id;
+ const lastIndex=SCORES[n]?.length-1;
+ if(position<1||position>lastIndex){
+  runtime.autoFitResult="Sem ponte narrativa aprovada";return id;
  }
+ const options=[track,...(alternatives[n]||[])].filter(c=>!SCORES[n].some(x=>x[0]===c[0]&&x[1]===c[1]));
+ const candidatesFound=[];
+ for(const [title,artist] of options){
+  try{
+   const uri=await spotifyResolveTrack(title,artist);
+   if(!uri?.startsWith("spotify:track:"))continue;
+   const trackId=uri.split(":").pop();
+   const data=await spotifyApi("/tracks/"+encodeURIComponent(trackId));
+   const ms=data?.duration_ms;
+   if(!Number.isFinite(ms)||ms<45000||ms>300000)continue;
+   const nrm=x=>String(x||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");
+   if(data?.name&&!nrm(data.name).includes(nrm(title).replace("bonustrack","")))continue;
+   candidatesFound.push({uri,title,artist,ms,difference:Math.abs(gap-ms)});
+  }catch(err){}
+ }
+ candidatesFound.sort((a,b)=>a.difference-b.difference);
+ const chosen=candidatesFound[0];
+ if(!chosen||chosen.difference>45000){
+  runtime.autoFitResult="Sem ponte aprovada próxima do alvo";
+  play.autoFitSignature=signature;play.autoFitResult=runtime.autoFitResult;save();return id;
+ }
+ if(state.active||state.activeBookSlug!=="fulgrim")return id;
  try{
-  const uri=await spotifyResolveTrack(track[0],track[1]);
-  if(!uri?.startsWith("spotify:track:"))throw Error("faixa não encontrada");
-  const trackId=uri.split(":").pop();
-  const info=await spotifyApi("/tracks/"+encodeURIComponent(trackId));
-  const sec=info?.duration_ms;
-  if(!Number.isFinite(sec)||sec<45000||sec>300000)throw Error("duração da ponte indisponível");
-  // Allow up to 45 seconds overshoot; do not add an unrelated long song.
-  if(Math.abs(gap-sec)>45000){
-   runtime.autoFitResult="Não há ponte aprovada com duração próxima";return id;
-  }
-  if(state.active||state.activeBookSlug!=="fulgrim")return id;
   await spotifyApi("/playlists/"+encodeURIComponent(id)+"/items",{
-   method:"POST",body:JSON.stringify({uris:[uri],position})
+   method:"POST",body:JSON.stringify({uris:[chosen.uri],position})
   });
-  runtime.durationMs+=sec;
+  runtime.durationMs+=chosen.ms;
   runtime.trackCount=(runtime.trackCount||SCORES[n].length)+1;
-  if((runtime.finalCueIndex??beforeFinal)>=position)runtime.finalCueIndex++;
-  runtime.autoFitResult="Ponte inserida no trecho "+(position+1)+" · +"+Math.round(sec/1000)+"s";
-  play.autoFitSignature=signature;
-  play.autoFitResult=runtime.autoFitResult;
-  play.durationMs=runtime.durationMs;
-  play.finalCueIndex=runtime.finalCueIndex;
+  if((runtime.finalCueIndex??lastIndex)>=position)runtime.finalCueIndex++;
+  runtime.autoFitResult="Ponte aplicada: "+chosen.title+" (+"
+   +Math.round(chosen.ms/1000)+"s), sem alterar a última faixa";
+  play.autoFitSignature=signature;play.autoFitResult=runtime.autoFitResult;
+  play.durationMs=runtime.durationMs;play.finalCueIndex=runtime.finalCueIndex;
   play.trackCount=runtime.trackCount;
   save();
  }catch(err){
-  runtime.autoFitResult="Ponte não aplicada: "+String(err?.message||err).slice(0,100);
+  runtime.autoFitResult="Ponte não aplicada: "+String(err?.message||err).slice(0,90);
  }
+
  return id;
 };
 })();
