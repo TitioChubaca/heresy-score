@@ -54,9 +54,9 @@ const oldRender=render;render=function(){
   const actions=card?.querySelector(".actions");
   if(actions){
    const check=document.createElement("button");
-   check.type="button";check.className="btn";check.textContent="Check Spotify Runtime";
+   check.type="button";check.className="btn";check.textContent="Verificar e ajustar duração";
    check.onclick=async()=>{
-    check.disabled=true;check.textContent="Checking Spotify...";
+    check.disabled=true;check.textContent="Conferindo e ajustando Spotify...";
     try{
      if(!spotifyConnected())throw Error("Spotify precisa estar conectado");
      const sourceBook=state.activeBookSlug;
@@ -69,7 +69,7 @@ const oldRender=render;render=function(){
      if(info){
       let line=card.querySelector(".hs-runtime-verified");
       if(!line){line=document.createElement("span");line.className="hs-runtime-verified";info.append(line)}
-      line.textContent="Spotify runtime "+m+":"+seconds+" // final cue #"+(r.finalCueIndex+1);
+      line.textContent="Spotify "+m+":"+seconds+" / alvo "+Math.floor((SCORE_META[number]?.estimatedMinutes||0))+":"+String(Math.round(((SCORE_META[number]?.estimatedMinutes||0)%1)*60)).padStart(2,"0")+" // "+(r.autoFitResult||"tempo verificado");
      }
      toast("Score verificado no Spotify // "+m+":"+seconds);
     }catch(err){toast("Spotify QA: "+err.message)}
