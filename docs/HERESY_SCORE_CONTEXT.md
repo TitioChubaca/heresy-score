@@ -351,3 +351,11 @@ User-observed IX 22:38 vs 25:12 text estimate. Added The Still, Cold World (Bonu
 - Before marking a chapter READY, verify exact Spotify recording, resolved runtime, ordered text segments, transition fit, final-cue protection, duplicate/recent-use warnings, and spoiler-safe metadata. Distinguish catalog estimates, app-resolved values and reader-confirmed playback.
 - Preserve all reading logs, local state, private MOBI and sealed future scene maps. Never publish the MOBI or private narrative maps to the public repository. Chapter X remains unconfirmed as completed; do not reveal future plot.
 - Next engineering task: reproduce and fix the **Chapter X Spotify runtime check failure**, then reassess its cue selection and dynamic contours. Follow with IX post-read audit and a general repeat/leitmotif guard.
+
+## 2026-11-03 — Compact reading player UI (first implementation)
+- Reader requested fewer chapter-start buttons and ability to browse spoiler-safe compendium images while chapter timer/music continues.
+- Added `scripts/compact-reader.js` and loaded it after other scripts in `index.html`; offline SW cache bumped to **heresy-score-v0138**.
+- Active player gains **Minimizar / Expandir**; compact mode docks at bottom with chapter/time and previous/pause/next controls. Existing session, timer and Spotify handlers remain authoritative, and no chapter abort/finish occurs when minimizing.
+- Secondary track feedback, final cue and chapter finish/open Spotify/abort actions are grouped in a native expandable **Mais ações** section in full mode. These remain available by expanding the player.
+- This is a first UI pass, **not device-tested**. Verify on Android PWA: viewport overlays, safe-area, archive navigation, image dialogs, pause/resume, track skip, finish, and page reload while active. Review other chapter-preflight action buttons in a second UI pass.
+- Spotify runtime Chapter X bug remains open; compact player work does not imply runtime fix.
