@@ -359,3 +359,11 @@ User-observed IX 22:38 vs 25:12 text estimate. Added The Still, Cold World (Bonu
 - Secondary track feedback, final cue and chapter finish/open Spotify/abort actions are grouped in a native expandable **Mais ações** section in full mode. These remain available by expanding the player.
 - This is a first UI pass, **not device-tested**. Verify on Android PWA: viewport overlays, safe-area, archive navigation, image dialogs, pause/resume, track skip, finish, and page reload while active. Review other chapter-preflight action buttons in a second UI pass.
 - Spotify runtime Chapter X bug remains open; compact player work does not imply runtime fix.
+
+## 2026-11-04 — Spotify playback / timer regression repair
+- Reader reported Chapter X active paused at 00:00; **Resume** failed even after opening Spotify manually, and **Open Spotify** was mislabeled/repurposed as a failed restore operation.
+- Root code issue verified in `scripts/spotify-chapter-resume.js`: override of `toggleSessionPause` sent paused sessions to `restore(0)`, coupling timer progression to successful Spotify device/playback API calls. `openSpotifyBtn` was also overridden to run restore rather than navigate.
+- Fixed timer resume to immediately update `state.active` and `renderNow()`, then attempt Spotify playback independently. Spotify failure must not freeze reading time.
+- Restored `openSpotifyBtn` to open the chapter playlist URL. Explicit `Retomar trilha no ponto da leitura` remains the API seek feature and now reports errors more clearly.
+- Offline cache bumped to **heresy-score-v0140**. Real Android/Spotify validation pending. Spotify API/device issues not yet proven fixed; do not claim end-to-end playback success.
+- Next QA: reload PWA; verify timer Resume/Pause independently, playlist link opening, device status, explicit restore error details, and playlist track API behavior. Never reset Chapter X reading logs to test.
