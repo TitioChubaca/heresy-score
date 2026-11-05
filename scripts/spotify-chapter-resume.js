@@ -31,7 +31,7 @@ async function playlistTracks(id){
   const items=page?.items||[];
   for(const entry of items){
    const t=entry?.item||entry?.track;
-   if(t?.type==="track"&&t.uri&&Number.isFinite(t.duration_ms))
+   if(t?.uri&&Number.isFinite(t.duration_ms))
     list.push({uri:t.uri,title:t.name||"",durationMs:Math.max(0,t.duration_ms)});
   }
   if(items.length<limit||!page?.next)break;
@@ -50,7 +50,7 @@ function locate(tracks,milliseconds){
 }
 async function restore(delta){
  if(busy||!state.active)return;
- if(!spotifyConnected()){info.textContent="Conecte sua conta Spotify antes de retomar.";return}
+ if(!spotifyConnected()){info.textContent="Spotify desconectado. O cronômetro pode continuar sem música.";return}
  const session=mySession(),chapter=state.active.chapter,at=elapsed();
  busy=true;b.disabled=minus.disabled=plus.disabled=true;b.textContent="Sincronizando...";
  try{
@@ -69,7 +69,7 @@ async function restore(delta){
   const desired=Math.max(0,at+adjust);
   const target=locate(tracks,desired);
   const device=await spotifyResolveDevice();
-  if(!device?.id)throw Error("Abra o Spotify neste aparelho para ativar um dispositivo e tente novamente");
+  if(!device?.id)throw Error("Nenhum dispositivo Spotify ativo. Abra o aplicativo Spotify e reproduza uma faixa primeiro");
   if(mySession()!==session)throw Error("Sessão alterada");
   await spotifyApi("/me/player/play?device_id="+encodeURIComponent(device.id),{
    method:"PUT",body:JSON.stringify({
@@ -96,23 +96,38 @@ async function restore(delta){
   info.textContent="Retomada: faixa "+(target.index+1)+" aos "+clock(target.positionMs)+" · cronômetro "+clock(at)+". Ajuste ±30s se necessário.";
   minus.disabled=plus.disabled=false;
  }catch(e){
-  info.textContent="Não foi possível posicionar a trilha: "+(e.message||e)+". O cronômetro foi preservado.";
+  info.textContent="Spotify não retomou: "+(e.message||e)+". Cronômetro preservado; use Abrir Spotify para reprodução manual.";
  }finally{busy=false;b.disabled=false;b.textContent="Retomar trilha no ponto da leitura"}
 }
-// The existing Resume button must NOT resume unrelated Spotify music.
+// Timer controls must always work, even if Spotify rejects playback APIs.
+// Spotify resynchronization remains an explicit separate action.
 const originalToggle=toggleSessionPause;
 toggleSessionPause=async function(){
- if(state.active?.paused&&spotifyConnected())return restore(0);
+ if(!state.active)return;
+ if(state.active.paused){
+  state.active.paused=false;
+  state.active.resumedAt=Date.now();
+  state.active.pausedAt=null;
+  save();renderNow();
+  if(spotifyConnected()){
+   const ok=await spotifyResume();
+   if(!ok){info.textContent="Cronômetro retomado. Spotify não respondeu: abra a playlist manualmente ou use Retomar trilha.";toast("Cronômetro ativo; Spotify não confirmado");}
+   else refreshPlayer();
+  }
+  return;
+ }
  return originalToggle();
 };
 const pauseButton=document.getElementById("pauseBtn");
 if(pauseButton)pauseButton.onclick=toggleSessionPause;
-// The original "Open Spotify" action used to open the playlist at its start.
-// During an active reading session it now restores the correct cue first.
+// Opening Spotify is navigation, never an API-only seek operation.
 const openBtn=document.getElementById("openSpotifyBtn");
 if(openBtn){
- const oldOpen=openBtn.onclick;
- openBtn.onclick=()=>state.active&&spotifyConnected()?restore(0):oldOpen?.();
+ openBtn.onclick=()=>{
+  const entry=currentPlaylist();
+  const url=entry?.url||(entry?.id?"https://open.spotify.com/playlist/"+entry.id:null)||state.spotify.playlistUrl||state.playlistUrl||PLAYLIST;
+  window.open(url,"_blank");
+ };
 }
 b.onclick=()=>restore(0);
 minus.onclick=()=>restore(-30000);plus.onclick=()=>restore(30000);
@@ -120,7 +135,7 @@ const previousRender=renderNow;
 renderNow=function(){
  previousRender();
  const active=!!state.active;
- if(openBtn)openBtn.textContent=active&&spotifyConnected()?"Abrir trilha no ponto da leitura":"Open Spotify";
+ if(openBtn)openBtn.textContent="Abrir playlist no Spotify";
  b.style.display=controls.style.display=active?"":"none";
  info.style.display=active?"":"none";
  if(!active){lastTarget=null;minus.disabled=plus.disabled=true}
