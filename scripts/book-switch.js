@@ -54,9 +54,9 @@ const oldRender=render;render=function(){
   const actions=card?.querySelector(".actions");
   if(actions){
    const check=document.createElement("button");
-   check.type="button";check.className="btn";check.textContent="Verificar e ajustar duração";
+   check.type="button";check.className="btn";check.textContent="Auditar duração Spotify";
    check.onclick=async()=>{
-    check.disabled=true;check.textContent="Conferindo e ajustando Spotify...";
+    check.disabled=true;check.textContent="Conferindo Spotify...";
     try{
      if(!spotifyConnected())throw Error("Spotify precisa estar conectado");
      const sourceBook=state.activeBookSlug;
@@ -82,7 +82,7 @@ const oldRender=render;render=function(){
      }
      toast("Score verificado no Spotify // "+m+":"+seconds);
     }catch(err){toast("Spotify QA: "+err.message)}
-    finally{check.disabled=false;check.textContent="Check Spotify Runtime"}
+    finally{check.disabled=false;check.textContent="Auditar duração Spotify"}
    };
    actions.append(check);
   }
