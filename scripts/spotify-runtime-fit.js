@@ -39,6 +39,38 @@ const alternatives={
 24:[["Aralakh Company","Cris Velasco"],["Reaper Chase","Cris Velasco"]],
 25:[["Leaving Earth","Clint Mansell"],["The Still, Cold World (Bonus Track)","Piotr Musiał"]]
 };
+
+async function liveTracks(id){
+ const out=[];
+ for(let offset=0;offset<500;offset+=100){
+  const page=await spotifyApi("/playlists/"+encodeURIComponent(id)+"/items?limit=100&offset="+offset);
+  const entries=page?.items||[];
+  for(const e of entries){const t=e?.item||e?.track;if(t?.uri&&Number.isFinite(t.duration_ms))out.push({uri:t.uri,ms:t.duration_ms,title:t.name||""});}
+  if(!page?.next||entries.length<100)break;
+ }
+ return out;
+}
+function normalizeTitle(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");}
+function cueMatches(t,c){return normalizeTitle(t.title)===normalizeTitle(c[0])||normalizeTitle(t.title).includes(normalizeTitle(c[0]).replace("bonustrack",""));}
+function storeActual(n,p,r,tracks){
+ r.durationMs=p.durationMs=tracks.reduce((a,t)=>a+t.ms,0);
+ r.trackCount=p.trackCount=tracks.length;
+ r.finalCueIndex=p.finalCueIndex=tracks.length-1;
+}
+async function undoBridge(id,n,p,r,tracks){
+ const pos=candidates[n]?.[0],score=SCORES[n]||[];
+ if(pos==null||tracks.length!==score.length+1||pos>=tracks.length-1)return false;
+ if(!tracks.filter((_,i)=>i!==pos).every((t,i)=>cueMatches(t,score[i])))return false;
+ const extra=tracks[pos],approved=[candidates[n][1],...(alternatives[n]||[])];
+ if(!approved.some(c=>cueMatches(extra,c)))return false;
+ await spotifyApi("/playlists/"+encodeURIComponent(id)+"/items",{method:"DELETE",body:JSON.stringify({items:[{uri:extra.uri,positions:[pos]}]})});
+ const fresh=await liveTracks(id);
+ if(fresh.length!==score.length)throw Error("Spotify não confirmou a remoção");
+ storeActual(n,p,r,fresh);
+ delete p.autoFitSignature;delete p.autoFitResult;
+ r.autoFitResult="Ponte extra removida ("+Math.round(extra.ms/1000)+"s); sequência preservada";
+ save();return true;
+}
 window.HSApprovedBridges=candidates;
 const original=spotifySyncChapter;
 spotifySyncChapter=async function(n){
@@ -51,16 +83,21 @@ spotifySyncChapter=async function(n){
  if(!runtime||!play)return id;
  if(session){runtime.autoFitResult="Leitura ativa: trilha preservada";return id;}
  const signature=JSON.stringify({score:SCORES[n]||[],policy,options:alternatives[n]||[]});
- if(play.autoFitSignature===signature){
-  runtime.autoFitResult=play.autoFitResult||"Verificado";return id;
- }
- if(play.autoFitSignature&&play.autoFitSignature!==signature){
-  delete play.autoFitSignature;delete play.autoFitResult;
- }
+ let tracks;
+ try{tracks=await liveTracks(id);if(!tracks.length)throw Error("playlist vazia");storeActual(n,play,runtime,tracks);}
+ catch(e){runtime.autoFitResult="Falha ao conferir Spotify: "+String(e.message||e);save();return id;}
  const target=Math.round((meta.estimatedMinutes||0)*60000);
+ let gap=target-runtime.durationMs;
+ if(gap < -45000){
+  try{if(await undoBridge(id,n,play,runtime,tracks)){tracks=await liveTracks(id);gap=target-runtime.durationMs;}}
+  catch(e){runtime.autoFitResult="Falha ao remover ponte: "+String(e.message||e);save();return id;}
+ }
+ if(gap < -45000){runtime.autoFitResult="Trilha "+Math.round(-gap/1000)+"s longa; sem corte editorial aprovado. Ordem preservada.";save();return id;}
+ if(Math.abs(gap)<=45000){runtime.autoFitResult="Duração dentro de ±45s do alvo";save();return id;}
+ if(play.autoFitSignature===signature){runtime.autoFitResult=play.autoFitResult||"Verificado";save();return id;}
+ if(play.autoFitSignature&&play.autoFitSignature!==signature){delete play.autoFitSignature;delete play.autoFitResult;}
  const actual=runtime.durationMs;
- if(!Number.isFinite(target)||!target||!Number.isFinite(actual)||!actual)return id;
- const gap=target-actual;
+ gap=target-actual;
  // Do not pad only to hit a number. A shortfall must be meaningfully large,
  // and the optional cue must match a previously selected narrative bridge.
  if(gap<90000||gap>330000){
@@ -98,9 +135,9 @@ spotifySyncChapter=async function(n){
   await spotifyApi("/playlists/"+encodeURIComponent(id)+"/items",{
    method:"POST",body:JSON.stringify({uris:[chosen.uri],position})
   });
-  runtime.durationMs+=chosen.ms;
-  runtime.trackCount=(runtime.trackCount||SCORES[n].length)+1;
-  if((runtime.finalCueIndex??lastIndex)>=position)runtime.finalCueIndex++;
+  const verified=await liveTracks(id);
+  storeActual(n,play,runtime,verified);
+
   runtime.autoFitResult="Ponte aplicada: "+chosen.title+" (+"
    +Math.round(chosen.ms/1000)+"s), sem alterar a última faixa";
   play.autoFitSignature=signature;play.autoFitResult=runtime.autoFitResult;
