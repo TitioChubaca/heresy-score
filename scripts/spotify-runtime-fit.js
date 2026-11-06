@@ -88,10 +88,12 @@ spotifySyncChapter=async function(n){
  catch(e){runtime.autoFitResult="Falha ao conferir Spotify: "+String(e.message||e);save();return id;}
  const target=Math.round((meta.estimatedMinutes||0)*60000);
  let gap=target-runtime.durationMs;
+ let removedExtra=false;
  if(gap < -45000){
-  try{if(await undoBridge(id,n,play,runtime,tracks)){tracks=await liveTracks(id);gap=target-runtime.durationMs;}}
+  try{if(await undoBridge(id,n,play,runtime,tracks)){removedExtra=true;tracks=await liveTracks(id);gap=target-runtime.durationMs;}}
   catch(e){runtime.autoFitResult="Falha ao remover ponte: "+String(e.message||e);save();return id;}
  }
+ if(removedExtra){runtime.autoFitResult+="; novo desvio "+Math.round(gap/1000)+"s (sem reinserir automaticamente)";save();return id;}
  if(gap < -45000){runtime.autoFitResult="Trilha "+Math.round(-gap/1000)+"s longa; sem corte editorial aprovado. Ordem preservada.";save();return id;}
  if(Math.abs(gap)<=45000){runtime.autoFitResult="Duração dentro de ±45s do alvo";save();return id;}
  if(play.autoFitSignature===signature){runtime.autoFitResult=play.autoFitResult||"Verificado";save();return id;}
