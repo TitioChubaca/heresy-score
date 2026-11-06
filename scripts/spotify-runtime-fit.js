@@ -72,29 +72,6 @@ async function undoBridge(id,n,p,r,tracks){
  save();return true;
 }
 
-async function quickFitXI(id,play,runtime,tracks,target){
- // Reader-requested one-time fast fit. Preserve opening, closing and relative cue order.
- const authored=SCORES[11]||[];
- if(tracks.length!==authored.length||!tracks.every((t,i)=>cueMatches(t,authored[i])))return false;
- const excess=runtime.durationMs-target;
- if(excess<90000||excess>300000)return false;
- // Only middle positions: never drop the entry, final cue or immediately preceding resolution.
- const options=tracks.map((t,i)=>({t,i,difference:Math.abs(excess-t.ms)}))
-  .filter(x=>x.i>=2&&x.i<=authored.length-3&&x.difference<=45000)
-  .sort((a,b)=>a.difference-b.difference);
- if(!options.length)return false;
- const {t,i}=options[0];
- await spotifyApi("/playlists/"+encodeURIComponent(id)+"/items",{
-  method:"DELETE",body:JSON.stringify({items:[{uri:t.uri,positions:[i]}]})
- });
- const fresh=await liveTracks(id);
- if(fresh.length!==tracks.length-1||!fresh.every((x,j)=>x.uri===tracks[j<i?j:j+1].uri))
-  throw Error("Spotify não confirmou o corte rápido; verifique a playlist");
- storeActual(11,play,runtime,fresh);
- play.quickFitXI={removedTitle:t.title,removedUri:t.uri,removedPosition:i,previousMs:tracks.reduce((a,x)=>a+x.ms,0)};
- runtime.autoFitResult="Ajuste rápido XI: removida "+t.title+" ("+Math.round(t.ms/1000)+"s); abertura, encerramento e ordem restante preservados";
- save();return true;
-}
 window.HSApprovedBridges=candidates;
 const original=spotifySyncChapter;
 spotifySyncChapter=async function(n){
@@ -105,7 +82,7 @@ spotifySyncChapter=async function(n){
  const runtime=state.spotify.chapterRuntime?.[n];
  const play=state.spotify.playlists?.["fulgrim:"+n];
  if(!runtime||!play)return id;
- if(session){runtime.autoFitResult="Leitura ativa: trilha preservada";return id;}
+ if(session){runtime.autoFitResult="Leitura ativa: trilha preservada";save();return id;}
  const signature=JSON.stringify({score:SCORES[n]||[],policy,options:alternatives[n]||[]});
  let tracks;
  try{tracks=await liveTracks(id);if(!tracks.length)throw Error("playlist vazia");storeActual(n,play,runtime,tracks);if(n===11){runtime.auditTracks=tracks.map((t,i)=>({position:i+1,title:t.title,seconds:Math.round(t.ms/1000)}));runtime.auditTargetMs=Math.round((meta.estimatedMinutes||0)*60000);runtime.auditOrderMatches=tracks.length===(SCORES[n]||[]).length&&tracks.every((t,i)=>cueMatches(t,SCORES[n][i]));}}
@@ -118,10 +95,6 @@ spotifySyncChapter=async function(n){
   catch(e){runtime.autoFitResult="Falha ao remover ponte: "+String(e.message||e);save();return id;}
  }
  if(removedExtra){runtime.autoFitResult+="; novo desvio "+Math.round(gap/1000)+"s (sem reinserir automaticamente)";save();return id;}
- if(n===11&&gap < -45000&&!play.quickFitXI){
-  try{if(await quickFitXI(id,play,runtime,tracks,target))return id;}
-  catch(e){runtime.autoFitResult="Ajuste rápido XI falhou: "+String(e.message||e);save();return id;}
- }
  if(gap < -45000){runtime.autoFitResult="Trilha "+Math.round(-gap/1000)+"s longa; sem corte editorial aprovado. Ordem preservada.";if(n===11)runtime.autoFitResult+=" Auditoria das "+tracks.length+" faixas disponível; não remova músicas originais automaticamente.";save();return id;}
  if(Math.abs(gap)<=45000){runtime.autoFitResult="Duração dentro de ±45s do alvo";save();return id;}
  if(play.autoFitSignature===signature){runtime.autoFitResult=play.autoFitResult||"Verificado";save();return id;}
