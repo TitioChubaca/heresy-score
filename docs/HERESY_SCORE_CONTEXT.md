@@ -379,3 +379,8 @@ User-observed IX 22:38 vs 25:12 text estimate. Added The Still, Cold World (Bonu
 - IMPORTANT: The reader clarified that the approximately **+3 minute** overrun after using **Verificar e ajustar duração** concerns **Chapter XI**, NOT Chapter X. Previous v0.14.1 note incorrectly attributed the overrun to X; retain X's earlier distinct runtime/button problems, but do not treat this +3m observation as X evidence.
 - Focus next audit and Spotify live-duration verification on **Chapter XI** (estimated source target 21.7 min), preserving authored cue sequence and final cue. The generic bridge rollback implementation applies to XI but remains unverified on the user's playlist.
 - Do not infer Chapter XI has been read or completed solely from Spotify preflight.
+
+## 2026-11-05 — Fulgrim XI runtime diagnostic (v0142)
+- Added chapter XI live per-track Spotify audit (`auditTracks`, `auditTargetMs`, `auditOrderMatches`) and an expandable audit under chapter XI's Spotify verification result, showing exact track durations, total deviation and whether authored cue order matches.
+- The app still safely removes only provably auto-inserted bridges; it does **not** automatically remove/replace any of XI's eight authored cues without editorially justified alternatives. Spotify API is executed in reader's PWA, not through GitHub; actual playlist durations cannot be verified from repo alone.
+- User should run verification on XI and share the audit if original eight tracks are overlong; then curate an appropriate shorter replacement in the same scene position, rather than guessing a song. Offline cache v0142. Do not claim the +3-minute issue has been eliminated.
