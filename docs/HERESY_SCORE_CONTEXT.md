@@ -374,3 +374,8 @@ User-observed IX 22:38 vs 25:12 text estimate. Added The Still, Cold World (Bonu
 - Updated live Spotify playlist duration audit on each check, and conservative rollback of an auto-inserted bridge ONLY when playlist has exactly one extra track, that track is at the approved insertion position, it matches an approved bridge, and all remaining original cue titles match the authored sequence. Verify after DELETE; never remove arbitrary source cues.
 - After a bridge rollback, do not immediately reinsert the same bridge. If original sequence remains >45 seconds long, report the overrun as **unresolved editorial shortening** rather than trimming blindly. Future work: approved same-function replacement and/or excerpt/cue-boundary design.
 - Cache **heresy-score-v0141**. Real device Spotify playlist test pending; active reading sessions remain protected from edits. Never describe full bidirectional shortening as solved until editorial overrun handling is implemented and tested.
+
+## 2026-11-05 — Reader correction: overrun belongs to Fulgrim XI
+- IMPORTANT: The reader clarified that the approximately **+3 minute** overrun after using **Verificar e ajustar duração** concerns **Chapter XI**, NOT Chapter X. Previous v0.14.1 note incorrectly attributed the overrun to X; retain X's earlier distinct runtime/button problems, but do not treat this +3m observation as X evidence.
+- Focus next audit and Spotify live-duration verification on **Chapter XI** (estimated source target 21.7 min), preserving authored cue sequence and final cue. The generic bridge rollback implementation applies to XI but remains unverified on the user's playlist.
+- Do not infer Chapter XI has been read or completed solely from Spotify preflight.
