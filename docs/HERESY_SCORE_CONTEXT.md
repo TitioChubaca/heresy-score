@@ -367,3 +367,10 @@ User-observed IX 22:38 vs 25:12 text estimate. Added The Still, Cold World (Bonu
 - Restored `openSpotifyBtn` to open the chapter playlist URL. Explicit `Retomar trilha no ponto da leitura` remains the API seek feature and now reports errors more clearly.
 - Offline cache bumped to **heresy-score-v0140**. Real Android/Spotify validation pending. Spotify API/device issues not yet proven fixed; do not claim end-to-end playback success.
 - Next QA: reload PWA; verify timer Resume/Pause independently, playlist link opening, device status, explicit restore error details, and playlist track API behavior. Never reset Chapter X reading logs to test.
+
+## 2026-11-05 — Spotify runtime overrun correction (v0.14.1 cache)
+- Reader reports **Verificar e ajustar duração** left Chapter X about **three minutes too long**; wants bidirectional adjustment without disrupting authored narrative order.
+- Inspected `scripts/spotify-runtime-fit.js`: previous implementation only added approved bridge tracks for shortfalls and incorrectly treated overlong playlists as sufficient.
+- Updated live Spotify playlist duration audit on each check, and conservative rollback of an auto-inserted bridge ONLY when playlist has exactly one extra track, that track is at the approved insertion position, it matches an approved bridge, and all remaining original cue titles match the authored sequence. Verify after DELETE; never remove arbitrary source cues.
+- After a bridge rollback, do not immediately reinsert the same bridge. If original sequence remains >45 seconds long, report the overrun as **unresolved editorial shortening** rather than trimming blindly. Future work: approved same-function replacement and/or excerpt/cue-boundary design.
+- Cache **heresy-score-v0141**. Real device Spotify playlist test pending; active reading sessions remain protected from edits. Never describe full bidirectional shortening as solved until editorial overrun handling is implemented and tested.
