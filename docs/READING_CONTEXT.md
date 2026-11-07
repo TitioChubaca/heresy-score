@@ -1,5 +1,18 @@
 # Warhammer Reading Context
 
+**Current handoff (2026-11-07)**  
+**Spoiler ceiling: Fulgrim — Chapter XII complete.**  
+**Next chapter: XIII.**  
+Source: confirmed chapter XII Supabase log (29 reading minutes) and the latest App Lab handoff. No chapter XIII completion log is present; if the reader later confirms XIII, advance then. **Never reveal Fulgrim XIII–XXV plot, character fate, scene mapping or spoiler-bearing art before individual reading clearance.**
+
+Reading order: Horus Heresy in publication order, in English. Completed I–IV, with *The Flight of the Eisenstein* including its XVII epilogue. Book V *Fulgrim* is the active book. Discuss only the text and characters the reader has already encountered; canonical lore first, clearly separate community interpretation; correct mistaken theories without spoiling upcoming reveals.
+
+The historical snapshot below is retained for archival context only. Its old `Current`, `Next` and chapter limits are **superseded by this top-level handoff**.
+
+---
+
+## Historical Book IV snapshot — October 2026 (superseded)
+
 Last updated: 2026-10-23
 Spoiler ceiling: **The Flight of the Eisenstein — complete (including Chapter XVII epilogue)**
 Next safe chapter: **Fulgrim — Chapter I (not yet started)**
