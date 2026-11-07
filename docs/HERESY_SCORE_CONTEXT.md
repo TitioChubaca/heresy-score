@@ -1,11 +1,11 @@
 # Heresy Score — Technical and Musical Context
 
-Last updated: 2026-10-24
-Current patch protocol: **v0.11.7**
+Last updated: 2026-11-07
+Current patch protocol: **v0.15.3**
 Current book: **Fulgrim (Book V)**
 Correct chapter count: **17 (chapter XVII is a short epilogue)**
-Current reader clearance: **Book IV complete; Fulgrim Chapter I complete**
-Next score: **Fulgrim Chapter II — seven-cue first pass published; Spotify preflight pending; Kindle estimate 26 min**
+Current reader clearance: **Book IV complete; Fulgrim Chapter XII complete (confirmed log); Chapter XIII next. Never expose XIII+ narrative details.**
+Next score: **Fulgrim Chapter XIII — editorial cue sheet staged; authoritative Spotify runtime and phone-device QA still pending. XIV–XXV only precurated, not ready-certified.**
 
 ## Product purpose
 Heresy Score is a mobile-first, spoiler-safe reading soundtrack companion for the Horus Heresy.
@@ -418,3 +418,22 @@ User-observed IX 22:38 vs 25:12 text estimate. Added The Still, Cold World (Bonu
 - Official source leads for future editorial sourcing: Warhammer Art (Fulgrim — Visions of Treachery by Neil Roberts, and The Palatine Phoenix); Warhammer Community archive of Dave Gallagher's 2003 Saul Tarvitz card illustration; Karl Richardson's Phoenix Guard book illustration (40k.gallery attribution). Verify scene-era spoiler safety and direct image rights/source before embedding. Do not use current 40k/Fulgrim Transfigured designs for current reading ceiling.
 - For n>=13, runtime-fit now attempts approved shorter transition candidates in the designated cue slot when over target; verifies exact Spotify playlist readback. If none fits, reports overrun without random deletion. This is **not** a guarantee of <=45s for all future chapters; deeper per-chapter music curation and device QA are pending.
 - v0151 deployed. Avoid publishing third-party art binaries to a public repository without license/permission; private repository status alone does not grant redistribution rights. User prefers personal/internal use, but provenance and artist credit must remain attached.
+
+
+## 2026-11-07 — v0.15.3 Spotify correctness and soundtrack-duration protocol
+
+**Problem and evidence:** GitHub commits did not imply updates to an installed PWA or to the user's private Spotify playlist. XII Spotify audit reported 34:34 / 11 items against a 29:36 estimate, while Supabase confirms XII was read in 29 minutes. Chapter XI was 27 minutes reading (not the 21:42 forecast). Do not silently change a reader's recorded time to match music.
+
+**Implemented:**
+- `data/fulgrim-future-scores.js`: XII source reduced from 11 to 10 approved cues by omitting its previously designated *optional intermediate atmospheric bridge*. Keep the opening and final cue. This is an editorial source change, not an unverified claim about the live Spotify playlist.
+- `scripts/spotify-runtime-fit.js`: now an authoritative reconciliation layer. For any chapter audit without an active session, resolve canonical cues; validate exact track + artist; compare playlist ordered URIs; replace mismatched live contents using Spotify `PUT /playlists/{id}/items`; reread and verify every URI plus `duration_ms`. Existing legacy `preflightComplete` signatures are **not sufficient evidence**. Statuses `WITHIN_RANGE`, `OVER_TARGET`, `UNDER_TARGET`, `FAILED`; never claim fitting if the overrun survives.
+- Disabled previous silent numerical bridge addition/deletion/replacement logic for Fulgrim. It failed to produce dependable, scene-faithful verified results. New changes require explicit editorial cue-sheet revisions first. Spotify errors must not be disguised as success.
+- Spotify 2026 API migration: use individual `GET /tracks/{id}` (bulk `GET /tracks?ids` is unavailable in applicable development mode), plus `playlist-read-private` OAuth scope for readback of the private chapter playlists. `spotify-resilient.js` fallback migrated as well. Existing authorized users **may need to click Connect Spotify and reauthorize** to grant the newly requested scope; never wipe the reading log or existing playlists.
+- PWA `sw.js` switched executable source files (.js, .json, .html) to network-first with `cache:"no-store"`, while keeping offline cached fallback, and version-bumped to `heresy-score-v0153`. `index.html` registers SW with `updateViaCache:"none"`.
+- New `scripts/spotify-audit-panel.js` in Settings allows auditing already-read chapters and the next unread one without starting music; shows actual runtime, reader target, signed deviation, verification state and previously read track list. Future preflight batch now limits to three upcoming chapters to reduce rate limiting.
+- Isolated mocked integration checks: stale 3-track playlist reconciled to two intended tracks with one PUT + readback; second check did not rewrite; active reading did not mutate; Spotify 403 returned a visible failure rather than a false success. JS syntax checks passed. **Authenticated Android PWA/Spotify confirmation remains open.**
+- The corrected Spotify playlist is **not** confirmed on the reader's account until the new code loads, OAuth includes reading scope, and a readback from Settings returns `verified=true`. Do not tell user it is already fixed on the phone.
+
+**Spoiler ceiling and next work:** Supabase currently has Fulgrim V–XII logs (V 36, VI 30, VII 31, VIII 30, IX 24, X 35, XI 27, XII 29 minutes) but not XIII. Next safe chapter XIII. Chapters XIV–XXV have precurated soundtrack data, *not* certified matching runtime; audit them in small batches, and edit source cue selection where persistent overrun is measured. Do not publish scene maps, original MOBI, future-character statuses or narrative details to the public repository. Base forecast on historical real reading times, not simply Kindle estimate.
+
+**QA still pending:** (1) installed PWA loads new JS (cache version evidence), (2) Spotify reauthorization with read-private scope, (3) live XII original 11 → canonical 10 readback / runtime, (4) XIII next-chapter preflight, (5) next 3 chapters' duration and scene-by-scene score editorial review, (6) Android pause/resume/final cue consistency and app_version telemetry.
