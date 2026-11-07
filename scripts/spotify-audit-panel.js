@@ -51,6 +51,22 @@ function result(n){
  }
  output.textContent=lines.join("\n");
 }
+async function readerForecast(n){
+ try{
+  const response=await fetch("./data/fulgrim-chapter-metrics.json",{cache:"no-store"});
+  if(!response.ok)return null;
+  const metrics=await response.json();
+  const chapters=metrics?.chapters||[];
+  const earlier=chapters.filter(c=>c.number<n&&c.words>0&&
+   Number(state.done?.[c.number]?.minutes)>=10).slice(-8);
+  if(earlier.length<3)return null;
+  const words=earlier.reduce((a,c)=>a+c.words,0);
+  const minutes=earlier.reduce((a,c)=>a+Number(state.done[c.number].minutes),0);
+  const pace=words/minutes,now=chapters.find(c=>c.number===n);
+  if(!now?.words||!Number.isFinite(pace)||pace<90||pace>350)return null;
+  return {minutes:now.words/pace,pace,samples:earlier.length};
+ }catch(err){return null;}
+}
 button.onclick=async()=>{
  options();
  const n=Number(select.value);
@@ -58,7 +74,13 @@ button.onclick=async()=>{
  if(state.active){output.textContent="Não modificar playlists durante a leitura ativa.";return;}
  if(!spotifyConnected()){output.textContent="Conecte ou reautorize o Spotify nas Configurações.";return;}
  button.disabled=true;output.textContent="Lendo a playlist do Spotify e conferindo as gravações...";
- try{await spotifySyncChapter(n);result(n);}
+ try{
+  await spotifySyncChapter(n);result(n);
+  const forecast=await readerForecast(n);
+  if(forecast)output.textContent+="\\nPrevisão por ritmo real: "+forecast.minutes.toFixed(1)+
+    " min ("+forecast.samples+" capítulos, "+Math.round(forecast.pace)+" palavras/min). "+
+    "Projeção separada da duração musical; não autoriza cortar cenas.";
+ }
  catch(err){result(n);output.textContent+="\nErro: "+String(err?.message||err);}
  finally{button.disabled=false;}
 };
