@@ -44,20 +44,18 @@ async function canonicalUris(score){
   if(!uri?.startsWith("spotify:track:"))throw Error("URI inválida: "+title);
   resolved.push(uri);
  }
- // Recheck the actual recording and artist, rather than trusting an old search cache.
- for(let i=0;i<resolved.length;i+=50){
-  const part=resolved.slice(i,i+50);
-  const response=await spotifyApi("/tracks?ids="+encodeURIComponent(part.map(u=>u.split(":").pop()).join(",")));
-  if(!Array.isArray(response?.tracks)||response.tracks.length!==part.length)
-    throw Error("Catálogo Spotify incompleto; lista original preservada");
-  for(let j=0;j<part.length;j++){
-   const t=response.tracks[j], [title,artist]=score[i+j];
-   if(!t||!Number.isFinite(t.duration_ms)||t.duration_ms<=0||
-      norm(t.name)!==norm(title)||
-      !(t.artists||[]).some(a=>norm(a.name)===norm(artist))){
-    throw Error("Gravação não confirmada: "+title+" / "+artist+
-      ". Nenhuma substituição automática foi realizada.");
-   }
+ // Spotify removed GET /tracks?ids=... for development-mode apps in 2026.
+ // Validate each exact recording individually before touching a playlist.
+ for(let i=0;i<resolved.length;i++){
+  const [title,artist]=score[i];
+  const t=await spotifyApi("/tracks/"+encodeURIComponent(resolved[i].split(":").pop()));
+  const expectedTitle=norm(title),actualTitle=norm(t?.name);
+  const titleOK=actualTitle===expectedTitle||
+    actualTitle===expectedTitle.replace(/ bonus track$/,"");
+  const artistOK=(t?.artists||[]).some(a=>norm(a.name)===norm(artist));
+  if(!t||!Number.isFinite(t.duration_ms)||t.duration_ms<=0||!titleOK||!artistOK){
+   throw Error("Gravação não confirmada: "+title+" / "+artist+
+     ". Nenhuma substituição automática foi realizada.");
   }
  }
  return resolved;
@@ -129,7 +127,7 @@ spotifySyncChapter=async function(n){
   state.spotify.playlistUrl=entry.url||"https://open.spotify.com/playlist/"+id;
   save();return id;
  }catch(err){
-  const message=String(err?.message||err);
+  const raw=String(err?.message||err);\n  const message=/\\b403\\b|scope|forbidden/i.test(raw)?"Spotify sem permissão de leitura da playlist privada. Reautorize com Conectar Spotify nas Configurações. Detalhe: "+raw:raw;
   const r=state.spotify.chapterRuntime=state.spotify.chapterRuntime||{};
   r[n]={...(r[n]||{}),verified:false,status:"FAILED",autoFitResult:"NÃO CONFIRMADO: "+message.slice(0,180)};
   const entry=state.spotify.playlists?.[key];
