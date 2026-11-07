@@ -409,3 +409,5 @@ User-observed IX 22:38 vs 25:12 text estimate. Added The Still, Cold World (Bonu
 - XII: target-specific editorial trim of optional atmospheric bridge Beyond The Asteroid Belt (index 5) only if resulting deviation <=75s. Uses full ordered PUT with readback retries. If original playlist update/readback fails, creates a new private playlist, verifies it, updates active playlist pointer, preserves original as backup. No write during reading.
 - All Fulgrim chapters >=XI now record per-track Spotify audits. Batch preparation shows runtime, target, signed deviation and LONGA warning. No arbitrary automatic cue deletions for future chapters; these need scene-aware editorial work.
 - GitHub code changes are committed; Spotify-side success remains unverified until user tests authenticated PWA. Project Markdown uploads dated Oct 22 are stale compared with this repo technical record. Spoiler ceiling: XII complete, XIII unread.
+
+- v0150 additionally forces cache:no-store on every Spotify API request (including refreshed-token retry); verified JavaScript syntax for runtime-fit, book-switch and service worker. Spotify integration test still requires reader authentication.
