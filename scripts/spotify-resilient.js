@@ -19,10 +19,9 @@ spotifySyncChapter=async function(chapter){
   await spotifyApi("/playlists/"+p.id+"/items",{method:"PUT",body:JSON.stringify({uris})});
   let durationMs=0;
   try{
-   for(let off=0;off<uris.length;off+=50){
-    const ids=uris.slice(off,off+50).map(u=>String(u).split(":").pop());
-    const results=await spotifyApi("/tracks?ids="+encodeURIComponent(ids.join(",")));
-    durationMs+=(results.tracks||[]).reduce((a,t)=>a+(t?.duration_ms||0),0);
+   for(const uri of uris){
+    const track=await spotifyApi("/tracks/"+encodeURIComponent(String(uri).split(":").pop()));
+    durationMs+=Number(track?.duration_ms)||0;
    }
   }catch(err){}
   state.spotify.playlistId=p.id;
