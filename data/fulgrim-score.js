@@ -476,3 +476,18 @@ for(let n=10;n<=25;n++)window.HS_FULGRIM_DATA.chapters.push({number:n,title:"CHA
  };
  for(const p of d.people){if(facts[p.name]){const known=new Set((p.facts||[]).map(f=>f.ch+":"+f.text));for(const f of facts[p.name])if(!known.has(f.ch+":"+f.text))(p.facts||(p.facts=[])).push(f);}}
 })();
+
+
+/* Source-mapped additions for chapters IV and V; deliberately excludes later developments. */
+(()=>{
+ const d=window.HS_FULGRIM_DATA;
+ const facts={
+  "Fabius":[{ch:4,text:"O trabalho no apothecarion ocupa parte importante das conversas sobre as possibilidades e os limites do aperfeiçoamento."}],
+  "Bequa Kynska":[{ch:4,text:"Enfrenta dificuldades criativas apesar do prestígio de que desfruta entre os remembrancers."}],
+  "Solomon Demeter":[{ch:5,text:"Participa da ofensiva noturna a bordo de um Stormbird, numa operação marcada por riscos durante a aproximação."}],
+  "Julius Kaesoron":[{ch:5,text:"Lidera o avanço da Primeira Companhia em terreno hostil durante a ofensiva."}],
+  "Marius Vairosean":[{ch:5,text:"Sua companhia participa das operações numa elevação ao sul da zona de combate."}],
+  "Fulgrim":[{ch:5,text:"Conduz pessoalmente parte do avanço da Legião durante a ofensiva em Laeran."}]
+ };
+ for(const p of d.people){for(const f of facts[p.name]||[]){if(!(p.facts||[]).some(x=>x.ch===f.ch&&x.text===f.text))(p.facts||(p.facts=[])).push(f);}}
+})();
