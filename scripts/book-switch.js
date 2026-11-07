@@ -156,7 +156,8 @@ batch.onclick=async()=>{
     await spotifySyncChapter(n);
     const runtime=state.spotify.chapterRuntime?.[n];
     const sec=runtime?.durationMs?Math.round(runtime.durationMs/1000):null;
-    outcomes.push("CH "+String(n).padStart(2,"0")+": "+(sec!==null?Math.floor(sec/60)+":"+String(sec%60).padStart(2,"0"):"duração não informada"));
+    const targetSec=Math.round((SCORE_META[n]?.estimatedMinutes||0)*60);const delta=sec===null?null:sec-targetSec;
+    outcomes.push("CH "+String(n).padStart(2,"0")+": "+(sec!==null?Math.floor(sec/60)+":"+String(sec%60).padStart(2,"0"):"duração não informada")+(delta===null?"":(" / alvo "+Math.floor(targetSec/60)+":"+String(targetSec%60).padStart(2,"0")+" / "+(delta>0?"+":"")+delta+"s"+(delta>45?" ⚠ LONGA":""))));
    }catch(e){outcomes.push("CH "+String(n).padStart(2,"0")+": erro — "+(e.message||"Spotify"))}
   }
  }finally{
