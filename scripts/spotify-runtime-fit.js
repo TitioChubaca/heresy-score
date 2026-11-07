@@ -202,6 +202,10 @@ spotifySyncChapter=async function(n){
   try{if(await shortenWithApprovedReplacement(id,n,play,runtime,tracks,target))return id;}
   catch(e){runtime.autoFitResult="Substituição XIΙ não confirmada: "+String(e.message||e);save();return id;}
  }
+ if(gap < -45000&&n>=13){
+  try{if(await shortenWithApprovedReplacement(id,n,play,runtime,tracks,target))return id;}
+  catch(e){runtime.autoFitResult="Substituição não confirmada: "+String(e.message||e);save();return id;}
+ }
  if(gap < -45000){runtime.autoFitResult="Trilha "+Math.round(-gap/1000)+"s longa; sem corte editorial aprovado. Ordem preservada.";runtime.autoFitResult+=" Auditoria das "+tracks.length+" faixas disponível; sem corte arbitrário.";save();return id;}
  if(Math.abs(gap)<=45000){runtime.autoFitResult="Duração dentro de ±45s do alvo";save();return id;}
  if(play.autoFitSignature===signature){runtime.autoFitResult=play.autoFitResult||"Verificado";save();return id;}
