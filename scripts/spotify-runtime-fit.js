@@ -76,7 +76,7 @@ function updateAudit(n,play,tracks,source,change){
     status==="UNDER_TARGET"?" • TRILHA CURTA; REVISÃO EDITORIAL PENDENTE":" • duração aceitável")};
  play.durationMs=total;play.trackCount=tracks.length;play.finalCueIndex=tracks.length-1;
  play.scoreSignature=source;play.preflightComplete=true;play.verifiedAt=r[n].verifiedAt;
- play.verifiedSequence=tracks.map(t=>t.uri);play.lastCorrection=change||"already-matched";
+ play.verifiedSequence=tracks.map(t=>t.uri);play.sourceVerifiedBy="0.15.2";play.lastCorrection=change||"already-matched";
  state.spotify.scoreDurations=state.spotify.scoreDurations||{};
  state.spotify.scoreDurations[n]=total;
  save();
@@ -103,7 +103,12 @@ spotifySyncChapter=async function(n){
   const ensured=await spotifyEnsurePlaylist(n);
   id=ensured.id;
   if(state.activeBookSlug!==BOOK||state.active)throw Error("Contexto de leitura mudou");
-  const expected=await canonicalUris(SCORES[n]);
+  // Reuse only a sequence that THIS strict reconciler previously confirmed.
+  // Legacy preflightComplete/scoreSignature alone is never proof.
+  const cached=state.spotify.playlists?.[key];
+  const expected=(cached?.sourceVerifiedBy==="0.15.2"&&cached?.scoreSignature===source&&
+   Array.isArray(cached.verifiedSequence)&&cached.verifiedSequence.length===SCORES[n].length)
+    ?cached.verifiedSequence.slice():await canonicalUris(SCORES[n]);
   if(state.activeBookSlug!==BOOK||state.active)throw Error("Contexto de leitura mudou");
   let actual=await playlistTracks(id);
   let changed="";
@@ -137,6 +142,6 @@ spotifySyncChapter=async function(n){
   throw Error("Auditoria Spotify "+String(n).padStart(2,"0")+": "+message);
  }
 };
-window.HSSpotifyRuntimeQA={version:"0.15.0",get:n=>state.spotify.chapterRuntime?.[n]||null,
+window.HSSpotifyRuntimeQA={version:"0.15.2",get:n=>state.spotify.chapterRuntime?.[n]||null,
  readOnly:n=>state.spotify.chapterRuntime?.[n]?.verified===true};
 })();
