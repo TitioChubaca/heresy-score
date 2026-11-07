@@ -1,4 +1,4 @@
-# Heresy Score — v0.15.4
+# Heresy Score — v0.15.5
 
 Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 
@@ -8,11 +8,11 @@ Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 - **Spotify playlist correction is now an evidence-based operation.** The app matches the actual ordered Spotify URIs against the curated cue sheet, reconciles mismatches, and confirms the result by reading Spotify back. If it fails or remains over target, the UI must report that explicitly.
 - Chapter XII's optional intermediate atmospheric cue was removed from the canonical published score (11 → 10 source tracks). **This does not mean the user's existing Spotify playlist has already changed.** Run a new audit from the logged-in PWA.
 - Spotify API 2026: requires `playlist-read-private` alongside `playlist-modify-private` to audit private playlists; the app uses individual `GET /tracks/{id}` rather than removed bulk requests. Previously connected users may need to choose **Connect Spotify** again and authorize the additional scope.
-- The PWA caches critical app code **network-first** (service worker `heresy-score-v0154`) and refreshes when a new worker takes control while no reading is active. Old installed shells can require one manual restart. **Do not erase browser data** or disconnect Supabase to troubleshoot updates.
+- The PWA caches critical app code **network-first** (service worker `heresy-score-v0155`) and refreshes when a new worker takes control while no reading is active. Old installed shells can require one manual restart. **Do not erase browser data** or disconnect Supabase to troubleshoot updates.
 - A new **Spotify // Conferência de playlists** section in Settings audits and repairs already-read chapters plus the next unread one, without playback or reading log changes. An optional small-batch audit covers the next three chapters.
 - Safety: no automatic music padding or deleting purely to match a stopwatch; each song change must be justified by the scene. No plot, character fate, private MOBI or future scene maps shipped.
 - Verification: syntax and isolated fake-Spotify reconciliation scenarios passed; authenticated PWA readback on the reader's own device is **still pending**.
-- Technical source of truth: [docs/HERESY_SCORE_CONTEXT.md](docs/HERESY_SCORE_CONTEXT.md), [docs/READING_CONTEXT.md](docs/READING_CONTEXT.md), and [tests/spotify-runtime-reconciliation.js](tests/spotify-runtime-reconciliation.js).
+- Technical source of truth: [docs/HERESY_SCORE_CONTEXT.md](docs/HERESY_SCORE_CONTEXT.md), [docs/READING_CONTEXT.md](docs/READING_CONTEXT.md), [spoiler-safe future runtime forecasts](docs/FULGRIM_RUNTIME_FORECAST_2026-11-07.md), and [tests/spotify-runtime-reconciliation.js](tests/spotify-runtime-reconciliation.js).
 
 ## P2 reliability and feedback (v0.11.6)
 
