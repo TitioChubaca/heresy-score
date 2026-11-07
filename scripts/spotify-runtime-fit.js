@@ -142,6 +142,15 @@ spotifySyncChapter=async function(n){
   throw Error("Auditoria Spotify "+String(n).padStart(2,"0")+": "+message);
  }
 };
+// Avoid simultaneous preflights racing to overwrite the same playlist.
+const oneAtATime=spotifySyncChapter,inFlight=new Map();
+spotifySyncChapter=async function(n){
+ if(state.activeBookSlug!==BOOK)return oneAtATime(n);
+ if(inFlight.has(n))return inFlight.get(n);
+ const work=oneAtATime(n);
+ inFlight.set(n,work);
+ try{return await work;}finally{if(inFlight.get(n)===work)inFlight.delete(n);}
+};
 window.HSSpotifyRuntimeQA={version:"0.15.2",get:n=>state.spotify.chapterRuntime?.[n]||null,
  readOnly:n=>state.spotify.chapterRuntime?.[n]?.verified===true};
 })();
