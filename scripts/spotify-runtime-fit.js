@@ -124,6 +124,36 @@ async function shortenWithApprovedReplacement(id,n,play,runtime,tracks,target){
  save();return true;
 }
 
+async function publishVerifiedScore(id,n,play,uris){
+ const endpoint="/playlists/"+encodeURIComponent(id)+"/items";
+ let primaryError="";
+ try{
+  await spotifyApi(endpoint,{method:"PUT",body:JSON.stringify({uris})});
+  const checked=await verifySequence(id,uris);
+  return {id,tracks:checked,rebuilt:false};
+ }catch(err){primaryError=String(err?.message||err);}
+ // If the existing playlist is stale/unwritable, use a fresh private playlist.
+ // Preserve the original as a fallback; never delete it.
+ const created=await spotifyApi("/me/playlists",{method:"POST",body:JSON.stringify({
+  name:"Heresy Score // Fulgrim // CH "+String(n).padStart(2,"0")+" // corrected",
+  public:false,description:"Verified reading soundtrack; original playlist preserved as backup."
+ })});
+ if(!created?.id)throw Error("Spotify não criou playlist substituta: "+primaryError);
+ play.pendingRepairId=created.id;save();
+ try{
+  await spotifyApi("/playlists/"+encodeURIComponent(created.id)+"/items",{
+   method:"POST",body:JSON.stringify({uris})
+  });
+  const checked=await verifySequence(created.id,uris);
+  play.previousPlaylistId=id;play.id=created.id;
+  play.url="https://open.spotify.com/playlist/"+created.id;
+  state.spotify.playlistId=created.id;state.spotify.playlistUrl=play.url;
+  delete play.pendingRepairId;save();
+  return {id:created.id,tracks:checked,rebuilt:true};
+ }catch(err){
+  throw Error("Playlist original: "+primaryError+"; substituta: "+String(err?.message||err));
+ }
+}
 async function shortenXII(id,play,runtime,tracks,target){
  const authored=SCORES[12]||[];
  if(tracks.length!==authored.length||!tracks.every((t,i)=>cueMatches(t,authored[i])))return false;
@@ -135,13 +165,11 @@ async function shortenXII(id,play,runtime,tracks,target){
  if(after>=before||after>75000)return false;
  if(state.active)return false;
  const expected=tracks.filter((_,i)=>i!==index).map(t=>t.uri);
- await spotifyApi("/playlists/"+encodeURIComponent(id)+"/items",{
-  method:"DELETE",body:JSON.stringify({items:[{uri:cue.uri,positions:[index]}]})
- });
- const verified=await verifySequence(id,expected);
+ const published=await publishVerifiedScore(id,12,play,expected);
+ const verified=published.tracks;
  storeActual(12,play,runtime,verified);
  play.editorialXII={omitted:optional[0],position:index,sourceLength:authored.length};
- runtime.autoFitResult="Capítulo XII reduzido: ponte atmosférica opcional retirada; Spotify confirmou "+Math.round(runtime.durationMs/1000)+"s. Ordem e final preservados.";
+ runtime.autoFitResult="Capítulo XII reduzido e confirmado: "+Math.floor(runtime.durationMs/60000)+":"+String(Math.floor(runtime.durationMs/1000)%60).padStart(2,"0")+(published.rebuilt?" (nova playlist criada; original preservada)":"")+".";
  save();return true;
 }
 window.HSApprovedBridges=candidates;
