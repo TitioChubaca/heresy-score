@@ -129,14 +129,14 @@ function change(slug){
 }
 const nav=document.querySelector('[data-view-panel="books"]');
 const panel=document.createElement("section");panel.id="hsBooksPanel";panel.className="panel";
-panel.innerHTML='<h2>Active Book // Library</h2><p class="small">O progresso, as anotações e a sincronização na nuvem são separados por livro. Não é possível trocar durante uma leitura ativa. Capítulo V está preparado para leitura com trilha. Scores VI–VIII preparados para depois, liberados em sequência. IX e posteriores selados.</p><label class="small">Selected book <select id="hsBookSwitch" style="width:100%;margin-top:8px;background:#101a0f;color:#d2cbb7;padding:12px;border:1px solid #536746"><option value="flight-of-the-eisenstein">IV — The Flight of the Eisenstein</option><option value="fulgrim">V — Fulgrim (scores I–XXV precurados)</option></select></label>';
+panel.innerHTML='<h2>Active Book // Library</h2><p class="small">O progresso, as anotações e a sincronização na nuvem são separados por livro. Não é possível trocar durante uma leitura ativa. Os próximos scores são pré-curados e exigem confirmação de duração e ordem no Spotify antes da leitura.</p><label class="small">Selected book <select id="hsBookSwitch" style="width:100%;margin-top:8px;background:#101a0f;color:#d2cbb7;padding:12px;border:1px solid #536746"><option value="flight-of-the-eisenstein">IV — The Flight of the Eisenstein</option><option value="fulgrim">V — Fulgrim (scores I–XXV precurados)</option></select></label>';
 nav.append(panel);
 document.getElementById("hsBookSwitch").onchange=e=>change(e.target.value);
 
 // Optional preflight for all prepared chapters. Does not start music, timers or readings.
 const batch=document.createElement("button");
 batch.type="button";batch.className="btn";batch.id="hsBatchSpotify";
-batch.textContent="Preparar playlists V–XXV (opcional)";
+batch.textContent="Auditar próximas 3 playlists (opcional)";
 const cancelBatch=document.createElement("button");cancelBatch.type="button";cancelBatch.className="btn";cancelBatch.textContent="Parar preparo";cancelBatch.style.marginLeft="8px";cancelBatch.hidden=true;let batchStopped=false;
 const batchReport=document.createElement("p");batchReport.className="small";
 batchReport.id="hsBatchSpotifyReport";batchReport.setAttribute("aria-live","polite");
@@ -149,7 +149,9 @@ batch.onclick=async()=>{
  const activeSlug=state.activeBookSlug,oldId=state.spotify.playlistId,oldURL=state.spotify.playlistUrl;
  const outcomes=[];
  try{
-  for(let n=5;n<=25;n++){
+  const readNumbers=Object.keys(state.done||{}).map(Number).filter(Number.isInteger);
+  const first=Math.min(25,Math.max(0,...readNumbers)+1),last=Math.min(25,first+2);
+  for(let n=first;n<=last;n++){
    if(batchStopped||state.activeBookSlug!==activeSlug||state.active)break;
    batchReport.textContent="Preparando capítulo "+String(n).padStart(2,"0")+"...";
    try{
