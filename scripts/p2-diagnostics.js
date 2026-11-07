@@ -11,7 +11,7 @@
   const currentDone=JSON.stringify(state.done||{})===JSON.stringify(b[slug]?.done||{});
   const list=state.spotify?.playlists||{};
   const checks=[
-   ["release","0.15.4"],
+   ["release","0.15.5"],
    ["Spotify audit engine",window.HSSpotifyRuntimeQA?.version||"Not loaded"],
    ["Spotify private-playlist authorization","Reauthorize if audit says 403"],
    ["Service-worker active script",navigator.serviceWorker?.controller?.scriptURL?"Detected":"Pending"],
