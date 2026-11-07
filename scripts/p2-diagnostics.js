@@ -11,7 +11,10 @@
   const currentDone=JSON.stringify(state.done||{})===JSON.stringify(b[slug]?.done||{});
   const list=state.spotify?.playlists||{};
   const checks=[
-   ["release","0.15.4"],\n   ["Spotify audit engine",window.HSSpotifyRuntimeQA?.version||"Not loaded"],\n   ["Spotify private-playlist authorization","Reauthorize if audit says 403"],\n   ["Service-worker active script",navigator.serviceWorker?.controller?.scriptURL?"Detected":"Pending"],
+   ["release","0.15.4"],
+   ["Spotify audit engine",window.HSSpotifyRuntimeQA?.version||"Not loaded"],
+   ["Spotify private-playlist authorization","Reauthorize if audit says 403"],
+   ["Service-worker active script",navigator.serviceWorker?.controller?.scriptURL?"Detected":"Pending"],
    ["book selected",slug],
    ["saved book log consistency",currentDone?"OK":"Needs review"],
    ["Eisenstein recorded chapters",logs(HSBooks.IV)],
