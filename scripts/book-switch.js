@@ -70,11 +70,11 @@ const oldRender=render;render=function(){
       let line=card.querySelector(".hs-runtime-verified");
       if(!line){line=document.createElement("span");line.className="hs-runtime-verified";info.append(line)}
       line.textContent="Spotify "+m+":"+seconds+" / alvo "+Math.floor((SCORE_META[number]?.estimatedMinutes||0))+":"+String(Math.round(((SCORE_META[number]?.estimatedMinutes||0)%1)*60)).padStart(2,"0")+" // "+(r.autoFitResult||"tempo verificado");
-      if(number===11&&Array.isArray(r.auditTracks)){
+      if((number===11||number===12)&&Array.isArray(r.auditTracks)){
        let audit=card.querySelector(".hs-ch11-audit");
        if(!audit){audit=document.createElement("details");audit.className="hs-ch11-audit";info.append(audit);}
        const delta=Math.round((r.durationMs-(r.auditTargetMs||0))/1000);
-       const summary=document.createElement("summary");summary.textContent="Auditoria XI · "+(delta>0?"+":"")+delta+"s · "+r.auditTracks.length+" faixas · ordem "+(r.auditOrderMatches?"confirmada":"a revisar");
+       const summary=document.createElement("summary");summary.textContent="Auditoria "+String(number).padStart(2,"0")+" · "+(delta>0?"+":"")+delta+"s · "+r.auditTracks.length+" faixas · ordem "+(r.auditOrderMatches?"confirmada":"a revisar");
        const pre=document.createElement("pre");pre.style.cssText="white-space:pre-wrap;overflow-wrap:anywhere;font-size:10px;line-height:1.6";
        pre.textContent=r.auditTracks.map(t=>String(t.position).padStart(2,"0")+" · "+Math.floor(t.seconds/60)+":"+String(t.seconds%60).padStart(2,"0")+" · "+t.title).join("\n");
        audit.replaceChildren(summary,pre);
