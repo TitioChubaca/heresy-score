@@ -136,7 +136,7 @@ async function shortenXII(id,play,runtime,tracks,target){
  if(state.active)return false;
  const expected=tracks.filter((_,i)=>i!==index).map(t=>t.uri);
  await spotifyApi("/playlists/"+encodeURIComponent(id)+"/items",{
-  method:"PUT",body:JSON.stringify({uris:expected})
+  method:"DELETE",body:JSON.stringify({items:[{uri:cue.uri,positions:[index]}]})
  });
  const verified=await verifySequence(id,expected);
  storeActual(12,play,runtime,verified);
