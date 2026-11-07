@@ -50,6 +50,17 @@ async function liveTracks(id){
  }
  return out;
 }
+async function verifySequence(id,expected){
+ let last=[];
+ for(let attempt=0;attempt<4;attempt++){
+  last=await liveTracks(id);
+  if(last.length===expected.length&&last.every((t,i)=>t.uri===expected[i]))return last;
+  // Yield to Spotify's playlist propagation without making another mutation.
+  await new Promise(resolve=>setTimeout(resolve,350*(attempt+1)));
+ }
+ const sample=last.map(t=>t.title).join(" | ");
+ throw Error("Spotify não confirmou: esperado "+expected.length+" faixas, retornou "+last.length+"; "+sample.slice(0,150));
+}
 function normalizeTitle(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");}
 function cueMatches(t,c){return normalizeTitle(t.title)===normalizeTitle(c[0])||normalizeTitle(t.title).includes(normalizeTitle(c[0]).replace("bonustrack",""));}
 function storeActual(n,p,r,tracks){
@@ -106,11 +117,7 @@ async function shortenWithApprovedReplacement(id,n,play,runtime,tracks,target){
  await spotifyApi("/playlists/"+encodeURIComponent(id)+"/items",{
   method:"PUT",body:JSON.stringify({uris:updated})
  });
- const fresh=await liveTracks(id);
- if(fresh.length!==updated.length||fresh.some((t,i)=>t.uri!==updated[i])){
-  // Do not claim success when Spotify readback differs.
-  throw Error("Spotify não confirmou substituição; confira a playlist antes de repetir");
- }
+ const fresh=await verifySequence(id,updated);
  storeActual(n,play,runtime,fresh);
  play.approvedReplacement={position:index,from:original.title,to:choice.title,uri:choice.uri};
  runtime.autoFitResult="Substituição aprovada: "+original.title+" → "+choice.title+"; novo total "+Math.round(runtime.durationMs/1000)+"s, ordem mantida";
@@ -131,9 +138,7 @@ async function shortenXII(id,play,runtime,tracks,target){
  await spotifyApi("/playlists/"+encodeURIComponent(id)+"/items",{
   method:"PUT",body:JSON.stringify({uris:expected})
  });
- const verified=await liveTracks(id);
- if(verified.length!==expected.length||verified.some((t,i)=>t.uri!==expected[i]))
-  throw Error("Spotify não confirmou a playlist reduzida");
+ const verified=await verifySequence(id,expected);
  storeActual(12,play,runtime,verified);
  play.editorialXII={omitted:optional[0],position:index,sourceLength:authored.length};
  runtime.autoFitResult="Capítulo XII reduzido: ponte atmosférica opcional retirada; Spotify confirmou "+Math.round(runtime.durationMs/1000)+"s. Ordem e final preservados.";
@@ -155,6 +160,7 @@ spotifySyncChapter=async function(n){
  try{tracks=await liveTracks(id);if(!tracks.length)throw Error("playlist vazia");storeActual(n,play,runtime,tracks);if(n===11||n===12){runtime.auditTracks=tracks.map((t,i)=>({position:i+1,title:t.title,seconds:Math.round(t.ms/1000)}));runtime.auditTargetMs=Math.round((meta.estimatedMinutes||0)*60000);runtime.auditOrderMatches=tracks.length===(SCORES[n]||[]).length&&tracks.every((t,i)=>cueMatches(t,SCORES[n][i]));}}
  catch(e){runtime.autoFitResult="Falha ao conferir Spotify: "+String(e.message||e);save();return id;}
  const target=Math.round((meta.estimatedMinutes||0)*60000);
+ if(n===12&&play.editorialXII&&tracks.length===(SCORES[12]||[]).length-1){runtime.autoFitResult="Playlist XII já reduzida; Spotify confirmou "+Math.round(runtime.durationMs/1000)+"s";save();return id;}
  let gap=target-runtime.durationMs;
  let removedExtra=false;
  if(gap < -45000){
