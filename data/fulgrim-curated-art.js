@@ -135,10 +135,12 @@ const ART={
 };
 window.HS_FULGRIM_ART_SOURCE=ART;
 function attach(p){
- const a=ART[p.name];if(!a||p.unlock>a.unlock||p.unlock>5)return;
+ const a=ART[p.name];if(!a||p.unlock>a.unlock)return;
  p.image=a.fallback;
  p.visual="RECONSTRUÇÃO ARTÍSTICA // NÃO CANÔNICA";
  p.art={kind:"original_reconstruction",category:"generated",credit:"Heresy Score",fallback:a.fallback};
+ // Miniature photographs are references only; prefer illustration or the existing reconstruction.
+ if(a.subtype==="forgeworld_model")return;
  if(!a.url||typeof Image!=="function")return;
  const preflight=new Image();
  preflight.onload=()=>{
@@ -157,6 +159,8 @@ function attach(p){
  preflight.src=a.url;
 }
 for(const p of d.people)attach(p);
+// Re-evaluate newly unlocked records after each completed chapter and book switch.
+window.addEventListener("hs-book-changed",()=>{for(const p of d.people)attach(p)});
 // A source label also follows the enlarged dossier, where users most need
 // to distinguish an actual official likeness from artist interpretation.
 const artDialog=document.getElementById("personDialog");
