@@ -162,6 +162,13 @@ function attach(p){
 for(const p of d.people)attach(p);
 // Re-evaluate newly unlocked records after each completed chapter and book switch.
 window.addEventListener("hs-book-changed",()=>{for(const p of d.people)attach(p)});
+const logSave=document.getElementById("saveFeedback");
+if(logSave)logSave.addEventListener("click",()=>setTimeout(()=>{
+ if(state.activeBookSlug!=="fulgrim")return;
+ for(const p of d.people)attach(p);
+ window.HSPrivateArt?.refresh?.();
+ if(typeof render==="function")render();
+},0));
 // A source label also follows the enlarged dossier, where users most need
 // to distinguish an actual official likeness from artist interpretation.
 const artDialog=document.getElementById("personDialog");
