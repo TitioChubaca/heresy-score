@@ -197,7 +197,7 @@ spotifySyncChapter=async function(n){
  }
  if(removedExtra){runtime.autoFitResult+="; novo desvio "+Math.round(gap/1000)+"s (sem reinserir automaticamente)";save();return id;}
  if(gap < -45000&&n===12){
-  try{if(await shortenXII(id,play,runtime,tracks,target))return id;}
+  try{if(await shortenXII(id,play,runtime,tracks,target))return play.id||id;}
   catch(e){runtime.autoFitResult="Ajuste XII não confirmado: "+String(e.message||e);save();return id;}
   try{if(await shortenWithApprovedReplacement(id,n,play,runtime,tracks,target))return id;}
   catch(e){runtime.autoFitResult="Substituição XIΙ não confirmada: "+String(e.message||e);save();return id;}
