@@ -1,6 +1,4 @@
-/* Curated Book V references. Public official/fanart URLs link to their source's image,
-   not copyrighted files copied to this public repository. All user assets remain local.
-   Only characters introduced by reader clearance through Chapter V are included. */
+/* Book V illustration-first source catalog. Unlocks follow the reader log; external sources retain credit. */
 (()=>{
 "use strict";
 const d=window.HS_FULGRIM_DATA;
@@ -137,6 +135,8 @@ window.HS_FULGRIM_ART_SOURCE=ART;
 function attach(p){
  const a=ART[p.name];if(!a||p.unlock>a.unlock)return;
  if(p.art?.kind==="personal_reference"||p.art?.kind==="archive_reconstruction")return;
+ // Do not reset an already-loaded official/fan illustration on every chapter log.
+ if(p.art?.verifiedOnDevice&&p.image===a.url)return;
  p.image=a.fallback;
  p.visual="RECONSTRUÇÃO ARTÍSTICA // NÃO CANÔNICA";
  p.art={kind:"original_reconstruction",category:"generated",credit:"Heresy Score",fallback:a.fallback};
