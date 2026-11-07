@@ -1,6 +1,6 @@
 # Warhammer Project Conversation Router
 
-Last updated: 2026-10-22
+Last updated: 2026-11-07
 
 Use separate conversations for reading and app development, sharing persistent Markdown context files.
 
@@ -30,3 +30,7 @@ After every book:
 ## Spoiler discipline
 The newest spoiler ceiling in READING_CONTEXT.md always wins.
 Never infer permission from general 40k knowledge, later-game appearances, app assets, hidden future research or pre-staged scores.
+
+## November 2026 handoff
+- Authoritative current state: `docs/READING_CONTEXT.md` (Fulgrim XII complete; XIII next), `docs/HERESY_SCORE_CONTEXT.md` (v0.15.5), and `docs/FULGRIM_RUNTIME_FORECAST_2026-11-07.md`.
+- Old static project-attached Markdown copies dated October 22 are historical and should not supersede the updated repo docs. The private MOBI and sealed maps must never be committed to the public repository.
