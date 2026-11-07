@@ -70,7 +70,7 @@ const oldRender=render;render=function(){
       let line=card.querySelector(".hs-runtime-verified");
       if(!line){line=document.createElement("span");line.className="hs-runtime-verified";info.append(line)}
       line.textContent="Spotify "+m+":"+seconds+" / alvo "+Math.floor((SCORE_META[number]?.estimatedMinutes||0))+":"+String(Math.round(((SCORE_META[number]?.estimatedMinutes||0)%1)*60)).padStart(2,"0")+" // "+(r.autoFitResult||"tempo verificado");
-      if((number===11||number===12)&&Array.isArray(r.auditTracks)){
+      if(Array.isArray(r.auditTracks)){
        let audit=card.querySelector(".hs-ch11-audit");
        if(!audit){audit=document.createElement("details");audit.className="hs-ch11-audit";info.append(audit);}
        const delta=Math.round((r.durationMs-(r.auditTargetMs||0))/1000);
