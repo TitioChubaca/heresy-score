@@ -127,7 +127,8 @@ spotifySyncChapter=async function(n){
   state.spotify.playlistUrl=entry.url||"https://open.spotify.com/playlist/"+id;
   save();return id;
  }catch(err){
-  const raw=String(err?.message||err);\n  const message=/\\b403\\b|scope|forbidden/i.test(raw)?"Spotify sem permissão de leitura da playlist privada. Reautorize com Conectar Spotify nas Configurações. Detalhe: "+raw:raw;
+  const raw=String(err?.message||err);
+  const message=/\b403\b|scope|forbidden/i.test(raw)?"Spotify sem permissão de leitura da playlist privada. Reautorize com Conectar Spotify nas Configurações. Detalhe: "+raw:raw;
   const r=state.spotify.chapterRuntime=state.spotify.chapterRuntime||{};
   r[n]={...(r[n]||{}),verified:false,status:"FAILED",autoFitResult:"NÃO CONFIRMADO: "+message.slice(0,180)};
   const entry=state.spotify.playlists?.[key];
