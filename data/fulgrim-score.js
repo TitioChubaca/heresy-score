@@ -460,3 +460,19 @@ window.HS_FULGRIM_DATA.archive.push(
 
 /* All chapters are shown by number only; unpublished material remains sealed. */
 for(let n=10;n<=25;n++)window.HS_FULGRIM_DATA.chapters.push({number:n,title:"CHAPTER "+String(n).padStart(2,"0")+" // SCORE SEALED",estimatedMinutes:null,startCue:null,type:"chapter"});
+
+
+/* Reader-cleared compendium enrichments from privately reviewed chapters III–V.
+   Only already-read facts; no future plot developments. */
+(()=>{
+ const d=window.HS_FULGRIM_DATA;
+ const facts={
+  "Marius Vairosean":[{ch:3,text:"Nas operações em Atoll 19, enfrenta falhas de comunicação e precisa improvisar para alcançar as unidades isoladas."}],
+  "Gaius Caphen":[{ch:3,text:"Sua unidade enfrenta resistência nos túneis dos Laer e recebe apoio durante o avanço."}],
+  "Solomon Demeter":[{ch:3,text:"Conduz seus homens sob forte pressão em Atoll 19; o reencontro com outros capitães suscita reflexões sobre disciplina e perfeição."}],
+  "Ostian Delafour":[{ch:3,text:"Observa Laeran da galeria da nave, conversa com Serena e depois tem um encontro desconfortável com Bequa."}],
+  "Serena d'Angelus":[{ch:3,text:"Compartilha com Ostian suas inquietações artísticas enquanto observam o mundo abaixo."}],
+  "Bequa Kynska":[{ch:3,text:"Procura Ostian após a conversa dele com Serena, numa interação pessoal pouco confortável."}]
+ };
+ for(const p of d.people){if(facts[p.name]){const known=new Set((p.facts||[]).map(f=>f.ch+":"+f.text));for(const f of facts[p.name])if(!known.has(f.ch+":"+f.text))(p.facts||(p.facts=[])).push(f);}}
+})();
