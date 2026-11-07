@@ -72,6 +72,50 @@ async function undoBridge(id,n,p,r,tracks){
  save();return true;
 }
 
+
+async function shortenWithApprovedReplacement(id,n,play,runtime,tracks,target){
+ const authored=SCORES[n]||[],policy=candidates[n];
+ if(!policy||tracks.length!==authored.length||!tracks.every((t,i)=>cueMatches(t,authored[i])))return false;
+ const gap=runtime.durationMs-target;
+ if(gap<45000)return false;
+ // Replace only the curated transition position, never opening or closing cues.
+ const position=policy[0],index=position;
+ if(index<1||index>=tracks.length-1)return false;
+ const original=tracks[index];
+ const options=[policy[1],...(alternatives[n]||[])].filter(c=>!authored.some(a=>a[0]===c[0]&&a[1]===c[1]));
+ const viable=[];
+ for(const [title,artist] of options){
+  try{
+   const uri=await spotifyResolveTrack(title,artist);
+   if(!uri?.startsWith("spotify:track:"))continue;
+   const data=await spotifyApi("/tracks/"+encodeURIComponent(uri.split(":").pop()));
+   if(!Number.isFinite(data?.duration_ms)||data.duration_ms<45000||!cueMatches({title:data.name},[title,artist]))continue;
+   const newTotal=runtime.durationMs-original.ms+data.duration_ms;
+   const difference=Math.abs(target-newTotal);
+   if(data.duration_ms>=original.ms||difference>=Math.abs(gap)||difference>60000)continue;
+   viable.push({uri,title,ms:data.duration_ms,difference});
+  }catch(e){}
+ }
+ viable.sort((a,b)=>a.difference-b.difference);
+ if(!viable.length)return false;
+ const choice=viable[0];
+ if(state.active||state.activeBookSlug!=="fulgrim")return false;
+ // Snapshot-safe replacement by one PUT with the full ordered list.
+ const expected=tracks.map(t=>t.uri);
+ const updated=expected.map((uri,i)=>i===index?choice.uri:uri);
+ await spotifyApi("/playlists/"+encodeURIComponent(id)+"/items",{
+  method:"PUT",body:JSON.stringify({uris:updated})
+ });
+ const fresh=await liveTracks(id);
+ if(fresh.length!==updated.length||fresh.some((t,i)=>t.uri!==updated[i])){
+  // Do not claim success when Spotify readback differs.
+  throw Error("Spotify não confirmou substituição; confira a playlist antes de repetir");
+ }
+ storeActual(n,play,runtime,fresh);
+ play.approvedReplacement={position:index,from:original.title,to:choice.title,uri:choice.uri};
+ runtime.autoFitResult="Substituição aprovada: "+original.title+" → "+choice.title+"; novo total "+Math.round(runtime.durationMs/1000)+"s, ordem mantida";
+ save();return true;
+}
 window.HSApprovedBridges=candidates;
 const original=spotifySyncChapter;
 spotifySyncChapter=async function(n){
@@ -85,7 +129,7 @@ spotifySyncChapter=async function(n){
  if(session){runtime.autoFitResult="Leitura ativa: trilha preservada";save();return id;}
  const signature=JSON.stringify({score:SCORES[n]||[],policy,options:alternatives[n]||[]});
  let tracks;
- try{tracks=await liveTracks(id);if(!tracks.length)throw Error("playlist vazia");storeActual(n,play,runtime,tracks);if(n===11){runtime.auditTracks=tracks.map((t,i)=>({position:i+1,title:t.title,seconds:Math.round(t.ms/1000)}));runtime.auditTargetMs=Math.round((meta.estimatedMinutes||0)*60000);runtime.auditOrderMatches=tracks.length===(SCORES[n]||[]).length&&tracks.every((t,i)=>cueMatches(t,SCORES[n][i]));}}
+ try{tracks=await liveTracks(id);if(!tracks.length)throw Error("playlist vazia");storeActual(n,play,runtime,tracks);if(n===11||n===12){runtime.auditTracks=tracks.map((t,i)=>({position:i+1,title:t.title,seconds:Math.round(t.ms/1000)}));runtime.auditTargetMs=Math.round((meta.estimatedMinutes||0)*60000);runtime.auditOrderMatches=tracks.length===(SCORES[n]||[]).length&&tracks.every((t,i)=>cueMatches(t,SCORES[n][i]));}}
  catch(e){runtime.autoFitResult="Falha ao conferir Spotify: "+String(e.message||e);save();return id;}
  const target=Math.round((meta.estimatedMinutes||0)*60000);
  let gap=target-runtime.durationMs;
@@ -95,6 +139,10 @@ spotifySyncChapter=async function(n){
   catch(e){runtime.autoFitResult="Falha ao remover ponte: "+String(e.message||e);save();return id;}
  }
  if(removedExtra){runtime.autoFitResult+="; novo desvio "+Math.round(gap/1000)+"s (sem reinserir automaticamente)";save();return id;}
+ if(gap < -45000&&n===12){
+  try{if(await shortenWithApprovedReplacement(id,n,play,runtime,tracks,target))return id;}
+  catch(e){runtime.autoFitResult="Substituição XIΙ não confirmada: "+String(e.message||e);save();return id;}
+ }
  if(gap < -45000){runtime.autoFitResult="Trilha "+Math.round(-gap/1000)+"s longa; sem corte editorial aprovado. Ordem preservada.";if(n===11)runtime.autoFitResult+=" Auditoria das "+tracks.length+" faixas disponível; não remova músicas originais automaticamente.";save();return id;}
  if(Math.abs(gap)<=45000){runtime.autoFitResult="Duração dentro de ±45s do alvo";save();return id;}
  if(play.autoFitSignature===signature){runtime.autoFitResult=play.autoFitResult||"Verificado";save();return id;}
