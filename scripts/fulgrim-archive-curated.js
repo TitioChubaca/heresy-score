@@ -6,13 +6,13 @@ const SOURCES=[{"key":"pride-of-the-emperor","url":"https://images-wixmp-ed30a86
 const data=window.HS_FULGRIM_DATA;if(!data?.archive)return;
 for(const entry of SOURCES){
  const r=data.archive.find(x=>x.key===entry.key);
- if(!r||r.unlock>5||typeof Image!=="function")continue;
+ if(!r||typeof Image!=="function")continue;
  const img=new Image();
  img.referrerPolicy="no-referrer";
  img.onload=()=>{
   r.image=entry.url;r.visual=entry.label;
   r.art={kind:entry.category,credit:entry.credit};
-  if(state.activeBookSlug==="fulgrim"&&typeof renderArchive==="function")renderArchive();
+  if(state.activeBookSlug==="fulgrim"&&r.unlock<=maxClearance()&&typeof renderArchive==="function")renderArchive();
  };
  img.src=entry.url;
 }
