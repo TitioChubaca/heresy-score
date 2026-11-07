@@ -185,7 +185,7 @@ spotifySyncChapter=async function(n){
  if(session){runtime.autoFitResult="Leitura ativa: trilha preservada";save();return id;}
  const signature=JSON.stringify({score:SCORES[n]||[],policy,options:alternatives[n]||[]});
  let tracks;
- try{tracks=await liveTracks(id);if(!tracks.length)throw Error("playlist vazia");storeActual(n,play,runtime,tracks);if(n===11||n===12){runtime.auditTracks=tracks.map((t,i)=>({position:i+1,title:t.title,seconds:Math.round(t.ms/1000)}));runtime.auditTargetMs=Math.round((meta.estimatedMinutes||0)*60000);runtime.auditOrderMatches=tracks.length===(SCORES[n]||[]).length&&tracks.every((t,i)=>cueMatches(t,SCORES[n][i]));}}
+ try{tracks=await liveTracks(id);if(!tracks.length)throw Error("playlist vazia");storeActual(n,play,runtime,tracks);if(n>=11){runtime.auditTracks=tracks.map((t,i)=>({position:i+1,title:t.title,seconds:Math.round(t.ms/1000)}));runtime.auditTargetMs=Math.round((meta.estimatedMinutes||0)*60000);runtime.auditOrderMatches=tracks.length===(SCORES[n]||[]).length&&tracks.every((t,i)=>cueMatches(t,SCORES[n][i]));}}
  catch(e){runtime.autoFitResult="Falha ao conferir Spotify: "+String(e.message||e);save();return id;}
  const target=Math.round((meta.estimatedMinutes||0)*60000);
  if(n===12&&play.editorialXII&&tracks.length===(SCORES[12]||[]).length-1){runtime.autoFitResult="Playlist XII já reduzida; Spotify confirmou "+Math.round(runtime.durationMs/1000)+"s";save();return id;}
@@ -202,7 +202,7 @@ spotifySyncChapter=async function(n){
   try{if(await shortenWithApprovedReplacement(id,n,play,runtime,tracks,target))return id;}
   catch(e){runtime.autoFitResult="Substituição XIΙ não confirmada: "+String(e.message||e);save();return id;}
  }
- if(gap < -45000){runtime.autoFitResult="Trilha "+Math.round(-gap/1000)+"s longa; sem corte editorial aprovado. Ordem preservada.";if(n===11)runtime.autoFitResult+=" Auditoria das "+tracks.length+" faixas disponível; não remova músicas originais automaticamente.";save();return id;}
+ if(gap < -45000){runtime.autoFitResult="Trilha "+Math.round(-gap/1000)+"s longa; sem corte editorial aprovado. Ordem preservada.";runtime.autoFitResult+=" Auditoria das "+tracks.length+" faixas disponível; sem corte arbitrário.";save();return id;}
  if(Math.abs(gap)<=45000){runtime.autoFitResult="Duração dentro de ±45s do alvo";save();return id;}
  if(play.autoFitSignature===signature){runtime.autoFitResult=play.autoFitResult||"Verificado";save();return id;}
  if(play.autoFitSignature&&play.autoFitSignature!==signature){delete play.autoFitSignature;delete play.autoFitResult;}
