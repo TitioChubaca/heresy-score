@@ -116,6 +116,29 @@ async function shortenWithApprovedReplacement(id,n,play,runtime,tracks,target){
  runtime.autoFitResult="Substituição aprovada: "+original.title+" → "+choice.title+"; novo total "+Math.round(runtime.durationMs/1000)+"s, ordem mantida";
  save();return true;
 }
+
+async function shortenXII(id,play,runtime,tracks,target){
+ const authored=SCORES[12]||[];
+ if(tracks.length!==authored.length||!tracks.every((t,i)=>cueMatches(t,authored[i])))return false;
+ // Editorially designated optional atmospheric bridge, not an arbitrary duration-based deletion.
+ const index=5,optional=authored[index];
+ if(optional?.[0]!=="Beyond The Asteroid Belt")return false;
+ const cue=tracks[index],before=Math.abs(runtime.durationMs-target);
+ const after=Math.abs(runtime.durationMs-cue.ms-target);
+ if(after>=before||after>75000)return false;
+ if(state.active)return false;
+ const expected=tracks.filter((_,i)=>i!==index).map(t=>t.uri);
+ await spotifyApi("/playlists/"+encodeURIComponent(id)+"/items",{
+  method:"PUT",body:JSON.stringify({uris:expected})
+ });
+ const verified=await liveTracks(id);
+ if(verified.length!==expected.length||verified.some((t,i)=>t.uri!==expected[i]))
+  throw Error("Spotify não confirmou a playlist reduzida");
+ storeActual(12,play,runtime,verified);
+ play.editorialXII={omitted:optional[0],position:index,sourceLength:authored.length};
+ runtime.autoFitResult="Capítulo XII reduzido: ponte atmosférica opcional retirada; Spotify confirmou "+Math.round(runtime.durationMs/1000)+"s. Ordem e final preservados.";
+ save();return true;
+}
 window.HSApprovedBridges=candidates;
 const original=spotifySyncChapter;
 spotifySyncChapter=async function(n){
@@ -140,6 +163,8 @@ spotifySyncChapter=async function(n){
  }
  if(removedExtra){runtime.autoFitResult+="; novo desvio "+Math.round(gap/1000)+"s (sem reinserir automaticamente)";save();return id;}
  if(gap < -45000&&n===12){
+  try{if(await shortenXII(id,play,runtime,tracks,target))return id;}
+  catch(e){runtime.autoFitResult="Ajuste XII não confirmado: "+String(e.message||e);save();return id;}
   try{if(await shortenWithApprovedReplacement(id,n,play,runtime,tracks,target))return id;}
   catch(e){runtime.autoFitResult="Substituição XIΙ não confirmada: "+String(e.message||e);save();return id;}
  }
