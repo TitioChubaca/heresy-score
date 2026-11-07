@@ -50,3 +50,8 @@ This is a **repository inventory**, not a claim that every character in the nove
 
 ## Status
 Audit inventory completed; content additions for V–XII and actual art-file replacements **not yet done**. A GitHub commit proves code change, not that images loaded on reader's device.
+
+## Implementation 2026-11-07 — v0153
+- Added reader-cleared, source-mapped facts for chapters III, IV and V to existing dossiers. Based on the attached private III–V scene-map ZIP, not inferred future plot.
+- VI–XII content extraction and new entity registration still outstanding; do not mark inventory complete. No third-party 2D art binaries were imported in this release. Artwork sourcing remains pending.
+- The 16 existing dossiers and 7 archive records remain the same number; this release enriches existing dossiers only.
