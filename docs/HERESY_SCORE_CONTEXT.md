@@ -441,3 +441,8 @@ User-observed IX 22:38 vs 25:12 text estimate. Added The Still, Cold World (Bonu
 - v0155 includes an idle-client auto-refresh on service-worker controller change, release diagnostics, documented README and reproducible mocked regression \`tests/spotify-runtime-reconciliation.js\`. Do not claim live-user confirmation from mocked tests.
 
 - Separate technical forecast and future-chapter QA checklist: `docs/FULGRIM_RUNTIME_FORECAST_2026-11-07.md`. The audit UI computes a pace forecast from the reader's own logged minutes and source word counts; this does not modify musical target or guarantee Spotify length.
+
+## 2026-11-07 — Compendium audit through XII (v0152)
+- Detailed spoiler-safe repository inventory at docs/FULGRIM_COMPENDIUM_AUDIT_I_XII.md. Current data has 16 character entries, all unlocked by IV, and 7 archive entries all unlocked by IV; zero new entries V–XII. This is the main coverage gap, separate from artwork. 2 external official illustration candidates, 2 miniature photos disabled as default, 12 generated fallbacks. 2 external archive fanarts, 5 without sourced illustration.
+- Fixed curated art refresh to retain already-loaded official/fanart instead of resetting to generated fallback; removed hardcoded chapter V limit in archive art source. v0152.
+- Next: read private source maps/MOBI for V–XII and add accurate spoiler-gated content; source and credit real 2D artwork, verify external asset access and rights. No claim of complete art replacement yet.
