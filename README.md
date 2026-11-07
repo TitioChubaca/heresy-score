@@ -1,17 +1,18 @@
-# Heresy Score — v0.11.7
+# Heresy Score — v0.15.4
 
 Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 
-## Current reading state
+## Current state — November 7, 2026
 
-- Active book: **Fulgrim**, Book V. Reader completed Chapter I; Chapter II score ready for Spotify preflight; Chapter III+ sealed.
-- Chapter II soundtrack: seven carefully ordered cues; published catalog time **25:39**; actual Spotify runtime must be confirmed in app.
-- Ending cue protected; no algorithmic reserve/trim for duration alone.
-- Chapter I Compendium: six named people and five already-seen locations/cultural entries, gated behind completion of Chapter I.
-- Previous book *The Flight of the Eisenstein* preserved as a 17-chapter archive (including epilogue XVII), rating 3/5.
-- Local progress key remains `heresy-score-v01` with per-book `state.books[slug]` migration v3; do not wipe site data.
-- Sound direction rules: [Sound Direction Bible](docs/SOUND_DIRECTION_BIBLE_V1.md).
-- Active work/QA checklist: [Active Pipeline](docs/ACTIVE_PIPELINE.md).
+- Active book: **Fulgrim**, Book V; **Chapter XII recorded as complete** (29 minutes); Chapter XIII is the next safe score. Chapters XIV–XXV are only precurated: they require individual live Spotify runtime and narrative-fitting checks.
+- **Spotify playlist correction is now an evidence-based operation.** The app matches the actual ordered Spotify URIs against the curated cue sheet, reconciles mismatches, and confirms the result by reading Spotify back. If it fails or remains over target, the UI must report that explicitly.
+- Chapter XII's optional intermediate atmospheric cue was removed from the canonical published score (11 → 10 source tracks). **This does not mean the user's existing Spotify playlist has already changed.** Run a new audit from the logged-in PWA.
+- Spotify API 2026: requires `playlist-read-private` alongside `playlist-modify-private` to audit private playlists; the app uses individual `GET /tracks/{id}` rather than removed bulk requests. Previously connected users may need to choose **Connect Spotify** again and authorize the additional scope.
+- The PWA caches critical app code **network-first** (service worker `heresy-score-v0154`) and refreshes when a new worker takes control while no reading is active. Old installed shells can require one manual restart. **Do not erase browser data** or disconnect Supabase to troubleshoot updates.
+- A new **Spotify // Conferência de playlists** section in Settings audits and repairs already-read chapters plus the next unread one, without playback or reading log changes. An optional small-batch audit covers the next three chapters.
+- Safety: no automatic music padding or deleting purely to match a stopwatch; each song change must be justified by the scene. No plot, character fate, private MOBI or future scene maps shipped.
+- Verification: syntax and isolated fake-Spotify reconciliation scenarios passed; authenticated PWA readback on the reader's own device is **still pending**.
+- Technical source of truth: [docs/HERESY_SCORE_CONTEXT.md](docs/HERESY_SCORE_CONTEXT.md), [docs/READING_CONTEXT.md](docs/READING_CONTEXT.md), and [tests/spotify-runtime-reconciliation.js](tests/spotify-runtime-reconciliation.js).
 
 ## P2 reliability and feedback (v0.11.6)
 
