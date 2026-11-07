@@ -136,6 +136,7 @@ const ART={
 window.HS_FULGRIM_ART_SOURCE=ART;
 function attach(p){
  const a=ART[p.name];if(!a||p.unlock>a.unlock)return;
+ if(p.art?.kind==="personal_reference"||p.art?.kind==="archive_reconstruction")return;
  p.image=a.fallback;
  p.visual="RECONSTRUÇÃO ARTÍSTICA // NÃO CANÔNICA";
  p.art={kind:"original_reconstruction",category:"generated",credit:"Heresy Score",fallback:a.fallback};
