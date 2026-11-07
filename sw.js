@@ -1,4 +1,4 @@
-const CACHE="heresy-score-v0151";
+const CACHE="heresy-score-v0152";
 const PATCH="./patch-v0102.js";
 const ASSETS=["./","./index.html","./manifest.webmanifest","./patch-v0102.js","./scripts/book-state.js","./scripts/private-art.js","./scripts/book-backup.js","./scripts/book-switch.js","./scripts/spotify-resilient.js","./scripts/score-readiness.js","./scripts/spotify-runtime-fit.js","./scripts/compact-reader.js","./scripts/portrait-crop.js","./scripts/portrait-pack.js","./scripts/feedback-direction.js","./scripts/p2-diagnostics.js","./scripts/scene-transition-markers.js","./scripts/spotify-chapter-resume.js","./scripts/portrait-compendium-help.js","./scripts/fulgrim-archive-curated.js","./data/fulgrim-score.js","./data/fulgrim-future-scores.js","./data/fulgrim-ch09-bridge.js","./data/fulgrim-curated-art.js","./assets/ui/portraits/fulgrim/fulgrim.webp","./assets/ui/portraits/fulgrim/solomon-demeter.webp","./assets/ui/portraits/fulgrim/ostian-delafour.webp","./assets/ui/portraits/fulgrim/serena-dangelus.webp","./assets/ui/portraits/fulgrim/bequa-kynska.webp","./assets/ui/portraits/fulgrim/paljor-dorji.webp","./assets/ui/portraits/fulgrim/julius-kaesoron.webp","./assets/ui/portraits/fulgrim/marius-vairosean.webp","./assets/ui/portraits/fulgrim/gaius-caphen.webp","./assets/ui/portraits/fulgrim/coraline-aseneca.webp","./assets/ui/portraits/fulgrim/eidolon.webp","./assets/ui/portraits/fulgrim/vespasian.webp","./assets/ui/portraits/fulgrim/fabius.webp","./assets/ui/portraits/fulgrim/saul-tarvitz.webp","./assets/ui/portraits/fulgrim/lucius.webp","./assets/ui/portraits/fulgrim/ferrus-manus.webp","./data/eisenstein-score.js","./data/eisenstein-compendium.js","./assets/ui/icons/app-icon-maskable-512.png","./assets/ui/icons/app-icon-512.png","./assets/ui/icons/app-icon-192.png","./assets/ui/symbols/aquila.png","./assets/ui/symbols/skull-bw-1.png","./assets/ui/symbols/administratum.png","./assets/ui/animated/administratum.gif"];
 
@@ -20,9 +20,32 @@ async function patchedPage(request){
 }
 
 self.addEventListener("fetch",e=>{
-  if(e.request.method!=="GET")return;
-  if(new URL(e.request.url).origin!==self.location.origin)return; // Never cache Spotify API or authenticated third-party responses.
-  if(e.request.mode==="navigate"){e.respondWith(patchedPage(e.request));return}
-  e.respondWith(caches.open(CACHE).then(cache=>cache.match(e.request).then(r=>r||fetch(e.request).then(res=>{if(res.ok)cache.put(e.request,res.clone());return res}).catch(()=>cache.match("./index.html")))));
+ if(e.request.method!=="GET")return;
+ const url=new URL(e.request.url);
+ if(url.origin!==self.location.origin)return;
+ if(e.request.mode==="navigate"){e.respondWith(patchedPage(e.request));return;}
+ const source=/\.(?:js|json|css|html|webmanifest)$/i.test(url.pathname);
+ e.respondWith((async()=>{
+  const cache=await caches.open(CACHE);
+  if(source){
+   // Network-first for executable app sources: a successful deploy must not
+   // be hidden by an old cached runtime file on an installed Android PWA.
+   try{
+    const response=await fetch(e.request,{cache:"no-store"});
+    if(response.ok){await cache.put(e.request,response.clone());return response;}
+    return (await cache.match(e.request))||response;
+   }catch(error){
+    return (await cache.match(e.request))||new Response("Offline code not cached",{status:503});
+   }
+  }
+  const saved=await cache.match(e.request);
+  if(saved)return saved;
+  try{
+   const response=await fetch(e.request);
+   if(response.ok)await cache.put(e.request,response.clone());
+   return response;
+  }catch(error){return new Response("Offline asset unavailable",{status:503});}
+ })());
 });
+
 self.addEventListener("activate",event=>{event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(k=>k.startsWith("heresy-score-v")&&k!==CACHE).map(k=>caches.delete(k)));await self.clients.claim();})());});
