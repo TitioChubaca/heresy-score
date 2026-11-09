@@ -491,3 +491,38 @@ for(let n=10;n<=25;n++)window.HS_FULGRIM_DATA.chapters.push({number:n,title:"CHA
  };
  for(const p of d.people){for(const f of facts[p.name]||[]){if(!(p.facts||[]).some(x=>x.ch===f.ch&&x.text===f.text))(p.facts||(p.facts=[])).push(f);}}
 })();
+
+
+/* Source-checked chapter VI–XIV compendium extension.
+   All text below concerns only scenes at or before its own unlock chapter. */
+(()=>{
+ const d=window.HS_FULGRIM_DATA;
+ const people=[
+  {name:"Captain Balhaan",role:"Captain // Iron Hands, Ferrum",unlock:6,facts:[{ch:6,text:"Capitão dos Iron Hands envolvido na perseguição à frota dos Diasporex nas proximidades do sistema Carollis."}]},
+  {name:"Gabriel Santor",role:"Captain // Iron Hands",unlock:7,facts:[{ch:7,text:"Capitão dos veteranos de Ferrus Manus e seu equerry, apresentado durante o encontro entre as duas Legiões."}]},
+  {name:"Evander Tobias",role:"Archivist // 28th Expedition",unlock:9,facts:[{ch:9,text:"Arquivista da 28ª Expedição, responsável por extensos registros consultados por Julius Kaesoron."}]},
+  {name:"Lycaon",role:"Equerry // Julius Kaesoron",unlock:9,facts:[{ch:9,text:"Auxiliar de Julius Kaesoron, encarregado de contatá-lo caso surjam assuntos que exijam sua atenção."}]},
+  {name:"Eldrad Ulthran",role:"Farseer // Craftworld Ulthwé",unlock:11,facts:[{ch:11,text:"Vidente eldar de Ulthwé, apresentado em meio a reflexões sobre possíveis futuros."},{ch:13,text:"Comunica-se com os humanos em nome do mundo-nave Ulthwé."},{ch:14,text:"Participa das conversas diplomáticas com Fulgrim em Tarsus."}]},
+  {name:"Khiraen Goldhelm",role:"Wraithlord // Craftworld Ulthwé",unlock:14,facts:[{ch:14,text:"Antigo guerreiro de Ulthwé, apresentado como um wraithlord e integrante da comitiva de Eldrad."}]}
+ ];
+ for(const x of people)if(!d.people.some(p=>p.name===x.name))d.people.push({...x,image:null,visual:"ILUSTRAÇÃO VERIFICADA PENDENTE",note:"Ficha restrita ao capítulo já concluído."});
+ const archive=[
+  {key:"diasporex",name:"Diasporex",kind:"entity",kindLabel:"Human / alien nomadic fleet",unlock:6,glyph:"◇",note:"Frota itinerante perseguida pelos Iron Hands nas proximidades de Carollis."},
+  {key:"carollis",name:"Carollis system",kind:"theatre",kindLabel:"Star system",unlock:6,glyph:"◉",note:"Sistema estelar associado às operações dos Iron Hands contra os Diasporex."},
+  {key:"ferrum",name:"Ferrum",kind:"voidcraft",kindLabel:"Iron Hands vessel",unlock:6,glyph:"◇",note:"Nave dos Iron Hands mencionada durante as operações da X Legião."},
+  {key:"perdus-region",name:"Perdus Region",kind:"theatre",kindLabel:"Region of space",unlock:11,glyph:"◉",note:"Região espacial mencionada durante a aproximação e o contato entre as expedições."},
+  {key:"craftworld-ulthwe",name:"Craftworld Ulthwé",kind:"voidcraft",kindLabel:"Eldar craftworld",unlock:11,glyph:"◇",note:"Mundo-nave eldar ao qual pertence o vidente Eldrad Ulthran."},
+  {key:"eldar",name:"Eldar",kind:"entity",kindLabel:"Xenos / species",unlock:11,glyph:"◆",note:"Povo xenos apresentado por meio da perspectiva de Ulthwé e de seus representantes."},
+  {key:"maiden-worlds",name:"Maiden Worlds",kind:"theatre",kindLabel:"Eldar worlds",unlock:13,glyph:"◉",note:"Mundos associados aos eldar e ao contexto dos contatos diplomáticos."},
+  {key:"tarsus",name:"Tarsus",kind:"theatre",kindLabel:"Diplomatic meeting world",unlock:14,glyph:"⌖",note:"Mundo escolhido para um encontro diplomático entre as delegações humana e eldar."},
+  {key:"wraithlord",name:"Wraithlord",kind:"entity",kindLabel:"Eldar war construct",unlock:14,glyph:"◆",note:"Forma de guerreiro ancestral eldar representada por Khiraen Goldhelm."}
+ ];
+ for(const x of archive)if(!d.archive.some(r=>r.key===x.key))d.archive.push({...x,visual:"ILUSTRAÇÃO VERIFICADA PENDENTE"});
+ const additions={
+  "Fulgrim":[{ch:14,text:"Participa de negociações com os representantes de Ulthwé em Tarsus."}],
+  "Solomon Demeter":[{ch:14,text:"Observa atentamente os guerreiros da delegação eldar durante o encontro diplomático."}],
+  "Ferrus Manus":[{ch:7,text:"Apresenta Gabriel Santor como capitão de seus veteranos e seu equerry."}],
+  "Julius Kaesoron":[{ch:9,text:"Consulta os arquivos da expedição e procura Evander Tobias."}]
+ };
+ for(const p of d.people)for(const f of additions[p.name]||[])if(!(p.facts||[]).some(v=>v.ch===f.ch&&v.text===f.text))(p.facts||(p.facts=[])).push(f);
+})();
