@@ -55,3 +55,13 @@ Audit inventory completed; content additions for V–XII and actual art-file rep
 - Added reader-cleared, source-mapped facts for chapters III, IV and V to existing dossiers. Based on the attached private III–V scene-map ZIP, not inferred future plot.
 - VI–XII content extraction and new entity registration still outstanding; do not mark inventory complete. No third-party 2D art binaries were imported in this release. Artwork sourcing remains pending.
 - The 16 existing dossiers and 7 archive records remain the same number; this release enriches existing dossiers only.
+
+## Source-checked expansion through XIV — 2026-11-08
+- Extracted the reader-supplied MOBI locally with PalmDOC decompression and checked the text of chapters VI–XIV. The original source remains private and **was not uploaded** to GitHub.
+- Added 6 new spoiler-gated character dossiers: Captain Balhaan (VI), Gabriel Santor (VII), Evander Tobias (IX), Lycaon (IX), Eldrad Ulthran (XI), Khiraen Goldhelm (XIV).
+- Added 9 archive records: Diasporex, Carollis system, Ferrum (VI), Perdus Region, Craftworld Ulthwé, Eldar (XI), Maiden Worlds (XIII), Tarsus and Wraithlord (XIV).
+- Added chapter-specific facts to existing Fulgrim, Solomon Demeter, Ferrus Manus, Julius Kaesoron dossiers.
+- Reader explicitly reports chapter XIV read; app still uses its own completed-chapter log for clearance, so XIII–XIV entries unlock only when the log confirms that progress.
+- No artwork claimed for new subjects: these records intentionally use **verified illustration pending** rather than inventing a canonical likeness. Original art / credited fanart sourcing remains outstanding. Do not use future-era Eldrad or other spoiler-bearing illustrations without screening.
+- Previous inventory (16 characters/7 archive) was correct **before** this expansion; new expected counts are 22 characters and 16 archive records.
+- This pass adds source-grounded high-priority entities, not an exhaustive per-scene annotation of every chapter VI–XIV. Further text pass should catch minor characters, additional sites, and more specific visual source records.
