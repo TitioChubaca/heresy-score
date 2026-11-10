@@ -3,6 +3,21 @@
 (()=>{
 "use strict";
 const SOURCES=[{"key":"pride-of-the-emperor","url":"https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/fcf06a40-01bb-4661-bb5c-4b343a377fb9/d2qc9c0-d8addc6e-a54b-4843-be86-bf0887212b52.jpg/v1/fill/w_900%2Ch_627%2Cq_75%2Cstrp/pride_of_the_emperor_by_terraluna5_d2qc9c0-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NjI3IiwicGF0aCI6IlwvZlwvZmNmMDZhNDAtMDFiYi00NjYxLWJiNWMtNGIzNDNhMzc3ZmI5XC9kMnFjOWMwLWQ4YWRkYzZlLWE1NGItNDg0My1iZTg2LWJmMDg4NzIxMmI1Mi5qcGciLCJ3aWR0aCI6Ijw9OTAwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.JOa1wIbXA5pm8pvwsAtYOce0Q9qEHH4BKLxQcZedgmE","category":"fanart","credit":"terraluna5 — Pride of the Emperor (2010)","label":"FANART // TERRALUNA5"},{"key":"laer","url":"https://vignette.wikia.nocookie.net/es.warhammer40k/images/1/10/Wh40k_laer_warrior_by_julienhainault-d9w9c33.jpg/revision/latest?cb=20160408184642","category":"fanart","credit":"Julien Hainault — Laer Warrior","label":"FANART // JULIEN HAINAULT"}];
+// The following are representative faction/type illustrations, not exact depictions
+// of Ulthwé's particular vessel or of every Eldar encountered in the novel.
+SOURCES.push({
+ key:"craftworld-ulthwe",
+ url:"https://wh40k.lexicanum.com/mediawiki/images/5/5f/CraftworldArt7.jpg",
+ category:"official_reference",
+ credit:"Games Workshop — Codex: Craftworlds (7th Edition); generic craftworld, NOT an exact depiction of Ulthwé",
+ label:"ARTE OFICIAL // CRAFTWORLD GENÉRICO"
+},{
+ key:"eldar",
+ url:"https://wh40k.lexicanum.com/mediawiki/images/8/86/EldarArtCard.jpg",
+ category:"official_reference",
+ credit:"Paul Dainton — Eldar Warlock Arquellia of Ulthwé; representative Eldar illustration, NOT a portrait of Eldrad",
+ label:"ARTE OFICIAL // ELDAR DE ULTHWÉ"
+});
 const data=window.HS_FULGRIM_DATA;if(!data?.archive)return;
 for(const entry of SOURCES){
  const r=data.archive.find(x=>x.key===entry.key);
