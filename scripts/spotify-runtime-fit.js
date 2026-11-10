@@ -160,7 +160,7 @@ spotifySyncChapter=async function(n){
    actual=await verify(id,desired);
    changed="source-reconciled";
   } else {
-   actual=await verify(id,expected);
+   actual=await verify(id,desired);
   }
   if(state.activeBookSlug!==BOOK||state.active)throw Error("Contexto de leitura mudou; conferência descartada");
   const entry=state.spotify.playlists?.[key];
