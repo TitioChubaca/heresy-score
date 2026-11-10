@@ -92,13 +92,13 @@ function updateAudit(n,play,tracks,source,change){
    position:i+1,title:t.title,seconds:seconds(t.ms)})),
   auditTargetMs:target,auditOrderMatches:true,verified:true,
   verifiedAt:new Date().toISOString(),status,sourceSignature:source,
-  autoFitResult:(change?"Playlist corrigida e confirmada":"Sequência Spotify confirmada")+
+  autoFitResult:(change?"Playlist modificada e conferida":"Sequência Spotify conferida")+
    " • "+hhmm(total)+(target?" / alvo "+hhmm(target)+" • "+(gap>=0?"+":"")+seconds(gap)+"s":"")+
    (status==="OVER_TARGET"?" • EXCESSO MUSICAL AINDA NÃO RESOLVIDO":
     status==="UNDER_TARGET"?" • TRILHA CURTA; REVISÃO EDITORIAL PENDENTE":" • duração aceitável")};
  play.durationMs=total;play.trackCount=tracks.length;play.finalCueIndex=tracks.length-1;
  play.scoreSignature=source;play.preflightComplete=status==="WITHIN_RANGE";play.verifiedAt=r[n].verifiedAt;
- play.verifiedSequence=tracks.map(t=>t.uri);play.sourceVerifiedBy="0.15.2";play.lastCorrection=change||"already-matched";
+ play.verifiedSequence=tracks.map(t=>t.uri);play.sourceVerifiedBy="0.15.7";play.lastCorrection=change||"already-matched";
  state.spotify.scoreDurations=state.spotify.scoreDurations||{};
  state.spotify.scoreDurations[n]=total;
  save();
@@ -128,7 +128,7 @@ spotifySyncChapter=async function(n){
   // Reuse only a sequence that THIS strict reconciler previously confirmed.
   // Legacy preflightComplete/scoreSignature alone is never proof.
   const cached=state.spotify.playlists?.[key];
-  const expected=(cached?.sourceVerifiedBy==="0.15.2"&&cached?.scoreSignature===source&&
+  const expected=(cached?.sourceVerifiedBy==="0.15.7"&&cached?.scoreSignature===source&&
    Array.isArray(cached.verifiedSequence)&&cached.verifiedSequence.length===SCORES[n].length)
     ?cached.verifiedSequence.slice():await canonicalUris(SCORES[n]);
   if(state.activeBookSlug!==BOOK||state.active)throw Error("Contexto de leitura mudou");
