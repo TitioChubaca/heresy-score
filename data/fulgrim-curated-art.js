@@ -131,22 +131,32 @@ const ART={
     "unlock": 4
   }
 };
+// Additional reader-cleared original 2D artwork sources. A remote image is
+// displayed only after the browser confirms it loads successfully.
+ART["Eldrad Ulthran"]={
+ category:"official",subtype:"codex_illustration",
+ label:"ILUSTRAÇÃO OFICIAL // CODEX: ELDAR",
+ credit:"Games Workshop — Codex: Eldar (4th Edition), p. 50",
+ url:"https://wh40k.lexicanum.com/mediawiki/Special:Redirect/file/Eldrad_Ulthran_Art.jpg",
+ page:"https://wh40k.lexicanum.com/mediawiki/index.php?title=File:Eldrad_Ulthran_Art.jpg",
+ unlock:11
+};
 window.HS_FULGRIM_ART_SOURCE=ART;
 function attach(p){
  const a=ART[p.name];if(!a||p.unlock>a.unlock)return;
  if(p.art?.kind==="personal_reference"||p.art?.kind==="archive_reconstruction")return;
  // Do not reset an already-loaded official/fan illustration on every chapter log.
  if(p.art?.verifiedOnDevice&&p.image===a.url)return;
- p.image=a.fallback;
- p.visual="RECONSTRUÇÃO ARTÍSTICA // NÃO CANÔNICA";
- p.art={kind:"original_reconstruction",category:"generated",credit:"Heresy Score",fallback:a.fallback};
+ p.image=a.fallback||null;
+ p.visual=a.fallback?"RECONSTRUÇÃO ARTÍSTICA // NÃO CANÔNICA":"ILUSTRAÇÃO VERIFICADA PENDENTE";
+ p.art=a.fallback?{kind:"original_reconstruction",category:"generated",credit:"Heresy Score",fallback:a.fallback}:{kind:"pending",credit:"Fonte em verificação"};
  // Miniature photographs are references only; prefer illustration or the existing reconstruction.
  if(a.subtype==="forgeworld_model")return;
  if(!a.url||typeof Image!=="function")return;
  const preflight=new Image();
  preflight.onload=()=>{
   // Never override the user's individually imported artwork from IndexedDB.
-  if(p.image!==a.fallback)return;
+  if(p.image!==(a.fallback||null))return;
   p.image=a.url;
   p.visual=a.label;
   p.art={kind:a.category,sourceKind:a.subtype||a.category,credit:a.credit,sourcePage:a.page||"",fallback:a.fallback,verifiedOnDevice:true};
@@ -154,7 +164,7 @@ function attach(p){
  };
  preflight.onerror=()=>{
   // Public-host hotlink unavailable: keep the original matte painting, not SVG vector.
-  if(p.image===a.fallback){p.visual="RECONSTRUÇÃO ARTÍSTICA // FONTE EXTERNA INDISPONÍVEL";}
+  if(p.image===(a.fallback||null)){p.visual=a.fallback?"RECONSTRUÇÃO ARTÍSTICA // FONTE EXTERNA INDISPONÍVEL":"ILUSTRAÇÃO EXTERNA INDISPONÍVEL";}
  };
  preflight.referrerPolicy="no-referrer";
  preflight.src=a.url;
