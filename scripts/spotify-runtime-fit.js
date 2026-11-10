@@ -60,6 +60,28 @@ async function canonicalUris(score){
  }
  return resolved;
 }
+// Editorially removable bridges only; all other cues and the final cue are protected.
+// Indexes refer to the original chapter cue sheet, not a previously trimmed playlist.
+const OPTIONAL_BRIDGES={15:[1,4,6,8,9]};
+function chooseEditorialSequence(n,tracks,target){
+ const allowed=OPTIONAL_BRIDGES[n]||[];
+ if(!allowed.length||!target||tracks.length!==SCORES[n].length)return null;
+ const initial=tracks.reduce((sum,t)=>sum+t.ms,0);
+ if(initial-target<=60000)return null;
+ let best=null;
+ for(let mask=1;mask<(1<<allowed.length);mask++){
+  const removed=allowed.filter((_,i)=>mask&(1<<i));
+  const kept=tracks.filter((_,i)=>!removed.includes(i));
+  const total=kept.reduce((sum,t)=>sum+t.ms,0);
+  const error=Math.abs(total-target);
+  // Never trade an extreme underrun for a smaller absolute error.
+  if(total<target-90000||total>target+60000||kept.length<6)continue;
+  const candidate={uris:kept.map(t=>t.uri),removed,total,error};
+  if(!best||candidate.error<best.error||
+     candidate.error===best.error&&removed.length<best.removed.length)best=candidate;
+ }
+ return best;
+}
 function updateAudit(n,play,tracks,source,change){
  const target=Math.round((SCORE_META[n]?.estimatedMinutes||0)*60000);
  const total=tracks.reduce((sum,t)=>sum+t.ms,0),gap=total-target;
@@ -75,7 +97,7 @@ function updateAudit(n,play,tracks,source,change){
    (status==="OVER_TARGET"?" • EXCESSO MUSICAL AINDA NÃO RESOLVIDO":
     status==="UNDER_TARGET"?" • TRILHA CURTA; REVISÃO EDITORIAL PENDENTE":" • duração aceitável")};
  play.durationMs=total;play.trackCount=tracks.length;play.finalCueIndex=tracks.length-1;
- play.scoreSignature=source;play.preflightComplete=true;play.verifiedAt=r[n].verifiedAt;
+ play.scoreSignature=source;play.preflightComplete=status==="WITHIN_RANGE";play.verifiedAt=r[n].verifiedAt;
  play.verifiedSequence=tracks.map(t=>t.uri);play.sourceVerifiedBy="0.15.2";play.lastCorrection=change||"already-matched";
  state.spotify.scoreDurations=state.spotify.scoreDurations||{};
  state.spotify.scoreDurations[n]=total;
@@ -112,14 +134,30 @@ spotifySyncChapter=async function(n){
   if(state.activeBookSlug!==BOOK||state.active)throw Error("Contexto de leitura mudou");
   let actual=await playlistTracks(id);
   let changed="";
-  if(!urisEqual(actual.map(t=>t.uri),expected)||
+  // Prefer the previously verified editorial cut over restoring the untrimmed source.
+  const retained=(cached?.editorialFit?.source===source&&
+    Array.isArray(cached.editorialFit.uris))?cached.editorialFit.uris:null;
+  let desired=retained||expected;
+  // If Spotify currently holds the untrimmed canonical score, calculate an
+  // editorially permitted bridge cut using ACTUAL Spotify track durations.
+  if(n===15&&urisEqual(actual.map(t=>t.uri),expected)){
+   const target=Math.round((SCORE_META[n]?.estimatedMinutes||0)*60000);
+   const fit=chooseEditorialSequence(n,actual,target);
+   if(fit){
+    desired=fit.uris;
+    const entry=state.spotify.playlists?.[key];
+    if(entry)entry.editorialFit={source,uris:fit.uris,removedIndexes:fit.removed,
+      targetMs:target,plannedMs:fit.total};
+   }
+  }
+  if(!urisEqual(actual.map(t=>t.uri),desired)||
      actual.some(t=>!Number.isFinite(t.ms)||t.ms<=0)){
    // The only authority for playlist content is the editorial chapter cue sheet.
    // A previous auto-inserted bridge or obsolete saved playlist is reconciled here.
    await spotifyApi("/playlists/"+encodeURIComponent(id)+"/items",{
-    method:"PUT",body:JSON.stringify({uris:expected})
+    method:"PUT",body:JSON.stringify({uris:desired})
    });
-   actual=await verify(id,expected);
+   actual=await verify(id,desired);
    changed="source-reconciled";
   } else {
    actual=await verify(id,expected);
@@ -151,6 +189,6 @@ spotifySyncChapter=async function(n){
  inFlight.set(n,work);
  try{return await work;}finally{if(inFlight.get(n)===work)inFlight.delete(n);}
 };
-window.HSSpotifyRuntimeQA={version:"0.15.2",get:n=>state.spotify.chapterRuntime?.[n]||null,
+window.HSSpotifyRuntimeQA={version:"0.15.7",get:n=>state.spotify.chapterRuntime?.[n]||null,
  readOnly:n=>state.spotify.chapterRuntime?.[n]?.verified===true};
 })();
