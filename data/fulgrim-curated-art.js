@@ -137,7 +137,7 @@ ART["Eldrad Ulthran"]={
  category:"official",subtype:"codex_illustration",
  label:"ILUSTRAÇÃO OFICIAL // CODEX: ELDAR",
  credit:"Games Workshop — Codex: Eldar (4th Edition), p. 50",
- url:"https://wh40k.lexicanum.com/mediawiki/Special:Redirect/file/Eldrad_Ulthran_Art.jpg",
+ url:"https://wh40k.lexicanum.com/mediawiki/images/d/db/Eldrad_Ulthran_Art.jpg",
  page:"https://wh40k.lexicanum.com/mediawiki/index.php?title=File:Eldrad_Ulthran_Art.jpg",
  unlock:11
 };
