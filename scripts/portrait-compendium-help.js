@@ -16,22 +16,17 @@ function update(){
  const isV=state.activeBookSlug==="fulgrim",read=!!state.done?.[1];
  box.hidden=!isV||!read;box.style.display=box.hidden?"none":"";
  if(box.hidden)return;
- const unlocked=people.filter(p=>(p.unlock||1)<=maxClearance()),count=unlocked.filter(p=>!!p.image).length;
- const missing=unlocked.length-count;
+ const unlocked=people.filter(p=>(p.unlock||1)<=maxClearance());
+ const exact=unlocked.filter(p=>p.art?.kind==="official"||p.art?.kind==="fanart"||p.art?.kind==="personal_reference").length;
+ const pending=unlocked.length-exact;
  if(!unlocked.length){text.textContent="Ainda não há personagens liberados.";button.hidden=true;return}
  button.hidden=false;
- if(count===unlocked.length){
-  text.textContent="As fichas exibem imagens: oficiais ou fanart quando acessíveis, reconstruções pictóricas nos demais casos. Nenhuma dessas reconstruções é canônica.";
-  button.textContent="Gerenciar coleção local";
- }else if(count===0){
-  text.textContent="Nenhum retrato deste livro está carregado. As imagens anexadas ao projeto ChatGPT não são instaladas automaticamente no navegador.";
-  button.textContent="Importar arquivo .hsartpack";
- }else{
-  text.textContent=count+" de "+unlocked.length+" retratos aparecem neste livro. "+missing+" personagens ainda estão sem imagem; nenhuma arte de outro personagem será usada como substituta oficial.";
-  button.textContent="Gerenciar retratos pendentes";
- }
+ text.textContent=exact+" de "+unlocked.length+" personagens com arte original ou pessoal. "+pending+
+  " com identificação simbólica/provisória ou reconstrução ainda não substituída. As placas simbólicas não são retratos.";
+ button.textContent="Gerenciar arte dos personagens";
+
  button.onclick=()=>{
-  if(count>0){setView("settings");const section=document.querySelector("#hsPortraitCoverage");section?.scrollIntoView?.({behavior:"smooth",block:"center"});return}
+  if(unlocked.length>0){setView("settings");const section=document.querySelector("#hsPortraitCoverage");section?.scrollIntoView?.({behavior:"smooth",block:"center"});return}
   fileInput=document.getElementById("hsPackFile");
   const upload=document.getElementById("hsPackButton");
   if(!fileInput||!upload){setView("settings");return}
