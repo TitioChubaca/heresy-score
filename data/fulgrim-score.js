@@ -499,7 +499,7 @@ for(let n=10;n<=25;n++)window.HS_FULGRIM_DATA.chapters.push({number:n,title:"CHA
  const d=window.HS_FULGRIM_DATA;
  const people=[
   {name:"Captain Balhaan",role:"Captain // Iron Hands, Ferrum",unlock:6,facts:[{ch:6,text:"Capitão dos Iron Hands envolvido na perseguição à frota dos Diasporex nas proximidades do sistema Carollis."}]},
-  {name:"Gabriel Santor",role:"Captain // Iron Hands",unlock:7,facts:[{ch:7,text:"Capitão dos veteranos de Ferrus Manus e seu equerry, apresentado durante o encontro entre as duas Legiões."}]},
+  {name:"Gabriel Santar",role:"Captain // Iron Hands",unlock:7,facts:[{ch:7,text:"Capitão dos veteranos de Ferrus Manus e seu equerry, apresentado durante o encontro entre as duas Legiões."}]},
   {name:"Evander Tobias",role:"Archivist // 28th Expedition",unlock:9,facts:[{ch:9,text:"Arquivista da 28ª Expedição, responsável por extensos registros consultados por Julius Kaesoron."}]},
   {name:"Lycaon",role:"Equerry // Julius Kaesoron",unlock:9,facts:[{ch:9,text:"Auxiliar de Julius Kaesoron, encarregado de contatá-lo caso surjam assuntos que exijam sua atenção."}]},
   {name:"Eldrad Ulthran",role:"Farseer // Craftworld Ulthwé",unlock:11,facts:[{ch:11,text:"Vidente eldar de Ulthwé, apresentado em meio a reflexões sobre possíveis futuros."},{ch:13,text:"Comunica-se com os humanos em nome do mundo-nave Ulthwé."},{ch:14,text:"Participa das conversas diplomáticas com Fulgrim em Tarsus."}]},
