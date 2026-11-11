@@ -24,7 +24,7 @@ const style=document.createElement("style");style.textContent=`
 .chapters{padding:0 13px 12px;min-height:155px}
 .chapter{margin:0;min-width:0;animation:hsCardIn .2s ease-out}
 .chapter[hidden]{display:none!important}
-@keyframes hsCardIn{from{opacity:.35;transform:translateX(9px)}to{opacity:1;transform:translateX(0)}}
+@keyframes hsCardIn{from{opacity:.35;transform:translateX(var(--hsDeckDirection,9px))}to{opacity:1;transform:translateX(0)}}
 .chapter .row{flex-wrap:wrap;align-items:flex-start}
 .chapter .chname{min-width:0;overflow-wrap:anywhere;line-height:1.5;flex:1 1 155px}
 .chapter .details{min-width:0;overflow-wrap:anywhere}
@@ -108,7 +108,7 @@ function show(){
  toolbar.querySelector('[data-dir="1"]').disabled=selected>=chapters.length;
  footer.querySelector(".hs-deck-current").hidden=selected===active;
 }
-function go(direction){selected=Math.max(1,Math.min(chapters.length,(selected||currentNumber())+direction));show();}
+function go(direction){host.style.setProperty("--hsDeckDirection",direction>0?"14px":"-14px");selected=Math.max(1,Math.min(chapters.length,(selected||currentNumber())+direction));show();}
 toolbar.querySelector('[data-dir="-1"]').onclick=()=>go(-1);
 toolbar.querySelector('[data-dir="1"]').onclick=()=>go(1);
 footer.querySelector(".hs-deck-current").onclick=()=>{selected=currentNumber();show()};
