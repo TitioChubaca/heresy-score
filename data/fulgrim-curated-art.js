@@ -167,8 +167,8 @@ function attach(p){
  // Do not reset an already-loaded official/fan illustration on every chapter log.
  if(p.art?.verifiedOnDevice&&p.image===a.url)return;
  if(p.art?.kind==="pending"&&p.art.credit==="Imagem remota falhou no dispositivo")return;
- p.image=a.fallback||null;
- p.visual=a.fallback?"RECONSTRUÇÃO ARTÍSTICA // NÃO CANÔNICA":"ILUSTRAÇÃO VERIFICADA PENDENTE";
+ p.image=a.fallback||symbolicPlate(p);
+ p.visual=a.fallback?"RECONSTRUÇÃO ARTÍSTICA // NÃO CANÔNICA":"IDENTIFICAÇÃO SIMBÓLICA // ARTE EXTERNA PENDENTE";
  p.art=a.fallback?{kind:"original_reconstruction",category:"generated",credit:"Heresy Score",fallback:a.fallback}:{kind:"pending",credit:"Fonte em verificação"};
  // Miniature photographs are references only; prefer illustration or the existing reconstruction.
  if(a.subtype==="forgeworld_model")return;
@@ -176,7 +176,7 @@ function attach(p){
  const preflight=new Image();
  preflight.onload=()=>{
   // Never override the user's individually imported artwork from IndexedDB.
-  if(p.image!==(a.fallback||null))return;
+  if(p.image!==(a.fallback||symbolicPlate(p)))return;
   p.image=a.url;
   p.visual=a.label;
   p.art={kind:a.category,sourceKind:a.subtype||a.category,credit:a.credit,sourcePage:a.page||"",fallback:a.fallback,verifiedOnDevice:true};
@@ -184,8 +184,8 @@ function attach(p){
  };
  preflight.onerror=()=>{
   // Public-host hotlink unavailable: keep the original matte painting, not SVG vector.
-  if(p.image===(a.fallback||null)){
-   p.visual=a.fallback?"RECONSTRUÇÃO ARTÍSTICA // FONTE EXTERNA INDISPONÍVEL":"ILUSTRAÇÃO EXTERNA INDISPONÍVEL";
+  if(p.image===(a.fallback||symbolicPlate(p))){
+   p.visual=a.fallback?"RECONSTRUÇÃO ARTÍSTICA // FONTE EXTERNA INDISPONÍVEL":"IDENTIFICAÇÃO SIMBÓLICA // ILUSTRAÇÃO EXTERNA INDISPONÍVEL";
    p.art={kind:"pending",credit:"Imagem remota falhou no dispositivo",sourcePage:a.page||""};
    if(typeof state!=="undefined"&&state.activeBookSlug==="fulgrim"&&typeof render==="function")render();
   }
@@ -216,7 +216,7 @@ if(artDialog&&artDialogImg&&typeof openPerson==="function"){
   oldOpen(p);
   if(state.activeBookSlug!=="fulgrim"||!p.art){credit.style.display="none";return}
   credit.style.display="block";
-  const t=p.art.kind==="official"?"ARTE OFICIAL":p.art.kind==="fanart"?"FANART CREDITADA":p.art.kind==="personal_reference"?"ARTE PESSOAL":"RECONSTRUÇÃO NÃO CANÔNICA";
+  const t=p.art.kind==="symbolic"||p.art.kind==="pending"?"IDENTIFICAÇÃO SIMBÓLICA":p.art.kind==="official"?"ARTE OFICIAL":p.art.kind==="fanart"?"FANART CREDITADA":p.art.kind==="personal_reference"?"ARTE PESSOAL":"RECONSTRUÇÃO NÃO CANÔNICA";
   credit.textContent=t+" // "+String(p.art.credit||p.visual||"origem não identificada");
  };
 }
