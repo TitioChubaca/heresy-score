@@ -231,6 +231,21 @@ function attach(p){
  candidate.src=a.url;
 }
 for(const p of d.people)attach(p);
+// If an external image stops working after its preflight, use the safe
+// local identification without blanking the dossier or retrying indefinitely.
+document.addEventListener("error",event=>{
+ const img=event.target;
+ if(!(img instanceof HTMLImageElement)||state.activeBookSlug!=="fulgrim")return;
+ const p=d.people.find(person=>person.name===img.alt&&person.image===img.getAttribute("src")&&person.art?.verifiedOnDevice);
+ if(!p)return;
+ event.stopImmediatePropagation();
+ p.image=symbolicPlate(p);
+ p.visual="IDENTIFICAÇÃO SIMBÓLICA // IMAGEM EXTERNA INDISPONÍVEL";
+ p.art={kind:"symbolic",credit:"Fonte de imagem indisponível no dispositivo",sourcePage:ART[p.name]?.page||""};
+ img.src=p.image;
+ if(typeof render==="function")render();
+},true);
+
 // Re-evaluate newly unlocked records after each completed chapter and book switch.
 window.addEventListener("hs-book-changed",()=>{for(const p of d.people)attach(p)});
 const logSave=document.getElementById("saveFeedback");
@@ -248,13 +263,17 @@ if(artDialog&&artDialogImg&&typeof openPerson==="function"){
  const credit=document.createElement("p");credit.id="hsArtProvenance";credit.className="small";
  credit.style.cssText="margin:9px 0;color:#c7b48e;font-size:11px";
  artDialogImg.after(credit);
+ const sourceLink=document.createElement("a");sourceLink.className="small";sourceLink.target="_blank";sourceLink.rel="noopener noreferrer";sourceLink.textContent="Ver ilustração na fonte externa";sourceLink.style.cssText="display:inline-block;color:#a8db72;margin:6px 0 10px";credit.after(sourceLink);
  const oldOpen=openPerson;
  openPerson=function(p){
   oldOpen(p);
-  if(state.activeBookSlug!=="fulgrim"||!p.art){credit.style.display="none";return}
+  if(state.activeBookSlug!=="fulgrim"||!p.art){credit.style.display="none";sourceLink.hidden=true;return}
   credit.style.display="block";
   const t=p.art.kind==="symbolic"||p.art.kind==="pending"?"IDENTIFICAÇÃO SIMBÓLICA":p.art.kind==="official"?"ARTE OFICIAL":p.art.kind==="fanart"?"FANART CREDITADA":p.art.kind==="personal_reference"?"ARTE PESSOAL":"RECONSTRUÇÃO NÃO CANÔNICA";
   credit.textContent=t+" // "+String(p.art.credit||p.visual||"origem não identificada");
+  const src=ART[p.name];
+  sourceLink.hidden=!(src?.url&&src?.page&&src.subtype!=="forgeworld_model");
+  if(!sourceLink.hidden)sourceLink.href=src.page;
  };
 }
 })();
