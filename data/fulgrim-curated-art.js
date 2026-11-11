@@ -147,6 +147,7 @@ function attach(p){
  if(p.art?.kind==="personal_reference"||p.art?.kind==="archive_reconstruction")return;
  // Do not reset an already-loaded official/fan illustration on every chapter log.
  if(p.art?.verifiedOnDevice&&p.image===a.url)return;
+ if(p.art?.kind==="pending"&&p.art.credit==="Imagem remota falhou no dispositivo")return;
  p.image=a.fallback||null;
  p.visual=a.fallback?"RECONSTRUÇÃO ARTÍSTICA // NÃO CANÔNICA":"ILUSTRAÇÃO VERIFICADA PENDENTE";
  p.art=a.fallback?{kind:"original_reconstruction",category:"generated",credit:"Heresy Score",fallback:a.fallback}:{kind:"pending",credit:"Fonte em verificação"};
@@ -164,7 +165,11 @@ function attach(p){
  };
  preflight.onerror=()=>{
   // Public-host hotlink unavailable: keep the original matte painting, not SVG vector.
-  if(p.image===(a.fallback||null)){p.visual=a.fallback?"RECONSTRUÇÃO ARTÍSTICA // FONTE EXTERNA INDISPONÍVEL":"ILUSTRAÇÃO EXTERNA INDISPONÍVEL";}
+  if(p.image===(a.fallback||null)){
+   p.visual=a.fallback?"RECONSTRUÇÃO ARTÍSTICA // FONTE EXTERNA INDISPONÍVEL":"ILUSTRAÇÃO EXTERNA INDISPONÍVEL";
+   p.art={kind:"pending",credit:"Imagem remota falhou no dispositivo",sourcePage:a.page||""};
+   if(typeof state!=="undefined"&&state.activeBookSlug==="fulgrim"&&typeof render==="function")render();
+  }
  };
  preflight.referrerPolicy="no-referrer";
  preflight.src=a.url;
