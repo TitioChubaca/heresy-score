@@ -166,6 +166,14 @@ spotifySyncChapter=async function(n){
   const entry=state.spotify.playlists?.[key];
   if(!entry||entry.id!==id)throw Error("Playlist mudou durante a auditoria");
   updateAudit(n,entry,actual,source,changed);
+  // Verification is not fitting. Never silently label an overlong score ready.
+  if(state.spotify.chapterRuntime?.[n]?.status!=="WITHIN_RANGE"){
+   const r=state.spotify.chapterRuntime[n];
+   r.autoFitResult+=" // BLOQUEADO: exige nova curadoria musical antes da leitura";
+   entry.preflightComplete=false;
+   save();
+   throw Error("Playlist conferida, mas FORA DA META: "+hhmm(r.durationMs)+" / "+hhmm(r.targetMs)+". Não foi ajustada.");
+  }
   state.spotify.playlistId=id;
   state.spotify.playlistUrl=entry.url||"https://open.spotify.com/playlist/"+id;
   save();return id;
@@ -189,6 +197,7 @@ spotifySyncChapter=async function(n){
  inFlight.set(n,work);
  try{return await work;}finally{if(inFlight.get(n)===work)inFlight.delete(n);}
 };
-window.HSSpotifyRuntimeQA={version:"0.15.7",get:n=>state.spotify.chapterRuntime?.[n]||null,
- readOnly:n=>state.spotify.chapterRuntime?.[n]?.verified===true};
+window.HSSpotifyRuntimeQA={version:"0.15.10",get:n=>state.spotify.chapterRuntime?.[n]||null,
+ readOnly:n=>state.spotify.chapterRuntime?.[n]?.verified===true,
+ ready:n=>state.spotify.chapterRuntime?.[n]?.status==="WITHIN_RANGE"};
 })();
