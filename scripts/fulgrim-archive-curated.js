@@ -39,6 +39,7 @@ function decorate(){
   if(!r.image||r.unlock>maxClearance())return;
   const holder=cards[i]?.querySelector(".world-visual");if(!holder)return;
   const img=document.createElement("img");img.src=r.image;img.alt=r.name+" // "+(r.art?.kind||"reference");img.loading="lazy";
+  img.onerror=()=>{r.image=null;r.visual="ARTE EXTERNA INDISPONÍVEL";if(holder.contains(img))holder.replaceChildren(document.createTextNode("Imagem não carregada — fonte externa indisponível"));const badge=cards[i]?.querySelector(".visual-badge");if(badge)badge.textContent=r.visual;};
   img.style.cssText="width:100%;height:100%;object-fit:contain;display:block";
   holder.replaceChildren(img);
   const badge=cards[i].querySelector(".visual-badge");if(badge)badge.textContent=r.visual;
@@ -50,6 +51,7 @@ const originalOpen=openArchiveRecord;openArchiveRecord=function(r){
  if(state.activeBookSlug!=="fulgrim"||!r.image||r.unlock>maxClearance())return;
  const holder=document.getElementById("archiveDialogVisual");if(!holder)return;
  const img=document.createElement("img");img.src=r.image;img.alt=r.name;
+ img.onerror=()=>{if(holder.contains(img))holder.replaceChildren(document.createTextNode("Imagem externa indisponível"));};
  img.style.cssText="width:100%;max-height:370px;object-fit:contain";
  holder.replaceChildren(img);
 };
