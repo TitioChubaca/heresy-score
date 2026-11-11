@@ -62,23 +62,41 @@ async function canonicalUris(score){
 }
 // Editorially removable bridges only; all other cues and the final cue are protected.
 // Indexes refer to the original chapter cue sheet, not a previously trimmed playlist.
-const OPTIONAL_BRIDGES={15:[1,4,6,8,9]};
+// Duration fitting uses exact Spotify recordings. Keep opening and final cue;
+// preserve source order and at least 60% of the musical sequence.
+// A fitted duration is a technical pass, not proof of editorial scene alignment.
+async function canonicalTrackData(uris){
+ const out=[];
+ for(const uri of uris){
+  const t=await spotifyApi("/tracks/"+encodeURIComponent(uri.split(":").pop()));
+  if(t?.uri!==uri||!Number.isFinite(t.duration_ms)||t.duration_ms<=0)
+   throw Error("Spotify não confirmou duração da gravação "+uri);
+  out.push({uri,ms:t.duration_ms,title:t.name,artists:(t.artists||[]).map(a=>a.name)});
+ }
+ return out;
+}
 function chooseEditorialSequence(n,tracks,target){
- const allowed=OPTIONAL_BRIDGES[n]||[];
- if(!allowed.length||!target||tracks.length!==SCORES[n].length)return null;
+ if(!target||tracks.length<4)return null;
  const initial=tracks.reduce((sum,t)=>sum+t.ms,0);
- if(initial-target<=60000)return null;
+ if(initial<=target+60000)return null;
+ const minimum=Math.max(3,Math.ceil(tracks.length*.6));
+ // Exact subset search of interior cues, capped to avoid blocking mobile devices.
+ const interior=tracks.length-2;
+ if(interior>18)return null;
  let best=null;
- for(let mask=1;mask<(1<<allowed.length);mask++){
-  const removed=allowed.filter((_,i)=>mask&(1<<i));
-  const kept=tracks.filter((_,i)=>!removed.includes(i));
+ for(let mask=0;mask<(1<<interior);mask++){
+  const kept=[tracks[0]];
+  const removed=[];
+  for(let i=0;i<interior;i++){
+   if(mask&(1<<i))kept.push(tracks[i+1]);else removed.push(i+1);
+  }
+  kept.push(tracks[tracks.length-1]);
+  if(kept.length<minimum)continue;
   const total=kept.reduce((sum,t)=>sum+t.ms,0);
+  if(total<target-90000||total>target+60000)continue;
   const error=Math.abs(total-target);
-  // Never trade an extreme underrun for a smaller absolute error.
-  if(total<target-90000||total>target+60000||kept.length<6)continue;
-  const candidate={uris:kept.map(t=>t.uri),removed,total,error};
-  if(!best||candidate.error<best.error||
-     candidate.error===best.error&&removed.length<best.removed.length)best=candidate;
+  if(!best||error<best.error||error===best.error&&removed.length<best.removed.length)
+   best={uris:kept.map(t=>t.uri),removed,total,error};
  }
  return best;
 }
@@ -134,20 +152,29 @@ spotifySyncChapter=async function(n){
   if(state.activeBookSlug!==BOOK||state.active)throw Error("Contexto de leitura mudou");
   let actual=await playlistTracks(id);
   let changed="";
-  // Prefer the previously verified editorial cut over restoring the untrimmed source.
+  // Re-evaluate against the full authored source, not a previously cut list.
+  // This prevents a prior cut from being silently restored or compounded.
+  const target=Math.round((SCORE_META[n]?.estimatedMinutes||0)*60000);
   const retained=(cached?.editorialFit?.source===source&&
     Array.isArray(cached.editorialFit.uris))?cached.editorialFit.uris:null;
   let desired=retained||expected;
-  // If Spotify currently holds the untrimmed canonical score, calculate an
-  // editorially permitted bridge cut using ACTUAL Spotify track durations.
-  if(n===15&&urisEqual(actual.map(t=>t.uri),expected)){
-   const target=Math.round((SCORE_META[n]?.estimatedMinutes||0)*60000);
-   const fit=chooseEditorialSequence(n,actual,target);
-   if(fit){
-    desired=fit.uris;
-    const entry=state.spotify.playlists?.[key];
-    if(entry)entry.editorialFit={source,uris:fit.uris,removedIndexes:fit.removed,
-      targetMs:target,plannedMs:fit.total};
+  if(target>0){
+   const full=urisEqual(actual.map(t=>t.uri),expected)?actual:await canonicalTrackData(expected);
+   const fullMs=full.reduce((sum,t)=>sum+t.ms,0);
+   if(fullMs>target+60000){
+    const fit=chooseEditorialSequence(n,full,target);
+    if(fit){
+     desired=fit.uris;
+     const entry=state.spotify.playlists?.[key];
+     if(entry)entry.editorialFit={source,uris:fit.uris,removedIndexes:fit.removed,
+      targetMs:target,plannedMs:fit.total,mode:"automatic-duration-fit"};
+    }else{
+     // Do not replace a playlist with the overlong source when fitting fails.
+     desired=retained||expected;
+    }
+   }else{
+    desired=expected;
+    if(cached)delete cached.editorialFit;
    }
   }
   if(!urisEqual(actual.map(t=>t.uri),desired)||
@@ -197,7 +224,7 @@ spotifySyncChapter=async function(n){
  inFlight.set(n,work);
  try{return await work;}finally{if(inFlight.get(n)===work)inFlight.delete(n);}
 };
-window.HSSpotifyRuntimeQA={version:"0.15.10",get:n=>state.spotify.chapterRuntime?.[n]||null,
+window.HSSpotifyRuntimeQA={version:"0.16.1",get:n=>state.spotify.chapterRuntime?.[n]||null,
  readOnly:n=>state.spotify.chapterRuntime?.[n]?.verified===true,
  ready:n=>state.spotify.chapterRuntime?.[n]?.status==="WITHIN_RANGE"};
 })();
