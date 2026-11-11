@@ -141,6 +141,25 @@ ART["Eldrad Ulthran"]={
  page:"https://wh40k.lexicanum.com/mediawiki/index.php?title=File:Eldrad_Ulthran_Art.jpg",
  unlock:11
 };
+// Offline-safe illustrated identification plates for newly added people.
+// These are symbolic UI graphics, NEVER claimed as canonical portraits.
+function symbolicPlate(p){
+ const eldar=/Eldrad|Khiraen/i.test(p.name);
+ const iron=/Balhaan|Santor/i.test(p.name);
+ const bg=eldar?"#142c2d":iron?"#252b30":"#302739";
+ const accent=eldar?"#9bd6bb":iron?"#b5c4c6":"#d8b88c";
+ const emblem=eldar?"✧":iron?"⚙":"✦";
+ const label=p.name.replace(/[&<>"]/g,"").slice(0,28);
+ const svg='<svg xmlns="http://www.w3.org/2000/svg" width="480" height="600" viewBox="0 0 480 600"><rect width="480" height="600" fill="'+bg+'"/><rect x="23" y="23" width="434" height="554" rx="8" fill="none" stroke="'+accent+'" stroke-width="3"/><path d="M90 170 L240 72 L390 170 M90 435 L240 527 L390 435" fill="none" stroke="'+accent+'" stroke-opacity=".5" stroke-width="3"/><text x="240" y="332" font-size="174" text-anchor="middle" fill="'+accent+'" font-family="serif">'+emblem+'</text><text x="240" y="480" font-size="24" text-anchor="middle" fill="#eee9db" font-family="sans-serif">'+label+'</text><text x="240" y="552" font-size="15" text-anchor="middle" fill="'+accent+'" font-family="sans-serif">IDENTIFICAÇÃO SIMBÓLICA · NÃO É RETRATO</text></svg>';
+ return "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
+}
+for(const p of d.people){
+ if(!p.image&&!ART[p.name]){
+  p.image=symbolicPlate(p);
+  p.visual="IDENTIFICAÇÃO SIMBÓLICA // RETRATO PENDENTE";
+  p.art={kind:"symbolic",credit:"Heresy Score — placa gráfica, não representa a aparência do personagem"};
+ }
+}
 window.HS_FULGRIM_ART_SOURCE=ART;
 function attach(p){
  const a=ART[p.name];if(!a||p.unlock>a.unlock)return;
