@@ -145,7 +145,7 @@ ART["Eldrad Ulthran"]={
 // These are symbolic UI graphics, NEVER claimed as canonical portraits.
 function symbolicPlate(p){
  const eldar=/Eldrad|Khiraen/i.test(p.name);
- const iron=/Balhaan|Santor/i.test(p.name);
+ const iron=/Balhaan|Santar/i.test(p.name);
  const bg=eldar?"#142c2d":iron?"#252b30":"#302739";
  const accent=eldar?"#9bd6bb":iron?"#b5c4c6":"#d8b88c";
  const emblem=eldar?"✧":iron?"⚙":"✦";
@@ -184,6 +184,22 @@ ART["Saul Tarvitz"]={
  url:"https://wh40k.lexicanum.com/mediawiki/images/e/e0/SaulTarvitzArt.jpg",
  page:"https://wh40k.lexicanum.com/wiki/File:SaulTarvitzArt.jpg",
  unlock:4
+};
+ART["Gabriel Santar"]={
+ category:"fanart",subtype:"artist_illustration",
+ label:"FANART // ILYA GURENKO",
+ credit:"Ilya Gurenko — Gabriel Santar (ilustração do capitão dos Iron Hands)",
+ url:"https://64.media.tumblr.com/878ffaebb91bbee7f7cdab7d0babe84a/36cf75ee24016f01-13/s1280x1920/1edd133d769bf1bec28c382f39d3a5ba057377ed.jpg",
+ page:"https://wh40kartwork.tumblr.com/post/637077430704717824/gabriel-santar-by-ilya-gurenko",
+ unlock:7
+};
+ART["Eidolon"]={
+ category:"fanart",subtype:"artist_illustration",
+ label:"FANART // DIEGO GISBERT LLORENS",
+ credit:"Diego Gisbert Llorens — Lord Commander Eidolon (Great Crusade, fanart)",
+ url:"https://i.pinimg.com/originals/03/23/f5/0323f5fdec542fae4d82cfbb85100ea7.jpg",
+ page:"https://www.artstation.com/artwork/PoEgOZ",
+ unlock:2
 };
 window.HS_FULGRIM_ART_SOURCE=ART;
 function attach(p){
