@@ -58,7 +58,7 @@ const style=document.createElement("style");style.textContent=`
 @media(max-width:520px){
 .mast{grid-template-columns:68px minmax(0,1fr) 38px;gap:8px}
 .sigil{width:68px;height:50px}.sigil img{width:60px;height:40px}
-h1{font-size:19px}.sub{font-size:8px;letter-spacing:.09em}
+h1{font-size:19px}.sub{font-size:8px;letter-spacing:.09em}\n.grid{grid-template-columns:repeat(2,minmax(0,1fr))}\n.debrief-grid{grid-template-columns:repeat(2,minmax(0,1fr))}\n.panel h2{font-size:10px;line-height:1.4}
 .roster,.world-archive{grid-template-columns:minmax(0,1fr)}
 .person-visual{flex-basis:175px;height:175px}
 .hs-deck-nav{grid-template-columns:40px minmax(0,1fr) 40px;gap:7px}
@@ -80,6 +80,10 @@ function show(){
  if(selected===null||selected===previousCurrent&&active!==previousCurrent)selected=active;
  previousCurrent=active;
  selected=Math.max(1,Math.min(chapters.length,selected||active));
+ const countChip=document.querySelector(".bookhead .chip");
+ if(countChip)countChip.textContent=chapters.length+" capítulos";
+ const protocolChip=document.querySelector(".bookhead .chip:last-child");
+ if(protocolChip)protocolChip.textContent="Leitura · versão 0.16.4";
  const cards=[...host.querySelectorAll(".chapter")];
  cards.forEach((card,i)=>{
   const number=chapters[i]?.number;
@@ -96,7 +100,6 @@ function show(){
    }
   }
  });
- const current=chapters.find(c=>c.number===selected);
  const title=toolbar.querySelector("#hsDeckTitle");
  title.textContent="Capítulo "+String(selected).padStart(2,"0")+" / "+chapters.length;
  const tag=toolbar.querySelector("#hsDeckStatus");
