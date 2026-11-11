@@ -160,38 +160,59 @@ for(const p of d.people){
   p.art={kind:"symbolic",credit:"Heresy Score — placa gráfica, não representa a aparência do personagem"};
  }
 }
+// Reader-safe two-dimensional art, with source pages identifying the exact character.
+ART["Fulgrim"]={
+ category:"official",subtype:"black_library_cover",
+ label:"ARTE OFICIAL // PALATINE PHOENIX",
+ credit:"Mikhail Savier — Fulgrim: The Palatine Phoenix (Warhammer Art)",
+ url:"https://www.warhammerart.com/cdn/shop/files/Fulgrim-The-Palatine-Phoenix.jpg?v=1741515735&width=1946",
+ page:"https://www.warhammerart.com/products/fulgrim-the-palatine-phoenix",
+ unlock:1
+};
+ART["Lucius"]={
+ category:"official",subtype:"horus_heresy_artbook",
+ label:"ARTE OFICIAL // LUCIUS PRÉ-HERESIA",
+ credit:"Games Workshop — Horus Heresy artbooks, Lucius (pre-Heresy)",
+ url:"https://wh40k.lexicanum.com/mediawiki/images/a/a3/LuciusPreHeresy.jpg",
+ page:"https://wh40k.lexicanum.com/wiki/File:LuciusPreHeresy.jpg",
+ unlock:4
+};
+ART["Saul Tarvitz"]={
+ category:"official",subtype:"horus_heresy_legions_art",
+ label:"ARTE OFICIAL // HORUS HERESY LEGIONS",
+ credit:"Games Workshop — The Horus Heresy: Legions, carta de Saul Tarvitz",
+ url:"https://wh40k.lexicanum.com/mediawiki/images/e/e0/SaulTarvitzArt.jpg",
+ page:"https://wh40k.lexicanum.com/wiki/File:SaulTarvitzArt.jpg",
+ unlock:4
+};
 window.HS_FULGRIM_ART_SOURCE=ART;
 function attach(p){
- const a=ART[p.name];if(!a||p.unlock>a.unlock)return;
+ const a=ART[p.name];if(!a)return;
  if(p.art?.kind==="personal_reference"||p.art?.kind==="archive_reconstruction")return;
- // Do not reset an already-loaded official/fan illustration on every chapter log.
  if(p.art?.verifiedOnDevice&&p.image===a.url)return;
- if(p.art?.kind==="pending"&&p.art.credit==="Imagem remota falhou no dispositivo")return;
- p.image=a.fallback||symbolicPlate(p);
- p.visual=a.fallback?"RECONSTRUÇÃO ARTÍSTICA // NÃO CANÔNICA":"IDENTIFICAÇÃO SIMBÓLICA // ARTE EXTERNA PENDENTE";
- p.art=a.fallback?{kind:"original_reconstruction",category:"generated",credit:"Heresy Score",fallback:a.fallback}:{kind:"pending",credit:"Fonte em verificação"};
- // Miniature photographs are references only; prefer illustration or the existing reconstruction.
- if(a.subtype==="forgeworld_model")return;
- if(!a.url||typeof Image!=="function")return;
- const preflight=new Image();
- preflight.onload=()=>{
-  // Never override the user's individually imported artwork from IndexedDB.
-  if(p.image!==(a.fallback||symbolicPlate(p)))return;
+ // Never present old AI-generated art as a verified likeness.
+ const fallback=symbolicPlate(p);
+ p.image=fallback;
+ p.visual="IDENTIFICAÇÃO SIMBÓLICA // RETRATO REAL PENDENTE";
+ p.art={kind:"symbolic",credit:"Heresy Score — identificação gráfica, não é a aparência do personagem",sourcePage:a.page||""};
+ if(!a.url||a.subtype==="forgeworld_model"||typeof Image!=="function")return;
+ const candidate=new Image();
+ candidate.referrerPolicy="no-referrer";
+ candidate.onload=()=>{
+  if(p.art?.kind==="personal_reference"||p.art?.kind==="archive_reconstruction")return;
+  if(p.image!==fallback)return;
   p.image=a.url;
   p.visual=a.label;
-  p.art={kind:a.category,sourceKind:a.subtype||a.category,credit:a.credit,sourcePage:a.page||"",fallback:a.fallback,verifiedOnDevice:true};
+  p.art={kind:a.category,sourceKind:a.subtype||a.category,credit:a.credit,sourcePage:a.page||"",fallback,verifiedOnDevice:true};
   if(typeof state!=="undefined"&&state.activeBookSlug==="fulgrim"&&typeof render==="function")render();
  };
- preflight.onerror=()=>{
-  // Public-host hotlink unavailable: keep the original matte painting, not SVG vector.
-  if(p.image===(a.fallback||symbolicPlate(p))){
-   p.visual=a.fallback?"RECONSTRUÇÃO ARTÍSTICA // FONTE EXTERNA INDISPONÍVEL":"IDENTIFICAÇÃO SIMBÓLICA // ILUSTRAÇÃO EXTERNA INDISPONÍVEL";
-   p.art={kind:"pending",credit:"Imagem remota falhou no dispositivo",sourcePage:a.page||""};
-   if(typeof state!=="undefined"&&state.activeBookSlug==="fulgrim"&&typeof render==="function")render();
-  }
+ candidate.onerror=()=>{
+  if(p.image!==fallback)return;
+  p.visual="IDENTIFICAÇÃO SIMBÓLICA // ARTE REMOTA INDISPONÍVEL";
+  p.art={kind:"symbolic",credit:"Heresy Score — arte remota indisponível; não é um retrato",sourcePage:a.page||""};
+  if(typeof state!=="undefined"&&state.activeBookSlug==="fulgrim"&&typeof render==="function")render();
  };
- preflight.referrerPolicy="no-referrer";
- preflight.src=a.url;
+ candidate.src=a.url;
 }
 for(const p of d.people)attach(p);
 // Re-evaluate newly unlocked records after each completed chapter and book switch.
