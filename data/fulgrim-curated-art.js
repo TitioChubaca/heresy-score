@@ -16,6 +16,7 @@ const ART={
   },
   "Solomon Demeter": {
     "category": "fanart",
+    "subtype": "miniature_photo",
     "label": "FANART // LIL LEGEND STUDIO",
     "credit": "Myles — Lil Legend Studio (miniatura personalizada de Solomon)",
     "url": "https://lillegendstudio.com/wp-content/uploads/2019/10/DSCF1353-1024x902.jpg",
@@ -211,7 +212,7 @@ function attach(p){
  p.image=fallback;
  p.visual="IDENTIFICAÇÃO SIMBÓLICA // RETRATO REAL PENDENTE";
  p.art={kind:"symbolic",credit:"Heresy Score — identificação gráfica, não é a aparência do personagem",sourcePage:a.page||""};
- if(!a.url||a.subtype==="forgeworld_model"||typeof Image!=="function")return;
+ if(!a.url||["forgeworld_model","miniature_photo"].includes(a.subtype)||typeof Image!=="function")return;
  const candidate=new Image();
  candidate.referrerPolicy="no-referrer";
  candidate.onload=()=>{
@@ -272,7 +273,7 @@ if(artDialog&&artDialogImg&&typeof openPerson==="function"){
   const t=p.art.kind==="symbolic"||p.art.kind==="pending"?"IDENTIFICAÇÃO SIMBÓLICA":p.art.kind==="official"?"ARTE OFICIAL":p.art.kind==="fanart"?"FANART CREDITADA":p.art.kind==="personal_reference"?"ARTE PESSOAL":"RECONSTRUÇÃO NÃO CANÔNICA";
   credit.textContent=t+" // "+String(p.art.credit||p.visual||"origem não identificada");
   const src=ART[p.name];
-  sourceLink.hidden=!(src?.url&&src?.page&&src.subtype!=="forgeworld_model");
+  sourceLink.hidden=!(src?.url&&src?.page&&!["forgeworld_model","miniature_photo"].includes(src.subtype));
   if(!sourceLink.hidden)sourceLink.href=src.page;
  };
 }
