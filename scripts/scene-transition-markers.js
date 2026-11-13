@@ -7,7 +7,7 @@ const panel=document.createElement("section");
 panel.className="hs-transition-markers";
 panel.style.cssText="margin:10px 0;padding:10px;border:1px solid #536746;border-radius:4px";
 const title=document.createElement("div");title.className="small";title.textContent="AJUSTE FINO // transição musical (opcional)";
-const hint=document.createElement("div");hint.className="small";hint.textContent="Toque somente se a música estiver atrasada em relação ao texto. A marca guarda o tempo do cronômetro e a faixa atual.";
+const hint=document.createElement("div");hint.className="small";hint.textContent="Você não precisa marcar nada durante a leitura. Este registro existe apenas para diagnóstico excepcional.";
 const row=document.createElement("div");row.style.cssText="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px";
 const choices=[["need-action","Começou ação / música calma"],["need-calm","Terminou ação / música intensa"]];
 const status=document.createElement("div");status.className="small";status.setAttribute("aria-live","polite");status.style.marginTop="6px";
@@ -28,8 +28,17 @@ for(const [type,label] of choices){
  row.append(b);
 }
 panel.append(title,hint,row,status);
+// The chapter soundtrack must work without any reader taps. Optional manual
+// transition markers live inside a collapsed diagnostics disclosure only.
+const diagnostic=document.createElement("details");
+diagnostic.className="hs-transition-diagnostics";
+diagnostic.style.cssText="margin:8px 0;border:1px solid #30402c;padding:7px";
+const diagnosticLabel=document.createElement("summary");
+diagnosticLabel.className="small";
+diagnosticLabel.textContent="Diagnóstico avançado de transições (não necessário para ler)";
+diagnostic.append(diagnosticLabel,panel);
 const controls=now.querySelector(".track-feedback");
-if(controls)controls.after(panel);else now.append(panel);
+if(controls)controls.after(diagnostic);else now.append(diagnostic);
 const baseFinish=finish;
 finish=function(){
  const active=state.active;
