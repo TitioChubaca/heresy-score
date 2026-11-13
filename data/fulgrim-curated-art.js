@@ -208,10 +208,13 @@ function attach(p){
  if(p.art?.kind==="personal_reference"||p.art?.kind==="archive_reconstruction")return;
  if(p.art?.verifiedOnDevice&&p.image===a.url)return;
  // Never present old AI-generated art as a verified likeness.
- const fallback=symbolicPlate(p);
+ const fallback=a.fallback||symbolicPlate(p);
+ const hasPainting=!!a.fallback;
  p.image=fallback;
- p.visual="IDENTIFICAÇÃO SIMBÓLICA // RETRATO REAL PENDENTE";
- p.art={kind:"symbolic",credit:"Heresy Score — identificação gráfica, não é a aparência do personagem",sourcePage:a.page||""};
+ p.visual=hasPainting?"RECONSTRUÇÃO IA PROVISÓRIA // NÃO CANÔNICA":"IDENTIFICAÇÃO SIMBÓLICA // RETRATO PENDENTE";
+ p.art={kind:hasPainting?"original_reconstruction":"symbolic",
+   credit:hasPainting?"Heresy Score — arte gerada por IA, provisória e não canônica":"Heresy Score — identificação gráfica, não é a aparência do personagem",
+   sourcePage:a.page||"",fallback};
  if(!a.url||["forgeworld_model","miniature_photo"].includes(a.subtype)||typeof Image!=="function")return;
  const candidate=new Image();
  candidate.referrerPolicy="no-referrer";
@@ -225,8 +228,10 @@ function attach(p){
  };
  candidate.onerror=()=>{
   if(p.image!==fallback)return;
-  p.visual="IDENTIFICAÇÃO SIMBÓLICA // ARTE REMOTA INDISPONÍVEL";
-  p.art={kind:"symbolic",credit:"Heresy Score — arte remota indisponível; não é um retrato",sourcePage:a.page||""};
+  p.visual=hasPainting?"RECONSTRUÇÃO IA PROVISÓRIA // FONTE EXTERNA INDISPONÍVEL":"IDENTIFICAÇÃO SIMBÓLICA // FONTE EXTERNA INDISPONÍVEL";
+  p.art={kind:hasPainting?"original_reconstruction":"symbolic",
+   credit:hasPainting?"Heresy Score — retrato IA provisório, arte externa indisponível":"Heresy Score — arte remota indisponível; símbolo não é retrato",
+   sourcePage:a.page||"",fallback};
   if(typeof state!=="undefined"&&state.activeBookSlug==="fulgrim"&&typeof render==="function")render();
  };
  candidate.src=a.url;
@@ -240,9 +245,10 @@ document.addEventListener("error",event=>{
  const p=d.people.find(person=>person.name===img.alt&&person.image===img.getAttribute("src")&&person.art?.verifiedOnDevice);
  if(!p)return;
  event.stopImmediatePropagation();
- p.image=symbolicPlate(p);
- p.visual="IDENTIFICAÇÃO SIMBÓLICA // IMAGEM EXTERNA INDISPONÍVEL";
- p.art={kind:"symbolic",credit:"Fonte de imagem indisponível no dispositivo",sourcePage:ART[p.name]?.page||""};
+ const restore=ART[p.name]?.fallback||symbolicPlate(p);
+ p.image=restore;
+ p.visual=ART[p.name]?.fallback?"RECONSTRUÇÃO IA PROVISÓRIA // ARTE EXTERNA INDISPONÍVEL":"IDENTIFICAÇÃO SIMBÓLICA // IMAGEM EXTERNA INDISPONÍVEL";
+ p.art={kind:ART[p.name]?.fallback?"original_reconstruction":"symbolic",credit:"Imagem externa indisponível; fallback local não canônico",sourcePage:ART[p.name]?.page||"",fallback:restore};
  img.src=p.image;
  if(typeof render==="function")render();
 },true);
