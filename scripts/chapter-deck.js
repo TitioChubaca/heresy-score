@@ -83,7 +83,7 @@ function show(){
  const countChip=document.querySelector(".bookhead .chip");
  if(countChip)countChip.textContent=chapters.length+" capítulos";
  const protocolChip=document.querySelector(".bookhead .chip:last-child");
- if(protocolChip)protocolChip.textContent="Leitura · versão 0.16.4";
+ if(protocolChip)protocolChip.textContent="Leitura · versão 0.16.6";
  const cards=[...host.querySelectorAll(".chapter")];
  cards.forEach((card,i)=>{
   const number=chapters[i]?.number;
