@@ -484,3 +484,27 @@ User-observed IX 22:38 vs 25:12 text estimate. Added The Still, Cold World (Bonu
 - Reader reports **Discordant Feast (Pavel Lipski)** still fails to fit the scene, and says this was raised before. Prior recorded feedback for VIII identified the same track mismatch (though original VIII source no longer contains this title). This is a negative recurring music preference; avoid this track in future scoring unless user specifically changes mind.
 - Edited chapter XVII score: remove Discordant Feast, retain Shadow Quarters as final cue, finalCueIndex 9, sourceOrderSegments 10. This editorial change does not rewrite user-completed playlist/log. Runtime duration should be recalibrated only if user opts to re-audit that chapter.
 - Two leftover tracks indicate pace issue beyond overall measured Spotify duration; future editorial review should distinguish playback length vs reading duration; do not claim solved by simply removing one track. No spoilers about story content beyond user's current point.
+
+## 2026-11-12 — Qualidade musical e visual: correção de causas (v0.16.6)
+
+### Evidência dos logs
+- Progresso confirmado no Supabase até Fulgrim XVIII (24 minutos, trilha 1 minuto curta e alguns encaixes incorretos). XVII: 26 minutos, trilha longa, Discordant Feast não encaixou. XV: 35 minutos, bom encaixe geral. XVI: registro de 1 minuto INVÁLIDO para calibragem: usuário não cronometrou a leitura, notou The Chant incompatível com diálogo calmo. IX e XII registraram intensidade excessiva em segmentos sem ação.
+- Fonte privada permite contar palavras e mapear posições de cenas sem publicar o texto. Por exemplo: XV 6399 palavras; XVI 4848; XVII 5590; XVIII 4405; XIX 5277. A estimativa seguinte usa mediana robusta de minutos/palavras (exclui log de 1 min), combinada à meta editorial anterior. Ritmo é variável; NÃO existe acompanhamento da página do Kindle em tempo real.
+- Erro de arquitetura anterior: o auto-fitter removia qualquer música intermediária até bater minutos, sem respeitar se era o elo entre atmosfera e combate. Novo fitter usa índices opcionais, índices protegidos e posições relativas de transição editorial. Se não encontrar subset válido, não declara sucesso.
+- Cues futuros XIX–XXV receberam proteções de estrutura musical (somente índices e timing genérico no repositório público); XIX reordenado para transições suaves. Discordant Feast removido das playlists futuras XXI e XXV, além de XVII. Nunca reintroduzir sem aprovação explícita.
+- Novos logs gravam musicTelemetry AUTOMÁTICO ao finalizar capítulo: duração da sessão, duração auditada, faixas/minutos restantes estimados e último título observado no Spotify. Estimativas não são posição real garantida, porque playback pode ser pausado/pulado independentemente. Não exigir botões durante leitura. Marcadores manuais recolhidos num bloco de diagnóstico fechado.
+
+### Regra visual e pendências
+- Ordem: arte oficial 2D da época > fanart creditada sem spoiler > **manter IA anterior como fallback local claramente não canônico** > identificação simbólica somente quando nunca houve retrato. O usuário rejeitou a troca de IA por placa/ausência de imagem.
+- Confirmada no GitHub a existência dos binários WEBP dos retratos antigos (amostra Fulgrim, Fabius, Julius, Ferrus, Serena); restaurado fallback. Imagem externa deve carregar realmente antes da substituição. Arte pessoal do IndexedDB continua prioritária.
+- Novas fontes representativas no arquivo de lugares: Karl Richardson, arte Black Library de campanha em Laeran (Atoll 19 apenas como referência de campanha, NÃO cena exata), Iron Hands oficial de GW (arte representativa), Eldar e craftworld. Pride of the Emperor e Laer têm referências externas prévias. Muitos planetas, lugares e personagens CONTINUAM sem ilustração exata; glyph/símbolo não é conclusão. Fontes externas têm risco de hotlink; não copiar arte protegida para repositório público sem permissão.
+- Retratos posteriores que revelem transformações futuras são proibidos mesmo se oficiais. Usuário já leu até XVIII, não revelar XIX+ nos textos ou assets.
+
+### QA antes de dizer corrigido
+1. Ler o mapa privado texto/capítulo e os logs, sem expor spoilers futuros.
+2. Classificar passagens por atmosfera, diálogo, tensão, ação e desfecho.
+3. Atribuir e proteger faixas de transição, depois ajustar duração Spotify com leitor real; NÃO arbitrar cortes por total.
+4. Verificar ordem/URI/duração na sessão OAuth do dispositivo. Código alterado não é validação de playback.
+5. Verificar ilustração renderizada no PWA; diferenciar arte oficial/fanart, IA temporária e símbolo.
+6. Preservar logs Supabase, leitura ativa, progresso, navegação e separação de livros.
+7. Registrar pendências abertamente e não criar versão atrás de versão sem inspeção final.
