@@ -274,7 +274,31 @@ async function begin(c){
  }finally{beginPending=false}
 }
 function renderNow(){if(!state.active){$("now").classList.remove("active");$("now").classList.remove("paused");clearInterval(tick);tick=null;clearInterval(playerPoll);playerPoll=null;return}$("now").classList.add("active");$("now").classList.toggle("paused",!!state.active.paused);$("nowChapter").textContent="CHAPTER "+String(state.active.chapter).padStart(2,"0");$("pauseBtn").textContent=state.active.paused?"Resume":"Pause";$("playbackState").textContent=state.active.paused?"session paused":"linked";let meta=SCORE_META[state.active.chapter]||{};$("finalCueBtn").style.display=meta.finalCueIndex==null?"none":"";$("finalCueBtn").disabled=!!state.active.paused;$("prevTrackBtn").disabled=!spotifyConnected();$("nextTrackBtn").disabled=!spotifyConnected();let u=()=>$("timer").textContent=fmt(elapsed());u();if(!tick)tick=setInterval(u,1000);renderTrackFeedbackState();if(!playerPoll){refreshPlayer();playerPoll=setInterval(refreshPlayer,12000)}}
-function finish(){if(!state.active)return;let c=state.active.chapter,ms=elapsed(),startedAt=state.active.startedAt;state.done[c]={...(state.done[c]||{}),minutes:Math.max(1,Math.round(ms/60000)),startedAt:new Date(startedAt).toISOString(),finishedAt:new Date().toISOString(),trackFeedback:[...(state.active.trackFeedback||[])],cloudSynced:false};state.active=null;save();target=c;openLog(c);render()}
+function finish(){
+ if(!state.active)return;
+ const c=state.active.chapter,ms=elapsed(),startedAt=state.active.startedAt;
+ const runtime=state.spotify.chapterRuntime?.[c],lastTrack=state.active.currentTrack;
+ // Passive telemetry only. Spotify playback can be paused, resumed or skipped
+ // independently, so unused tracks derived from minutes are ESTIMATES.
+ let remainingMs=null,remainingTrackEstimate=null;
+ if(runtime?.verified&&Array.isArray(runtime.auditTracks)&&Number.isFinite(runtime.durationMs)){
+  remainingMs=Math.max(0,runtime.durationMs-ms);
+  let consumed=0,index=0;
+  while(index<runtime.auditTracks.length&&consumed+runtime.auditTracks[index].seconds*1000<=ms){
+   consumed+=runtime.auditTracks[index].seconds*1000;index++;
+  }
+  remainingTrackEstimate=runtime.auditTracks.length-index;
+ }
+ state.done[c]={...(state.done[c]||{}),minutes:Math.max(1,Math.round(ms/60000)),
+  startedAt:new Date(startedAt).toISOString(),finishedAt:new Date().toISOString(),
+  trackFeedback:[...(state.active.trackFeedback||[])],
+  musicTelemetry:{source:"passive-reading-timer-estimate",readDurationMs:ms,
+   auditedScoreDurationMs:Number.isFinite(runtime?.durationMs)?runtime.durationMs:null,
+   estimatedUnusedMs:remainingMs,estimatedRemainingTracks:remainingTrackEstimate,
+   lastObservedTrack:lastTrack?.title||null,sceneAccuracyVerified:false},
+  cloudSynced:false};
+ state.active=null;save();target=c;openLog(c);render();
+}
 function openLog(c){target=c;let d=state.done[c]||{};$("fbChapter").textContent="CHAPTER "+String(c).padStart(2,"0")+" // "+(d.minutes||"?")+" MIN";$("fbNotes").value=d.notes||"";document.querySelectorAll(".seg").forEach(s=>s.querySelectorAll("button").forEach(b=>b.classList.toggle("on",d[s.dataset.key]===b.dataset.value)));$("feedbackDialog").showModal()}
 document.querySelectorAll(".seg").forEach(s=>s.onclick=e=>{let b=e.target.closest("button[data-value]");if(!b)return;s.querySelectorAll("button").forEach(x=>x.classList.remove("on"));b.classList.add("on")});
 $("finishBtn").onclick=finish;$("trackFitBtn").onclick=()=>markCurrentTrack("fit");$("trackMismatchBtn").onclick=()=>markCurrentTrack("mismatch");$("pauseBtn").onclick=toggleSessionPause;$("nextTrackBtn").onclick=spotifyNext;$("prevTrackBtn").onclick=spotifyPrev;$("finalCueBtn").onclick=spotifyFinalCue;$("openSpotifyBtn").onclick=()=>{let u=state.spotify.playlistUrl||state.playlistUrl||PLAYLIST;window.open(u,"_blank")};$("cancelBtn").onclick=()=>{state.active=null;save();render()};$("closeFb").onclick=()=>$("feedbackDialog").close();$("savePlaylist").onclick=()=>{state.playlistUrl=$("playlistUrl").value.trim()||PLAYLIST;save();toast("link archived")};$("copyRedirect").onclick=async()=>{try{await navigator.clipboard.writeText(spotifyRedirectUri());toast("redirect URI copied")}catch(e){$("spotifyRedirect").select()}};$("spotifyConnect").onclick=spotifyLogin;$("spotifyDisconnect").onclick=()=>{state.spotify.accessToken="";state.spotify.refreshToken="";state.spotify.expiresAt=0;save();renderSpotify();toast("Spotify disconnected")};$("cloudConnect").onclick=cloudConnect;$("cloudPull").onclick=()=>cloudPullLogs(true);$("cloudDisconnect").onclick=()=>{state.cloud.enabled=false;state.cloud.userDisabled=true;state.cloud.lastError="";save();renderCloud();toast("cloud disconnected")};$("closePerson").onclick=()=>$("personDialog").close();$("saveFeedback").onclick=async()=>{if(!target)return;let d=state.done[target]||{};document.querySelectorAll(".seg").forEach(s=>{let o=s.querySelector(".on");if(o)d[s.dataset.key]=o.dataset.value});d.notes=$("fbNotes").value.trim();d.cloudSynced=false;state.done[target]=d;save();$("feedbackDialog").close();render();if(state.cloud.enabled)await cloudPushChapter(target,false);toast(state.done[target].cloudSynced?"field log archived // cloud":"field log archived")};
