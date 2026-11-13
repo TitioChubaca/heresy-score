@@ -75,28 +75,50 @@ async function canonicalTrackData(uris){
  }
  return out;
 }
+// Source-derived private metrics contain counts only. No copyrighted text,
+ // event details, or future character information is shipped.
+const CHAPTER_WORDS={1:4776,2:5359,3:4476,4:5511,5:6110,6:5245,7:5604,8:5961,9:4951,10:6320,11:4255,12:5900,13:4610,14:4804,15:6399,16:4848,17:5590,18:4405,19:5277,20:5517,21:5418,22:5283,23:5319,24:5015,25:5586};
+function calibratedTarget(n){
+ const base=Number(SCORE_META[n]?.baseEstimatedMinutes||SCORE_META[n]?.estimatedMinutes);
+ if(!Number.isFinite(base)||base<=0||!CHAPTER_WORDS[n])return null;
+ const logs=Object.entries(state.done||{}).map(([chapter,log])=>{
+  const i=Number(chapter),min=Number(log?.minutes),words=CHAPTER_WORDS[i];
+  return {i,min,wpm:words/min};
+ }).filter(x=>x.i<n&&x.i>0&&x.min>=14&&x.min<=65&&Number.isFinite(x.wpm)&&x.wpm>=145&&x.wpm<=255)
+ .sort((a,b)=>b.i-a.i).slice(0,8);
+ if(logs.length<3)return Math.round(base*10)/10;
+ const speeds=logs.map(x=>x.wpm).sort((a,b)=>a-b);
+ const mid=Math.floor(speeds.length/2),median=speeds.length%2?speeds[mid]:(speeds[mid-1]+speeds[mid])/2;
+ const measured=CHAPTER_WORDS[n]/Math.max(165,Math.min(235,median));
+ // Smooth against editorial estimate; do not whipsaw on a single session.
+ const blended=base*.25+measured*.75;
+ return Math.round(Math.max(base*.78,Math.min(base*1.23,blended))*10)/10;
+}
 function chooseEditorialSequence(n,tracks,target){
- if(!target||tracks.length<4)return null;
+ const plan=SCORE_META[n]?.editorialFitPlan;
+ // DO NOT remove arbitrary cues: the old subset fitter crossed dialogue,
+ // action and atmosphere boundaries to make the arithmetic look correct.
+ if(!plan||!Array.isArray(plan.optionalIndexes)||!plan.optionalIndexes.length||!target||tracks.length!==SCORES[n].length)return null;
+ const allowed=[...new Set(plan.optionalIndexes)].filter(i=>Number.isInteger(i)&&i>0&&i<tracks.length-1);
+ const protectedCue=new Set([0,tracks.length-1,...(plan.protectedIndexes||[])]);
+ if(!allowed.length||allowed.some(i=>protectedCue.has(i))||allowed.length>12)return null;
  const initial=tracks.reduce((sum,t)=>sum+t.ms,0);
  if(initial<=target+60000)return null;
- const minimum=Math.max(3,Math.ceil(tracks.length*.6));
- // Exact subset search of interior cues, capped to avoid blocking mobile devices.
- const interior=tracks.length-2;
- if(interior>18)return null;
  let best=null;
- for(let mask=0;mask<(1<<interior);mask++){
-  const kept=[tracks[0]];
-  const removed=[];
-  for(let i=0;i<interior;i++){
-   if(mask&(1<<i))kept.push(tracks[i+1]);else removed.push(i+1);
-  }
-  kept.push(tracks[tracks.length-1]);
-  if(kept.length<minimum)continue;
+ for(let mask=1;mask<(1<<allowed.length);mask++){
+  const removed=allowed.filter((_,j)=>mask&(1<<j));
+  const removing=new Set(removed);
+  const kept=tracks.filter((_,i)=>!removing.has(i));
   const total=kept.reduce((sum,t)=>sum+t.ms,0);
-  if(total<target-90000||total>target+60000)continue;
-  const error=Math.abs(total-target);
-  if(!best||error<best.error||error===best.error&&removed.length<best.removed.length)
-   best={uris:kept.map(t=>t.uri),removed,total,error};
+  if(total<target-90000||total>target+60000||kept.length<Math.ceil(tracks.length*.6))continue;
+  const msBefore=index=>tracks.reduce((sum,t,i)=>sum+(i<index&&!removing.has(i)?t.ms:0),0);
+  const anchorLoss=(plan.anchors||[]).reduce((sum,a)=>{
+   if(removing.has(a.index))return sum+100;
+   return sum+Math.abs(msBefore(a.index)-a.at*target)/60000*(a.weight||1);
+  },0);
+  const durationLoss=Math.abs(total-target)/60000;
+  const loss=durationLoss*2+anchorLoss*.8+removed.length*.25;
+  if(!best||loss<best.loss)best={uris:kept.map(t=>t.uri),removed,total,error:Math.abs(total-target),anchorLoss,loss};
  }
  return best;
 }
@@ -125,6 +147,16 @@ function updateAudit(n,play,tracks,source,change){
 spotifySyncChapter=async function(n){
  if(state.activeBookSlug!==BOOK)return previousSync(n);
  if(!Array.isArray(SCORES[n])||!SCORES[n].length)throw Error("Capítulo ainda não possui trilha aprovada");
+ // Recalculate only the next unread score using real logged reading speed.
+ // An invalid 1-minute chapter log is excluded by calibratedTarget().
+ if(n>Math.max(0,...Object.keys(state.done||{}).map(Number).filter(Number.isInteger))){
+  const meta=SCORE_META[n];
+  if(meta){
+   if(!Number.isFinite(meta.baseEstimatedMinutes))meta.baseEstimatedMinutes=Number(meta.estimatedMinutes);
+   const estimated=calibratedTarget(n);
+   if(estimated)meta.estimatedMinutes=estimated;
+  }
+ }
  const source=JSON.stringify(SCORES[n]),key=BOOK+":"+n;
  const session=!!state.active;
  const play=state.spotify.playlists?.[key];
@@ -167,7 +199,7 @@ spotifySyncChapter=async function(n){
      desired=fit.uris;
      const entry=state.spotify.playlists?.[key];
      if(entry)entry.editorialFit={source,uris:fit.uris,removedIndexes:fit.removed,
-      targetMs:target,plannedMs:fit.total,mode:"automatic-duration-fit"};
+      targetMs:target,plannedMs:fit.total,mode:"scene-protected-duration-fit",anchorLoss:fit.anchorLoss};
     }else{
      // Do not replace a playlist with the overlong source when fitting fails.
      desired=retained||expected;
@@ -224,7 +256,7 @@ spotifySyncChapter=async function(n){
  inFlight.set(n,work);
  try{return await work;}finally{if(inFlight.get(n)===work)inFlight.delete(n);}
 };
-window.HSSpotifyRuntimeQA={version:"0.16.1",get:n=>state.spotify.chapterRuntime?.[n]||null,
+window.HSSpotifyRuntimeQA={version:"0.16.6",get:n=>state.spotify.chapterRuntime?.[n]||null,
  readOnly:n=>state.spotify.chapterRuntime?.[n]?.verified===true,
  ready:n=>state.spotify.chapterRuntime?.[n]?.status==="WITHIN_RANGE"};
 })();
