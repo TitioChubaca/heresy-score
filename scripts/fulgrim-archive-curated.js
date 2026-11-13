@@ -18,6 +18,21 @@ SOURCES.push({
  credit:"Paul Dainton — Eldar Warlock Arquellia of Ulthwé; representative Eldar illustration, NOT a portrait of Eldrad",
  label:"ARTE OFICIAL // ELDAR DE ULTHWÉ"
 });
+// Source-credited representative imagery; neither work claims to depict
+// an exact atoll or an individual participant.
+SOURCES.push({
+ key:"atoll-19",
+ url:"https://artwork.40k.gallery/wp-content/uploads/2025/02/Phoenix-Guard-206x300.jpg",
+ category:"official_reference",
+ credit:"Karl Richardson — Black Library illustration from Fulgrim; Laeran campaign, not exactly Atoll 19",
+ label:"ARTE OFICIAL // CAMPANHA LAERAN"
+},{
+ key:"legion-iron-hands",
+ url:"https://www.belloflostsouls.net/wp-content/uploads/2022/05/FZW8N7Hfyvk704td.jpg",
+ category:"official_reference",
+ credit:"Games Workshop — Horus Heresy Iron Hands illustration; representative legion scene",
+ label:"ARTE OFICIAL // IRON HANDS"
+});
 const data=window.HS_FULGRIM_DATA;if(!data?.archive)return;
 for(const entry of SOURCES){
  const r=data.archive.find(x=>x.key===entry.key);
@@ -26,7 +41,7 @@ for(const entry of SOURCES){
  img.referrerPolicy="no-referrer";
  img.onload=()=>{
   r.image=entry.url;r.visual=entry.label;
-  r.art={kind:entry.category,credit:entry.credit};
+  r.art={kind:entry.category,credit:entry.credit,subjectExact:!entry.category.includes("reference")};
   if(state.activeBookSlug==="fulgrim"&&r.unlock<=maxClearance()&&typeof renderArchive==="function")renderArchive();
  };
  img.src=entry.url;
