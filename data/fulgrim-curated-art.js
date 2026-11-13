@@ -202,11 +202,14 @@ ART["Eidolon"]={
  page:"https://www.artstation.com/artwork/PoEgOZ",
  unlock:2
 };
+// Alternate host only when the exact same period-safe work is confirmed.
+// An external failure must never erase a working local portrait.
+ART["Fulgrim"].alternates=["https://grimdarkgamer.com/images/Fulgrim-The-Palatine-Phoenix.jpg"];
 window.HS_FULGRIM_ART_SOURCE=ART;
 function attach(p){
  const a=ART[p.name];if(!a)return;
  if(p.art?.kind==="personal_reference"||p.art?.kind==="archive_reconstruction")return;
- if(p.art?.verifiedOnDevice&&p.image===a.url)return;
+ if(p.art?.verifiedOnDevice&&p.art?.sourceKey===p.name&&p.image)return;
  // Never present old AI-generated art as a verified likeness.
  const fallback=a.fallback||symbolicPlate(p);
  const hasPainting=!!a.fallback;
@@ -216,25 +219,29 @@ function attach(p){
    credit:hasPainting?"Heresy Score — arte gerada por IA, provisória e não canônica":"Heresy Score — identificação gráfica, não é a aparência do personagem",
    sourcePage:a.page||"",fallback};
  if(!a.url||["forgeworld_model","miniature_photo"].includes(a.subtype)||typeof Image!=="function")return;
- const candidate=new Image();
- candidate.referrerPolicy="no-referrer";
+ const sources=[a.url,...(a.alternates||[])].filter(Boolean);
+ let sourceIndex=0;
+ const candidate=new Image();candidate.referrerPolicy="no-referrer";
  candidate.onload=()=>{
   if(p.art?.kind==="personal_reference"||p.art?.kind==="archive_reconstruction")return;
   if(p.image!==fallback)return;
-  p.image=a.url;
-  p.visual=a.label;
-  p.art={kind:a.category,sourceKind:a.subtype||a.category,credit:a.credit,sourcePage:a.page||"",fallback,verifiedOnDevice:true};
+  const chosen=sources[sourceIndex];
+  p.image=chosen;p.visual=a.label;
+  p.art={kind:a.category,sourceKind:a.subtype||a.category,credit:a.credit,
+   sourcePage:a.page||"",sourceKey:p.name,sourceUrl:chosen,fallback,verifiedOnDevice:true};
   if(typeof state!=="undefined"&&state.activeBookSlug==="fulgrim"&&typeof render==="function")render();
  };
  candidate.onerror=()=>{
   if(p.image!==fallback)return;
-  p.visual=hasPainting?"RECONSTRUÇÃO IA PROVISÓRIA // FONTE EXTERNA INDISPONÍVEL":"IDENTIFICAÇÃO SIMBÓLICA // FONTE EXTERNA INDISPONÍVEL";
+  sourceIndex++;
+  if(sourceIndex<sources.length){candidate.src=sources[sourceIndex];return;}
+  p.visual=hasPainting?"RECONSTRUÇÃO IA PROVISÓRIA // FONTES EXTERNAS INDISPONÍVEIS":"IDENTIFICAÇÃO SIMBÓLICA // FONTES EXTERNAS INDISPONÍVEIS";
   p.art={kind:hasPainting?"original_reconstruction":"symbolic",
-   credit:hasPainting?"Heresy Score — retrato IA provisório, arte externa indisponível":"Heresy Score — arte remota indisponível; símbolo não é retrato",
+   credit:hasPainting?"Heresy Score — retrato IA provisório, arte remota indisponível":"Heresy Score — símbolo não é retrato",
    sourcePage:a.page||"",fallback};
   if(typeof state!=="undefined"&&state.activeBookSlug==="fulgrim"&&typeof render==="function")render();
  };
- candidate.src=a.url;
+ candidate.src=sources[0];
 }
 for(const p of d.people)attach(p);
 // If an external image stops working after its preflight, use the safe
