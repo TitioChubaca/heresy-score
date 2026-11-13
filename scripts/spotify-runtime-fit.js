@@ -187,7 +187,10 @@ spotifySyncChapter=async function(n){
   // Re-evaluate against the full authored source, not a previously cut list.
   // This prevents a prior cut from being silently restored or compounded.
   const target=Math.round((SCORE_META[n]?.estimatedMinutes||0)*60000);
-  const retained=(cached?.editorialFit?.source===source&&
+  // Earlier builds pruned any interior cue; those saved cuts may have
+  // destroyed a scene transition and must NEVER be reused.
+  const retained=(cached?.editorialFit?.mode==="scene-protected-duration-fit"&&
+    cached.editorialFit.source===source&&
     Array.isArray(cached.editorialFit.uris))?cached.editorialFit.uris:null;
   let desired=retained||expected;
   if(target>0){
