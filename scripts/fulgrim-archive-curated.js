@@ -68,7 +68,9 @@ const originalOpen=openArchiveRecord;openArchiveRecord=function(r){
  const img=document.createElement("img");img.src=r.image;img.alt=r.name;
  img.onerror=()=>{if(holder.contains(img))holder.replaceChildren(document.createTextNode("Imagem externa indisponível"));};
  img.style.cssText="width:100%;max-height:370px;object-fit:contain";
- holder.replaceChildren(img);
+ const credit=document.createElement("p");credit.className="small";
+ credit.textContent=r.art?.credit||"Imagem de referência";credit.style.marginTop="8px";
+ holder.replaceChildren(img,credit);
 };
 decorate();
 })();
