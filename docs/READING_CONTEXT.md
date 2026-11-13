@@ -1,13 +1,23 @@
 # Warhammer Reading Context
 
-**Current handoff (2026-11-07)**  
-**Spoiler ceiling: Fulgrim — Chapter XII complete.**  
-**Next chapter: XIII.**  
-Source: confirmed chapter XII Supabase log (29 reading minutes) and the latest App Lab handoff. No chapter XIII completion log is present; if the reader later confirms XIII, advance then. **Never reveal Fulgrim XIII–XXV plot, character fate, scene mapping or spoiler-bearing art before individual reading clearance.**
+**Current handoff — 2026-11-12**
+**Spoiler ceiling: Fulgrim (Horus Heresy V), Chapter XVIII COMPLETED.**
+**Next chapter: XIX — UNREAD.**
 
-Reading order: Horus Heresy in publication order, in English. Completed I–IV, with *The Flight of the Eisenstein* including its XVII epilogue. Book V *Fulgrim* is the active book. Discuss only the text and characters the reader has already encountered; canonical lore first, clearly separate community interpretation; correct mistaken theories without spoiling upcoming reveals.
+Evidence: original user's completed in-app logs, verified via authorized Supabase read (Book V XVIII: 24 minutes, entry dated Nov 12 Brazil time). The XVI log records 1 minute but user explicitly did not count reading time; it must NOT be treated as 1-minute reading speed. Chapter XVII: 26 minutes; XV: 35 minutes. Future plot and any character fate beyond XVIII remain private, even when chapter text was supplied for private soundtrack editing.
 
-The historical snapshot below is retained for archival context only. Its old `Current`, `Next` and chapter limits are **superseded by this top-level handoff**.
+## Permanent reader/app preferences
+- English Kindle, Horus Heresy publication order, books I–IV finished. Current book V.
+- Never reveal XIX–XXV events, image transformations, character fates, future titles or scene descriptions. Future musical scene maps are PRIVATE; public code gets only numeric/functional cue metadata.
+- Canonical sources first, community interpretations distinguished, correct mistakes; avoid artificial agreement.
+- **Soundtrack quality first**: precurate the real passage sequence, dialogue/atmosphere/action/lull, then select appropriate tracks, then fit real Spotify recording durations to reader pace. No need to tap scene-transition buttons while reading.
+- Reader log feedback is authoritative for preferences; avoid repeatedly rejected **Discordant Feast**.
+- Image standard: official original 2D art > credited period-safe fanart > existing local AI illustration as temporary **clearly noncanonical fallback**. Do not replace working paintings with empty symbolic icons. No hotlinked artwork can be claimed displayed/offline without actual browser validation.
+- Reader feedback recorded so far: CH IX tone rises too much; XII had over-intense music despite no action; XVI The Chant did not fit a calm dialogue and reading duration was NOT recorded; XVII 26 min, overly long, Discordant Feast mismatch; XVIII 24 min, playlist short by about a minute and multiple scene fits imperfect.
+- Do NOT silently edit a completed chapter's synced logs or active Spotify playback. Passive future duration telemetry may be captured as **estimates**, never presented as true playback offsets.
+- Latest App Lab fixes and QA policy: see docs/HERESY_SCORE_CONTEXT.md.
+
+The historical snapshot below is retained as an archive; old limits no longer apply.
 
 ---
 
