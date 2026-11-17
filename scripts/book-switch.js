@@ -55,36 +55,50 @@ const oldRender=render;render=function(){
   if(actions){
    const check=document.createElement("button");
    check.type="button";check.className="btn";check.textContent="Auditar duração Spotify";
+   const report=document.createElement("div");report.className="hs-audit-inline small";
+   report.setAttribute("role","status");report.setAttribute("aria-live","polite");
+   report.style.cssText="width:100%;flex-basis:100%;padding:10px;margin-top:4px;border:1px solid #354b33;background:#091009;line-height:1.6;overflow-wrap:anywhere";
+   const prior=state.spotify.chapterRuntime?.[number];
+   report.textContent=prior?.verified&&prior?.status==="WITHIN_RANGE"?
+    "Última auditoria: "+prior.autoFitResult+" · Toque para verificar novamente no Spotify.":
+    prior?.autoFitResult||"Auditoria disponível · as etapas e erros aparecerão aqui e não desaparecerão.";
    check.onclick=async()=>{
-    check.disabled=true;check.textContent="Conferindo Spotify...";
+    if(check.disabled)return;
+    check.disabled=true;check.textContent="Auditando Spotify…";
+    report.style.borderColor="#b88b4e";
+    report.textContent="Iniciando auditoria do capítulo "+String(number).padStart(2,"0")+"...";
+    const update=e=>{
+     if(e.detail?.chapter!==number)return;
+     report.textContent=e.detail.message;
+     report.style.borderColor=e.detail.phase==="error"?"#a54840":e.detail.phase==="success"?"#5c804b":"#b88b4e";
+    };
+    window.addEventListener("hs-spotify-audit-progress",update);
     try{
-     if(!spotifyConnected())throw Error("Spotify precisa estar conectado");
-     const sourceBook=state.activeBookSlug;
+     if(state.active)throw Error("Existe uma leitura ativa; não é seguro modificar a playlist.");
+     if(!spotifyConnected())throw Error("Spotify desconectado ou autorização expirada. Abra Configurações > Conectar Spotify.");
+     const book=state.activeBookSlug;
      await spotifySyncChapter(number);
-     if(state.activeBookSlug!==sourceBook)throw Error("Livro alterado durante a verificacao");
+     if(state.activeBookSlug!==book)throw Error("Livro mudou durante a auditoria.");
+     const runtime=state.spotify.chapterRuntime?.[number];
+     if(!runtime?.verified||runtime.status!=="WITHIN_RANGE"||!Number.isFinite(runtime.durationMs))
+      throw Error("O Spotify não confirmou uma playlist dentro da meta.");
+     const clock=ms=>Math.floor(ms/60000)+":"+String(Math.floor(ms/1000)%60).padStart(2,"0");
+     const fit=state.spotify.playlists?.[book+":"+number]?.editorialFit;
+     report.textContent="CONFIRMADO NO SPOTIFY · "+clock(runtime.durationMs)+" / meta "+
+      clock(runtime.targetMs)+" · "+runtime.trackCount+" faixas. "+
+      (fit?((fit.removedIndexes||[]).length+" cortes editoriais; "+(fit.addedCues||[]).length+" reservas adicionadas."):"Sequência conferida.");
+     report.style.borderColor="#5c804b";
+    }catch(err){
      const r=state.spotify.chapterRuntime?.[number];
-     if(!r||!Number.isFinite(r.durationMs))throw Error("Duracao nao retornada pelo Spotify");
-     const m=Math.floor(r.durationMs/60000),seconds=String(Math.floor(r.durationMs/1000)%60).padStart(2,"0");
-     const info=card.querySelector(".details");
-     if(info){
-      let line=card.querySelector(".hs-runtime-verified");
-      if(!line){line=document.createElement("span");line.className="hs-runtime-verified";info.append(line)}
-      line.textContent="Spotify "+m+":"+seconds+" / alvo "+Math.floor((SCORE_META[number]?.estimatedMinutes||0))+":"+String(Math.round(((SCORE_META[number]?.estimatedMinutes||0)%1)*60)).padStart(2,"0")+" // "+(r.autoFitResult||"tempo verificado");
-      if(Array.isArray(r.auditTracks)){
-       let audit=card.querySelector(".hs-ch11-audit");
-       if(!audit){audit=document.createElement("details");audit.className="hs-ch11-audit";info.append(audit);}
-       const delta=Math.round((r.durationMs-(r.auditTargetMs||0))/1000);
-       const summary=document.createElement("summary");summary.textContent="Auditoria "+String(number).padStart(2,"0")+" · "+(delta>0?"+":"")+delta+"s · "+r.auditTracks.length+" faixas · ordem "+(r.auditOrderMatches?"confirmada":"a revisar");
-       const pre=document.createElement("pre");pre.style.cssText="white-space:pre-wrap;overflow-wrap:anywhere;font-size:10px;line-height:1.6";
-       pre.textContent=r.auditTracks.map(t=>String(t.position).padStart(2,"0")+" · "+Math.floor(t.seconds/60)+":"+String(t.seconds%60).padStart(2,"0")+" · "+t.title).join("\n");
-       audit.replaceChildren(summary,pre);
-      }
-     }
-     toast("Score verificado no Spotify // "+m+":"+seconds);
-    }catch(err){toast("Spotify QA: "+err.message)}
-    finally{check.disabled=false;check.textContent="Auditar duração Spotify"}
+     report.textContent="NÃO CORRIGIDO · "+String(err?.message||err)+
+      (r?.durationMs&&r?.targetMs?" · Última medição: "+Math.round(r.durationMs/60000)+" / "+Math.round(r.targetMs/60000)+" min.":"");
+     report.style.borderColor="#a54840";
+    }finally{
+     window.removeEventListener("hs-spotify-audit-progress",update);
+     check.disabled=false;check.textContent="Auditar duração Spotify";
+    }
    };
-   actions.append(check);
+   actions.append(check,report);
   }
  }
 
