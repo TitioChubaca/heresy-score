@@ -11,14 +11,20 @@ const begin=html.indexOf(" const scoreMeta=SCORE_META[c.number];");
 const end=html.indexOf(" a.className=\"chapter \"+st;",begin);
 assert(begin>0&&end>begin,"Chapter card should derive target and badge from current state");
 const derive=new Function("state","SCORE_META","HSBooks","window","c","st",
- html.slice(begin,end)+"return {targetClock,verified,cardTag,estimate};");
+ html.slice(begin,end)+"return {targetClock,verified,cardTag,estimate,calibrated};");
 const state={activeBookSlug:"fulgrim"};
 const HSBooks={V:"fulgrim"};
 const meta={22:{estimatedMinutes:26.2,baseEstimatedMinutes:27.1}};
 const live={HSScoreReadiness:{spotifyPrepared:n=>n===22}};
 const view=derive(state,meta,HSBooks,live,{number:22,estimatedMinutes:27.1},"ready");
-assert.deepEqual(view,{targetClock:"26:12",verified:true,cardTag:"SPOTIFY OK",estimate:26.2},
+assert.deepEqual(view,{targetClock:"26:12",verified:true,cardTag:"SPOTIFY OK",estimate:26.2,calibrated:true},
  "The card must no longer display 27.1 minutes or READY after a 26:12 verified audit.");
+// Reload: SCORE_META resets to 27.1 but the verified target of 26:12 persists.
+const persisted={activeBookSlug:"fulgrim",spotify:{chapterRuntime:{22:{verified:true,status:"WITHIN_RANGE",targetMs:1572000}}}};
+const reread=derive(persisted,{22:{estimatedMinutes:27.1}},HSBooks,live,
+ {number:22,estimatedMinutes:27.1},"ready");
+assert.deepEqual(reread,{targetClock:"26:12",verified:true,cardTag:"SPOTIFY OK",estimate:26.2,calibrated:true},
+ "Restart must restore confirmed 26:12, not stale 27.1 editorial estimate.");
 const pending=derive(state,meta,HSBooks,{HSScoreReadiness:{spotifyPrepared:()=>false}},{number:22,estimatedMinutes:27.1},"ready");
 assert.equal(pending.cardTag,"SCORE PRONTO","A curated score is not proof of Spotify verification.");
 const readiness=read("scripts/score-readiness.js");
