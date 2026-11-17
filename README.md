@@ -1,18 +1,28 @@
-# Heresy Score — v0.15.5
+# Heresy Score — v0.16.7
 
 Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
 
-## Current state — November 7, 2026
+**Progress verified from private reader logs on 2026-11-16:** *Fulgrim* chapters I–XXI completed; XXII is the next unread chapter. Never expose future plot or character fates to the reader.
 
-- Active book: **Fulgrim**, Book V; **Chapter XII recorded as complete** (29 minutes); Chapter XIII is the next safe score. Chapters XIV–XXV are only precurated: they require individual live Spotify runtime and narrative-fitting checks.
-- **Spotify playlist correction is now an evidence-based operation.** The app matches the actual ordered Spotify URIs against the curated cue sheet, reconciles mismatches, and confirms the result by reading Spotify back. If it fails or remains over target, the UI must report that explicitly.
-- Chapter XII's optional intermediate atmospheric cue was removed from the canonical published score (11 → 10 source tracks). **This does not mean the user's existing Spotify playlist has already changed.** Run a new audit from the logged-in PWA.
-- Spotify API 2026: requires `playlist-read-private` alongside `playlist-modify-private` to audit private playlists; the app uses individual `GET /tracks/{id}` rather than removed bulk requests. Previously connected users may need to choose **Connect Spotify** again and authorize the additional scope.
-- The PWA caches critical app code **network-first** (service worker `heresy-score-v0155`) and refreshes when a new worker takes control while no reading is active. Old installed shells can require one manual restart. **Do not erase browser data** or disconnect Supabase to troubleshoot updates.
-- A new **Spotify // Conferência de playlists** section in Settings audits and repairs already-read chapters plus the next unread one, without playback or reading log changes. An optional small-batch audit covers the next three chapters.
-- Safety: no automatic music padding or deleting purely to match a stopwatch; each song change must be justified by the scene. No plot, character fate, private MOBI or future scene maps shipped.
-- Verification: syntax and isolated fake-Spotify reconciliation scenarios passed; authenticated PWA readback on the reader's own device is **still pending**.
-- Technical source of truth: [docs/HERESY_SCORE_CONTEXT.md](docs/HERESY_SCORE_CONTEXT.md), [docs/READING_CONTEXT.md](docs/READING_CONTEXT.md), [spoiler-safe future runtime forecasts](docs/FULGRIM_RUNTIME_FORECAST_2026-11-07.md), and [tests/spotify-runtime-reconciliation.js](tests/spotify-runtime-reconciliation.js).
+## Spotify audit reliability repair — 2026-11-16
+
+The older "Auditar duração Spotify" button could appear inert because errors vanished in a one-second toast. The runtime also could ONLY shorten tracks, and an earlier caching shortcut could mistake a fitted playlist for the original score.
+
+- **Auditing always leaves a persistent result in the current chapter card or the dedicated Settings panel.** Shows each stage (connecting, resolving, fitting, writing, verifying), exact confirmed duration/target, or the reason for failure.
+- **Short AND long** playlists now use a chapter-specific editorial plan. Protected scene cues are never discarded. The algorithm may remove only editorially optional tracks and insert only preapproved ambient/action/tension bridge cues at selected boundaries. This is not arbitrary duplication, time stretching, or continuous playback trimming.
+- **Spotify API verification is compulsory:** resolve exact recordings, write playlist if needed, re-read URI sequence and durations. Never mark corrected before read-back; do not blindly reuse an earlier fitted list as canonical.
+- Spotify API errors surface HTTP statuses, expired authorization, insufficient scopes/ownership, network failures and timeouts. A failure without a safe combination does not rewrite the playlist.
+- Typical tolerance for exact whole-song fitting: 45 seconds under or 60 seconds over. If no safe full-recording combination meets this, the app explicitly reports **not corrected**, since Spotify playlists do not trim songs to exact seconds.
+- Pace targets use valid completed chapter reading times and source-backed word counts; suspicious one-minute chapter XVI entry is excluded.
+- No in-reading correction buttons are required; the normal Begin Chapter flow performs the same fitting. The manual audit is a preflight check.
+- Automated offline fake-Spotify scenarios cover adding a curated cue, removing an optional cue, idempotent repeat audits, no safe fit, and 403 write denial. Run locally with `node tests/spotify-bidirectional-fit.js` and `node tests/spotify-runtime-reconciliation.js`.
+- **Not yet verified:** live authenticated Spotify readback on the user's Android device or published PWA deployment. A GitHub commit alone is NOT proof that Spotify playlist contents changed.
+
+## Artwork backlog
+
+Official character-specific 2D art > era-safe credited fanart > existing AI portrait explicitly identified as temporary. External image hotlinks remain unreliable and many places/people still lack genuine illustrations. Do not label the gallery complete until images are rendered on-device.
+
+## Historical project notes (may contain older progress estimates)
 
 ## P2 reliability and feedback (v0.11.6)
 
