@@ -160,7 +160,7 @@ function updateAudit(n,play,tracks,source,change){
     status==="UNDER_TARGET"?" • TRILHA CURTA; REVISÃO EDITORIAL PENDENTE":" • duração aceitável")};
  play.durationMs=total;play.trackCount=tracks.length;play.finalCueIndex=tracks.length-1;
  play.scoreSignature=source;play.preflightComplete=status==="WITHIN_RANGE";play.verifiedAt=r[n].verifiedAt;
- play.verifiedSequence=tracks.map(t=>t.uri);play.sourceVerifiedBy="0.15.7";play.lastCorrection=change||"already-matched";
+ play.verifiedSequence=tracks.map(t=>t.uri);play.sourceVerifiedBy="0.16.7";play.lastCorrection=change||"already-matched";
  state.spotify.scoreDurations=state.spotify.scoreDurations||{};
  state.spotify.scoreDurations[n]=total;
  save();
@@ -279,8 +279,14 @@ spotifySyncChapter=async function(n){
   save();progress(n,"success","Spotify confirmou "+hhmm(state.spotify.chapterRuntime[n].durationMs)+" / meta "+hhmm(target)+".");return id;
  }catch(err){
   const raw=String(err?.message||err);
-  progress(n,"error",raw);
-  const message=/\b403\b|scope|forbidden/i.test(raw)?"Spotify sem permissão de leitura da playlist privada. Reautorize com Conectar Spotify nas Configurações. Detalhe: "+raw:raw;
+  const failedAt=window.HSSpotifyAuditProgress?.chapter===n?window.HSSpotifyAuditProgress.phase:"unknown";
+  const isForbidden=/\b403\b|scope|forbidden/i.test(raw);
+  const message=isForbidden?
+   (failedAt==="writing"?"Spotify recusou GRAVAR a playlist. Verifique playlist-modify-private e se a playlist é sua. ":
+    failedAt==="loading"||failedAt==="connecting"?"Spotify recusou LER a playlist. Verifique playlist-read-private e a propriedade da playlist. ":
+    "Spotify recusou a operação nesta etapa ("+failedAt+"). Verifique a autorização da conta. ")+raw
+   :raw;
+  progress(n,"error",message);
   const r=state.spotify.chapterRuntime=state.spotify.chapterRuntime||{};
   r[n]={...(r[n]||{}),verified:false,status:"FAILED",autoFitResult:"NÃO CONFIRMADO: "+message.slice(0,180)};
   const entry=state.spotify.playlists?.[key];
