@@ -33,7 +33,8 @@ spotifySyncChapter=async function(n){
 };
 window.HSScoreReadiness={
  isPrepared:n=>!!SCORES[n],
- spotifyPrepared:n=>{const p=state.spotify.playlists?.[playlistKey(n)];return !!p?.id&&p.scoreSignature===signature(n)&&!!p.preflightComplete},
+ spotifyPrepared:n=>{const p=state.spotify.playlists?.[playlistKey(n)],r=state.spotify.chapterRuntime?.[n];
+  return !!p?.id&&p.scoreSignature===signature(n)&&!!p.preflightComplete&&p.sourceVerifiedBy==="0.16.7"&&r?.verified&&r.status==="WITHIN_RANGE"},
  scoreCount:()=>Object.keys(SCORES).length
 };
 // Never alter state.done when new music scores are published.
@@ -48,7 +49,8 @@ render=function(){
  const info=document.getElementById("directive");
  if(info&&!state.active&&ready){
   info.textContent=!!SCORES[ready.number]
-    ?"FULGRIM // CHAPTER "+String(ready.number).padStart(2,"0")+" // TRILHA JÁ PREPARADA"
+    ?"FULGRIM // CHAPTER "+String(ready.number).padStart(2,"0")+
+       (window.HSScoreReadiness.spotifyPrepared(ready.number)?" // PLAYLIST CONFIRMADA NO SPOTIFY":" // SELEÇÃO MUSICAL CRIADA · AUDITORIA SPOTIFY NECESSÁRIA")
     :"FULGRIM // Próximo capítulo ainda sem trilha";
  }
 };
