@@ -293,7 +293,17 @@ async function begin(c){
     if(state.activeBookSlug!==sourceBook)return;
     state.spotify.deviceActive=!!started;
     toast(started?"score synced // playback started":"score synced // Spotify device inactive");
-   }catch(e){state.spotify.deviceActive=false;toast(e.message)}
+   }catch(e){
+    state.spotify.deviceActive=false;
+    const card=[...document.querySelectorAll("#chapters .chapter")]
+      .find(x=>x.querySelector(".chname")?.textContent.includes("CHAPTER "+String(c.number).padStart(2,"0")));
+    const report=card?.querySelector(".hs-audit-inline");
+    const message="LEITURA NÃO INICIADA: Spotify não confirmou a trilha. "+String(e?.message||e);
+    if(report){report.textContent=message;report.style.borderColor="#a54840";}
+    toast("Spotify não confirmado · veja o erro no capítulo");
+    // Do not start a timed reading with an unconfirmed score by accident.
+    return;
+   }
   }
   if(state.activeBookSlug!==sourceBook||state.active)return;
   let now=Date.now(),waitForSpotify=connected&&!started;
