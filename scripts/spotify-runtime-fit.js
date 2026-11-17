@@ -78,6 +78,24 @@ async function canonicalTrackData(uris){
  }
  return out;
 }
+const CHAPTER_WORDS={1:4776,2:5359,3:4476,4:5511,5:6110,6:5245,7:5604,8:5961,9:4951,10:6320,11:4255,12:5900,13:4610,14:4804,15:6399,16:4848,17:5590,18:4405,19:5277,20:5517,21:5418,22:5283,23:5319,24:5015,25:5586};
+function calibratedTarget(n){
+ const base=Number(SCORE_META[n]?.baseEstimatedMinutes||SCORE_META[n]?.estimatedMinutes);
+ if(!Number.isFinite(base)||base<=0||!CHAPTER_WORDS[n])return null;
+ const logs=Object.entries(state.done||{}).map(([chapter,log])=>{
+  const i=Number(chapter),min=Number(log?.minutes),words=CHAPTER_WORDS[i];
+  return {i,min,wpm:words/min};
+ }).filter(x=>x.i<n&&x.i>0&&x.min>=14&&x.min<=65&&Number.isFinite(x.wpm)&&x.wpm>=145&&x.wpm<=255)
+ .sort((a,b)=>b.i-a.i).slice(0,8);
+ if(logs.length<3)return Math.round(base*10)/10;
+ const speeds=logs.map(x=>x.wpm).sort((a,b)=>a-b);
+ const mid=Math.floor(speeds.length/2),median=speeds.length%2?speeds[mid]:(speeds[mid-1]+speeds[mid])/2;
+ const measured=CHAPTER_WORDS[n]/Math.max(165,Math.min(235,median));
+ // Smooth against editorial estimate; do not whipsaw on a single session.
+ const blended=base*.25+measured*.75;
+ return Math.round(Math.max(base*.78,Math.min(base*1.23,blended))*10)/10;
+}
+
 const within=(total,target)=>total>=target-45000&&total<=target+60000;
 function progress(n,phase,message){
  const detail={chapter:n,phase,message,at:new Date().toISOString()};
