@@ -16,7 +16,7 @@ function scenario(denied=false){
  }}};
  let playlist=["a","b","c"],puts=0,reads=0;
  const ctx={
-  window:{},state,SCORES:{12:[["A","Artist"],["C","Artist"]]},
+  window:{dispatchEvent(){}},CustomEvent:function(_,props){this.detail=props.detail},chapters:[{number:12,estimatedMinutes:3.3}],state,SCORES:{12:[["A","Artist"],["C","Artist"]]},
   SCORE_META:{12:{estimatedMinutes:3.3}},
   save(){},setTimeout,spotifySyncChapter:async()=>{throw Error("Unexpected legacy sync");},
   spotifyEnsurePlaylist:async()=>({id:"P"}),
