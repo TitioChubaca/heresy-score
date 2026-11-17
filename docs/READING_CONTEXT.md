@@ -1,23 +1,20 @@
-# Warhammer Reading Context
+# Warhammer Reading Context — updated 2026-11-16
 
-**Current handoff — 2026-11-12**
-**Spoiler ceiling: Fulgrim (Horus Heresy V), Chapter XVIII COMPLETED.**
-**Next chapter: XIX — UNREAD.**
+**Current book:** Fulgrim, Horus Heresy V (English Kindle).
+**Verified reader log:** chapters I–XXI COMPLETE. **Next: XXII, UNREAD.**
+**Spoiler ceiling:** XXI. Never show scenes, later-era appearances, names/fates or hints from XXII–XXV in replies or artwork.
 
-Evidence: original user's completed in-app logs, verified via authorized Supabase read (Book V XVIII: 24 minutes, entry dated Nov 12 Brazil time). The XVI log records 1 minute but user explicitly did not count reading time; it must NOT be treated as 1-minute reading speed. Chapter XVII: 26 minutes; XV: 35 minutes. Future plot and any character fate beyond XVIII remain private, even when chapter text was supplied for private soundtrack editing.
+## Reading and soundtrack preferences
+- Canon before speculation; cite community interpretations as noncanon, correct erroneous claims without spoiling.
+- The musical score should progress through actual chapter scenes without reader interaction.
+- Read clock is not identical to Spotify playback position. Use verified chapter duration and word counts only as a projection; skip invalid 1-minute entry in XVI.
+- The user has repeatedly rejected Discordant Feast as mismatched; avoid it.
+- Older soundtrack fitting algorithm removed arbitrary middle cues and damaged ambience-to-action transitions. New fitting protects curated cues and uses only approved reserve bridges.
+- Persistent audit result is required: either verified Spotify duration/order, already within tolerance, or explicit why fitting failed. Do not say a Spotify playlist is fixed until read-back from the authenticated app.
+- Official safe 2D art > fanart credited > existing provisional AI portrait. Do not replace art with an empty placeholder due to failed external hotlink.
+- Source material for future chapters is PRIVATE; do not publish spoilers in the application metadata.
 
-## Permanent reader/app preferences
-- English Kindle, Horus Heresy publication order, books I–IV finished. Current book V.
-- Never reveal XIX–XXV events, image transformations, character fates, future titles or scene descriptions. Future musical scene maps are PRIVATE; public code gets only numeric/functional cue metadata.
-- Canonical sources first, community interpretations distinguished, correct mistakes; avoid artificial agreement.
-- **Soundtrack quality first**: precurate the real passage sequence, dialogue/atmosphere/action/lull, then select appropriate tracks, then fit real Spotify recording durations to reader pace. No need to tap scene-transition buttons while reading.
-- Reader log feedback is authoritative for preferences; avoid repeatedly rejected **Discordant Feast**.
-- Image standard: official original 2D art > credited period-safe fanart > existing local AI illustration as temporary **clearly noncanonical fallback**. Do not replace working paintings with empty symbolic icons. No hotlinked artwork can be claimed displayed/offline without actual browser validation.
-- Reader feedback recorded so far: CH IX tone rises too much; XII had over-intense music despite no action; XVI The Chant did not fit a calm dialogue and reading duration was NOT recorded; XVII 26 min, overly long, Discordant Feast mismatch; XVIII 24 min, playlist short by about a minute and multiple scene fits imperfect.
-- Do NOT silently edit a completed chapter's synced logs or active Spotify playback. Passive future duration telemetry may be captured as **estimates**, never presented as true playback offsets.
-- Latest App Lab fixes and QA policy: see docs/HERESY_SCORE_CONTEXT.md.
-
-The historical snapshot below is retained as an archive; old limits no longer apply.
+Below is retained historical context; this current header supersedes prior chapter ceilings.
 
 ---
 
