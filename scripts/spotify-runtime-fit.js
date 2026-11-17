@@ -175,7 +175,11 @@ spotifySyncChapter=async function(n){
   if(meta){
    if(!Number.isFinite(meta.baseEstimatedMinutes))meta.baseEstimatedMinutes=Number(meta.estimatedMinutes);
    const estimated=calibratedTarget(n);
-   if(estimated)meta.estimatedMinutes=estimated;
+   if(estimated){
+    meta.estimatedMinutes=estimated;
+    const chapter=chapters.find(c=>c.number===n);
+    if(chapter)chapter.estimatedMinutes=estimated;
+   }
   }
  }
  const source=JSON.stringify(SCORES[n]),key=BOOK+":"+n;
@@ -215,12 +219,14 @@ spotifySyncChapter=async function(n){
   const full=urisEqual(actual.map(t=>t.uri),expected)?actual:await canonicalTrackData(expected);
   const initialMs=full.reduce((sum,t)=>sum+t.ms,0);
   const plan=SCORE_META[n]?.editorialFitPlan;
-  const reserves=[];
+  const reserves=[],unavailable=[];
   if(!within(initialMs,target)&&plan?.approvedExtensions?.length){
    progress(n,"reserves","Conferindo reservas de ambientação/tensão específicas deste capítulo...");
    for(const option of plan.approvedExtensions){
-    reserves.push(await fetchApprovedReserve(option));
-    progress(n,"reserves","Reservas conferidas "+reserves.length+"/"+plan.approvedExtensions.length);
+    try{reserves.push(await fetchApprovedReserve(option));}
+    catch(err){unavailable.push(option.track[0]+": "+String(err?.message||err));}
+    progress(n,"reserves","Reservas conferidas "+reserves.length+"/"+plan.approvedExtensions.length+
+     (unavailable.length?" ("+unavailable.length+" indisponíveis)":""));
    }
   }
   const fit=chooseProtectedSequence(n,full,target,reserves);
@@ -229,7 +235,8 @@ spotifySyncChapter=async function(n){
     "as músicas opcionais e reservas aprovadas não permitem chegar à meta sem cortar partes essenciais.";
    throw Error((initialMs<target?"TRILHA CURTA":"TRILHA LONGA")+
     ": "+hhmm(initialMs)+" / meta "+hhmm(target)+"; "+explanation+
-    " Playlist anterior preservada, nenhuma correção declarada.");
+    (unavailable.length?" Reservas indisponíveis: "+unavailable.join("; ")+".":"")+
+    " Nenhuma correção declarada.");
   }
   const desired=fit.uris;
   const fitEntry=state.spotify.playlists?.[key];
