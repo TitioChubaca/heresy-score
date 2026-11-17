@@ -11,6 +11,7 @@ const seconds=ms=>Math.round(ms/1000);
 const hhmm=ms=>Math.floor(ms/60000)+":"+String(Math.floor(ms/1000)%60).padStart(2,"0");
 const urisEqual=(a,b)=>a.length===b.length&&a.every((v,i)=>v===b[i]);
 const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+const inspectedTracks=new Map();
 async function playlistTracks(id){
  const found=[];
  for(let offset=0;offset<500;offset+=100){
@@ -57,6 +58,7 @@ async function canonicalUris(score){
    throw Error("Gravação não confirmada: "+title+" / "+artist+
      ". Nenhuma substituição automática foi realizada.");
   }
+  inspectedTracks.set(resolved[i],{uri:resolved[i],ms:t.duration_ms,title:t.name,artists:(t.artists||[]).map(a=>a.name)});
  }
  return resolved;
 }
@@ -68,6 +70,7 @@ async function canonicalUris(score){
 async function canonicalTrackData(uris){
  const out=[];
  for(const uri of uris){
+  if(inspectedTracks.has(uri)){out.push(inspectedTracks.get(uri));continue;}
   const t=await spotifyApi("/tracks/"+encodeURIComponent(uri.split(":").pop()));
   if(t?.uri!==uri||!Number.isFinite(t.duration_ms)||t.duration_ms<=0)
    throw Error("Spotify não confirmou duração da gravação "+uri);
@@ -75,26 +78,6 @@ async function canonicalTrackData(uris){
  }
  return out;
 }
-// Source-derived private metrics contain counts only. No copyrighted text,
- // event details, or future character information is shipped.
-const CHAPTER_WORDS={1:4776,2:5359,3:4476,4:5511,5:6110,6:5245,7:5604,8:5961,9:4951,10:6320,11:4255,12:5900,13:4610,14:4804,15:6399,16:4848,17:5590,18:4405,19:5277,20:5517,21:5418,22:5283,23:5319,24:5015,25:5586};
-function calibratedTarget(n){
- const base=Number(SCORE_META[n]?.baseEstimatedMinutes||SCORE_META[n]?.estimatedMinutes);
- if(!Number.isFinite(base)||base<=0||!CHAPTER_WORDS[n])return null;
- const logs=Object.entries(state.done||{}).map(([chapter,log])=>{
-  const i=Number(chapter),min=Number(log?.minutes),words=CHAPTER_WORDS[i];
-  return {i,min,wpm:words/min};
- }).filter(x=>x.i<n&&x.i>0&&x.min>=14&&x.min<=65&&Number.isFinite(x.wpm)&&x.wpm>=145&&x.wpm<=255)
- .sort((a,b)=>b.i-a.i).slice(0,8);
- if(logs.length<3)return Math.round(base*10)/10;
- const speeds=logs.map(x=>x.wpm).sort((a,b)=>a-b);
- const mid=Math.floor(speeds.length/2),median=speeds.length%2?speeds[mid]:(speeds[mid-1]+speeds[mid])/2;
- const measured=CHAPTER_WORDS[n]/Math.max(165,Math.min(235,median));
- // Smooth against editorial estimate; do not whipsaw on a single session.
- const blended=base*.25+measured*.75;
- return Math.round(Math.max(base*.78,Math.min(base*1.23,blended))*10)/10;
-}
-
 const within=(total,target)=>total>=target-45000&&total<=target+60000;
 function progress(n,phase,message){
  const detail={chapter:n,phase,message,at:new Date().toISOString()};
@@ -204,9 +187,9 @@ spotifySyncChapter=async function(n){
   // Reuse only a sequence that THIS strict reconciler previously confirmed.
   // Legacy preflightComplete/scoreSignature alone is never proof.
   const cached=state.spotify.playlists?.[key];
-  const expected=(cached?.sourceVerifiedBy==="0.15.7"&&cached?.scoreSignature===source&&
-   Array.isArray(cached.verifiedSequence)&&cached.verifiedSequence.length===SCORES[n].length)
-    ?cached.verifiedSequence.slice():await canonicalUris(SCORES[n]);
+  // Old fitted playlists may have the SAME length as the authored score;
+  // using their saved URIs here can silently corrupt every subsequent audit.
+  const expected=await canonicalUris(SCORES[n]);
   if(state.activeBookSlug!==BOOK||state.active)throw Error("Contexto de leitura mudou");
   progress(n,"loading","Lendo músicas já presentes no Spotify...");
   let actual=await playlistTracks(id);
@@ -220,7 +203,8 @@ spotifySyncChapter=async function(n){
   const initialMs=full.reduce((sum,t)=>sum+t.ms,0);
   const plan=SCORE_META[n]?.editorialFitPlan;
   const reserves=[],unavailable=[];
-  if(!within(initialMs,target)&&plan?.approvedExtensions?.length){
+  if(!within(initialMs,target)&&plan?.approvedExtensions?.length&&
+     (initialMs<target-45000||!chooseProtectedSequence(n,full,target,[]))){
    progress(n,"reserves","Conferindo reservas de ambientação/tensão específicas deste capítulo...");
    for(const option of plan.approvedExtensions){
     try{reserves.push(await fetchApprovedReserve(option));}
@@ -239,11 +223,6 @@ spotifySyncChapter=async function(n){
     " Nenhuma correção declarada.");
   }
   const desired=fit.uris;
-  const fitEntry=state.spotify.playlists?.[key];
-  if(fitEntry)fitEntry.editorialFit={
-   source,uris:desired,removedIndexes:fit.removed,addedCues:fit.added,
-   plannedMs:fit.total,targetMs:target,mode:"scene-protected-bidirectional-fit",anchorLoss:fit.anchorLoss
-  };
   progress(n,"planned","Plano: "+hhmm(initialMs)+" → "+hhmm(fit.total)+
    " / meta "+hhmm(target)+"; cortes "+fit.removed.length+", acréscimos "+fit.added.length+".");
   if(!urisEqual(actual.map(t=>t.uri),desired)||
@@ -263,6 +242,11 @@ spotifySyncChapter=async function(n){
   if(state.activeBookSlug!==BOOK||state.active)throw Error("Contexto de leitura mudou; conferência descartada");
   const entry=state.spotify.playlists?.[key];
   if(!entry||entry.id!==id)throw Error("Playlist mudou durante a auditoria");
+  // Only persist a fitted sequence AFTER Spotify confirmed it by read-back.
+  entry.editorialFit={
+   source,uris:desired,removedIndexes:fit.removed,addedCues:fit.added,
+   plannedMs:fit.total,targetMs:target,mode:"scene-protected-bidirectional-fit",anchorLoss:fit.anchorLoss
+  };
   updateAudit(n,entry,actual,source,changed);
   // Verification is not fitting. Never silently label an overlong score ready.
   if(state.spotify.chapterRuntime?.[n]?.status!=="WITHIN_RANGE"){
