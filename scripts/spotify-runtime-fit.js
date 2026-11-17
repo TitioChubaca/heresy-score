@@ -160,7 +160,7 @@ function updateAudit(n,play,tracks,source,change){
     status==="UNDER_TARGET"?" • TRILHA CURTA; REVISÃO EDITORIAL PENDENTE":" • duração aceitável")};
  play.durationMs=total;play.trackCount=tracks.length;play.finalCueIndex=tracks.length-1;
  play.scoreSignature=source;play.preflightComplete=status==="WITHIN_RANGE";play.verifiedAt=r[n].verifiedAt;
- play.verifiedSequence=tracks.map(t=>t.uri);play.sourceVerifiedBy="0.16.7";play.lastCorrection=change||"already-matched";
+ play.verifiedSequence=tracks.map(t=>t.uri);play.sourceVerifiedBy="0.16.8";play.lastCorrection=change||"already-matched";
  state.spotify.scoreDurations=state.spotify.scoreDurations||{};
  state.spotify.scoreDurations[n]=total;
  save();
