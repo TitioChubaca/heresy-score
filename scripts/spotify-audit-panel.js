@@ -68,21 +68,37 @@ async function readerForecast(n){
  }catch(err){return null;}
 }
 button.onclick=async()=>{
- options();
  const n=Number(select.value);
+ if(!Number.isInteger(n)||n<1||n>25){output.textContent="Selecione um capítulo válido.";return;}
  if(state.activeBookSlug!=="fulgrim"){output.textContent="Selecione Fulgrim na Biblioteca antes da auditoria.";return;}
- if(state.active){output.textContent="Não modificar playlists durante a leitura ativa.";return;}
- if(!spotifyConnected()){output.textContent="Conecte ou reautorize o Spotify nas Configurações.";return;}
- button.disabled=true;output.textContent="Lendo a playlist do Spotify e conferindo as gravações...";
+ if(state.active){output.textContent="Não modificar playlists durante uma leitura ativa.";return;}
+ if(!spotifyConnected()){output.textContent="Spotify desconectado. Use Configurações → Conectar Spotify e tente novamente.";return;}
+ button.disabled=true;button.textContent="Auditando…";
+ output.textContent="Iniciando auditoria do capítulo "+String(n).padStart(2,"0")+"…";
+ const onProgress=e=>{
+  if(e.detail?.chapter!==n)return;
+  output.textContent="Capítulo "+String(n).padStart(2,"0")+
+   " / "+e.detail.phase.toUpperCase()+"\n"+e.detail.message;
+ };
+ window.addEventListener("hs-spotify-audit-progress",onProgress);
  try{
-  await spotifySyncChapter(n);result(n);
-  const forecast=await readerForecast(n);
-  if(forecast)output.textContent+="\\nPrevisão por ritmo real: "+forecast.minutes.toFixed(1)+
-    " min ("+forecast.samples+" capítulos, "+Math.round(forecast.pace)+" palavras/min). "+
-    "Projeção separada da duração musical; não autoriza cortar cenas.";
+  await spotifySyncChapter(n);
+  const r=state.spotify.chapterRuntime?.[n];
+  if(!r?.verified||r.status!=="WITHIN_RANGE")throw Error("Spotify não confirmou uma playlist dentro da meta.");
+  result(n);
+  const fit=state.spotify.playlists?.["fulgrim:"+n]?.editorialFit;
+  if(fit)output.textContent+="\nCuradoria aplicada: "+(fit.removedIndexes?.length||0)+
+   " cortes opcionais e "+(fit.addedCues?.length||0)+" reservas específicas deste capítulo.";
+  output.textContent+="\nCONFIRMADO: sequência e duração foram relidas no Spotify.";
+ }catch(err){
+  const message=String(err?.message||err);
+  result(n);
+  output.textContent+="\n\nNÃO CORRIGIDO: "+message;
+  output.textContent+="\nNenhuma correção foi confirmada; não trate essa playlist como pronta.";
+ }finally{
+  window.removeEventListener("hs-spotify-audit-progress",onProgress);
+  button.disabled=false;button.textContent="Conferir / corrigir";
  }
- catch(err){result(n);output.textContent+="\nErro: "+String(err?.message||err);}
- finally{button.disabled=false;}
 };
 select.onchange=()=>result(Number(select.value));
 options();
