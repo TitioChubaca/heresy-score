@@ -57,18 +57,21 @@ d.scoreMeta[25]={type:"chapter",estimatedMinutes:28.0,stage:"precurated-source-s
    Anchor = target relative reading position for a musical transition.
    Protected cues are NEVER removed by automatic duration fitting. */
 const editorialPlans={
-  19:{optionalIndexes:[2,3,4],protectedIndexes:[0,1,5,6,7,8,9],anchors:[{index:7,at:.68,weight:5}]},
-  20:{optionalIndexes:[1,3,5,7],protectedIndexes:[0,2,4,6,8,9,10],anchors:[{index:9,at:.78,weight:3}]},
-  21:{optionalIndexes:[1,3,6],protectedIndexes:[0,2,4,5,7,8],anchors:[{index:7,at:.76,weight:2}]},
-  22:{optionalIndexes:[1,3,6],protectedIndexes:[0,2,4,5,7,8,9],anchors:[{index:5,at:.64,weight:3}]},
-  23:{optionalIndexes:[1,2,3],protectedIndexes:[0,4,5,6,7,8,9],anchors:[{index:4,at:.32,weight:5}]},
-  24:{optionalIndexes:[2,4,7],protectedIndexes:[0,1,3,5,6,8,9],anchors:[{index:1,at:.15,weight:4}]},
-  25:{optionalIndexes:[2,3,5],protectedIndexes:[0,1,4,6,7,8,9],anchors:[{index:2,at:.30,weight:3}]}
+  19:{approvedExtensions:[{afterIndex:1,track:["Spires of the Hive","Dmitry V. Silantyev"],role:"ambient"},{afterIndex:5,track:["Vigil","Jack Wall"],role:"tension"}],optionalIndexes:[2,3,4],protectedIndexes:[0,1,5,6,7,8,9],anchors:[{index:7,at:.68,weight:5}]},
+  20:{approvedExtensions:[{afterIndex:1,track:["Spires of the Hive","Dmitry V. Silantyev"],role:"ambient"},{afterIndex:4,track:["Epilogue Karnaca","Daniel Licht"],role:"ambient"}],optionalIndexes:[1,3,5,7],protectedIndexes:[0,2,4,6,8,9,10],anchors:[{index:9,at:.78,weight:3}]},
+  21:{approvedExtensions:[{afterIndex:3,track:["Spires of the Hive","Dmitry V. Silantyev"],role:"ambient"},{afterIndex:5,track:["The Royal Conservatory","Daniel Licht"],role:"ambient"}],optionalIndexes:[1,3,6],protectedIndexes:[0,2,4,5,7,8],anchors:[{index:7,at:.76,weight:2}]},
+  22:{approvedExtensions:[{afterIndex:2,track:["Catalogued Fates","Pavel Lipski"],role:"ambient"},{afterIndex:5,track:["Sparks in the Dark","Nikolay Filipovich"],role:"tension"}],optionalIndexes:[1,3,6],protectedIndexes:[0,2,4,5,7,8,9],anchors:[{index:5,at:.64,weight:3}]},
+  23:{approvedExtensions:[{afterIndex:3,track:["Waiting to Strike","Jesper Kyd"],role:"tension"},{afterIndex:4,track:["Warriors of Mars","Guillaume David"],role:"action"}],optionalIndexes:[1,2,3],protectedIndexes:[0,4,5,6,7,8,9],anchors:[{index:4,at:.32,weight:5}]},
+  24:{approvedExtensions:[{afterIndex:2,track:["Path of Trust","Jesper Kyd"],role:"ambient"},{afterIndex:6,track:["Our Enemies Approach","Doyle W. Donehoo"],role:"tension"}],optionalIndexes:[2,4,7],protectedIndexes:[0,1,3,5,6,8,9],anchors:[{index:1,at:.15,weight:4}]},
+  25:{approvedExtensions:[{afterIndex:4,track:["Dark Calculation","Doyle W. Donehoo"],role:"tension"},{afterIndex:7,track:["Absolution","Pawel Perepelica"],role:"ambient"}],optionalIndexes:[2,3,5],protectedIndexes:[0,1,4,6,7,8,9],anchors:[{index:2,at:.30,weight:3}]}
 };
 for(const [chapter,plan] of Object.entries(editorialPlans)){
  const n=Number(chapter),score=d.scores[n];
  if(!score||!Array.isArray(score))continue;
  if(plan.optionalIndexes.some(i=>i<=0||i>=score.length-1)||plan.protectedIndexes.some(i=>i>=score.length))throw Error("Editorial index invalid "+n);
+ if((plan.approvedExtensions||[]).some(x=>x.afterIndex<0||x.afterIndex>=score.length-1||
+  !Array.isArray(x.track)||x.track.length!==2||score.some(t=>t[0]===x.track[0]&&t[1]===x.track[1])))
+  throw Error("Extension index/duplicate invalid "+n);
  d.scoreMeta[n].editorialFitPlan=plan;
  d.scoreMeta[n].editorialStatus="private-text reviewed: music-lane anchors; runtime remains Spotify-dependent";
 }
