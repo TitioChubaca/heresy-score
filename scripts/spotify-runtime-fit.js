@@ -147,7 +147,7 @@ function chooseProtectedSequence(n,tracks,target,reserves){
 function updateAudit(n,play,tracks,source,change){
  const target=Math.round((SCORE_META[n]?.estimatedMinutes||0)*60000);
  const total=tracks.reduce((sum,t)=>sum+t.ms,0),gap=total-target;
- const status=target&&gap>60000?"OVER_TARGET":target&&gap< -90000?"UNDER_TARGET":"WITHIN_RANGE";
+ const status=target&&gap>60000?"OVER_TARGET":target&&gap< -45000?"UNDER_TARGET":"WITHIN_RANGE";
  const r=state.spotify.chapterRuntime=state.spotify.chapterRuntime||{};
  r[n]={...(r[n]||{}),durationMs:total,targetMs:target,trackCount:tracks.length,
   finalCueIndex:tracks.length-1,auditTracks:tracks.map((t,i)=>({
@@ -276,6 +276,9 @@ spotifySyncChapter=async function(n){
   }
   state.spotify.playlistId=id;
   state.spotify.playlistUrl=entry.url||"https://open.spotify.com/playlist/"+id;
+  state.spotify.auditResults=state.spotify.auditResults||{};
+  state.spotify.auditResults[n]={status:"VERIFIED",at:new Date().toISOString(),
+   message:"Playlist confirmada pela API do Spotify. Verificação de encaixe narrativo depende da leitura."};
   save();progress(n,"success","Spotify confirmou "+hhmm(state.spotify.chapterRuntime[n].durationMs)+" / meta "+hhmm(target)+".");return id;
  }catch(err){
   const raw=String(err?.message||err);
@@ -291,6 +294,9 @@ spotifySyncChapter=async function(n){
   r[n]={...(r[n]||{}),verified:false,status:"FAILED",autoFitResult:"NÃO CONFIRMADO: "+message.slice(0,180)};
   const entry=state.spotify.playlists?.[key];
   if(entry){entry.preflightComplete=false;delete entry.verifiedAt;}
+  state.spotify.auditResults=state.spotify.auditResults||{};
+  state.spotify.auditResults[n]={status:"FAILED",message:"Auditoria Spotify "+String(n).padStart(2,"0")+": "+message,
+   at:new Date().toISOString()};
   save();
   throw Error("Auditoria Spotify "+String(n).padStart(2,"0")+": "+message);
  }
@@ -304,7 +310,7 @@ spotifySyncChapter=async function(n){
  inFlight.set(n,work);
  try{return await work;}finally{if(inFlight.get(n)===work)inFlight.delete(n);}
 };
-window.HSSpotifyRuntimeQA={version:"0.16.7",get:n=>state.spotify.chapterRuntime?.[n]||null,
+window.HSSpotifyRuntimeQA={version:"0.16.8",get:n=>state.spotify.chapterRuntime?.[n]||null,
  readOnly:n=>state.spotify.chapterRuntime?.[n]?.verified===true,
  ready:n=>state.spotify.chapterRuntime?.[n]?.status==="WITHIN_RANGE"};
 })();
