@@ -521,3 +521,23 @@ User-observed IX 22:38 vs 25:12 text estimate. Added The Still, Cold World (Bonu
 - Offline mocked tests passed during development: under-target addition, over-target removal, same-length replace then repeat audit without duplicate changes, no-safe-fit refusal without PUT, 403 PUT denial without declaring success. Source-level regression test added at tests/spotify-bidirectional-fit.js; original tests/spotify-runtime-reconciliation.js adapted for new progress events.
 - Real Spotify authenticated session unavailable to ChatGPT via this environment. GitHub commits plus synthetic tests do NOT prove the reader's playlist has been updated. The app must be opened with the current version and audited once by reader; persistent result is then evidence. Don't use 'definitively fixed on device' without that result.
 - Future accepted issue: Spotify whole tracks can make exact time impossible; the UI must report when protected cues and approved reserves cannot fit target. Also, no real-time Kindle page location means transitions can only be optimized predictively.
+
+## 2026-11-16 — v0.16.9: user screenshot proved Spotify runtime succeeded but the UI was stale
+
+User sent live Android PWA screenshot of Fulgrim chapter XXII:
+- Reading card still showed editorial target **27.1 minutes** and badge **READY**.
+- Audit report read **"CONFIRMADO NO SPOTIFY · 25:40 / meta 26:12 · 9 faixas · 1 cortes editoriais · 0 reservas adicionadas"**.
+- Lower directive still said **"AUDITORIA SPOTIFY NECESSÁRIA"**.
+- This is NOT a case of the button doing literally nothing: readback and one optional cut did execute. The interface was inconsistent because the audit event updated state and an inline report but DID NOT rerender the whole card/directive.
+- 26:12 is the dynamically calibrated target; 27:06 (27.1 minutes) is the editorial source estimate. The gap between actual Spotify 25:40 and calibrated target 26:12 is -32 seconds, within the app's stated -45/+60 seconds tolerance. It does NOT prove scene-to-music emotional fit.
+
+Fixes:
+1. Chapter card target is derived from SCORE_META's live calibrated value, not the stale chapter copy.
+2. After an authenticated audit succeeds/fails, re-render the complete reading card and directive; don't leave stale READY or audit-required text.
+3. Core render distinguishes **SPOTIFY OK** (API readback verified) from **SCORE PRONTO** (editorial music list exists).
+4. Audit report is persisted in state.spotify.auditResults, with VERIFIED or FAILED; after app reopen show last confirmed runtime or exact failed reason. Both chapter and Settings auditors refresh the reading UI.
+5. Crucial restart fix: SCORE_META is recreated from source on app reload, returning to 27.1; restore the last VERIFIED targetMs from persisted Spotify runtime (26:12) when source signature still matches. The view now shows "alvo calibrado ≈ 26:12" and a Spotify-confirmed 25:40 report across restarts.
+6. Score readiness accepts previously confirmed Spotify 0.16.7 entries as well as 0.16.8; no need to force a new Spotify rewrite to correct labels.
+7. Regression tests: tests/spotify-audit-ui-consistency.js created and expanded for screenshot scenario, including restart; targeted in-memory JS evaluations verified "SPOTIFY OK", targetClock "26:12", and lower directive "PLAYLIST CONFIRMADA NO SPOTIFY" for verified state, then audit-required for failed state.
+
+QA caveat: validated code syntax and mocked UI/state behavior; real Android screen *after* deployment is still unverified. Prior screenshot is authentic evidence of Spotify readback, not live testing of the newest UI. Do not claim more.
