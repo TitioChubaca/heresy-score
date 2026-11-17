@@ -59,9 +59,25 @@ const oldRender=render;render=function(){
    report.setAttribute("role","status");report.setAttribute("aria-live","polite");
    report.style.cssText="width:100%;flex-basis:100%;padding:10px;margin-top:4px;border:1px solid #354b33;background:#091009;line-height:1.6;overflow-wrap:anywhere";
    const prior=state.spotify.chapterRuntime?.[number];
-   report.textContent=prior?.verified&&prior?.status==="WITHIN_RANGE"?
-    "Última auditoria: "+prior.autoFitResult+" · Toque para verificar novamente no Spotify.":
-    prior?.autoFitResult||"Auditoria disponível · as etapas e erros aparecerão aqui e não desaparecerão.";
+   const latestAttempt=state.spotify.auditResults?.[number];
+   const passed=!!window.HSScoreReadiness?.spotifyPrepared?.(number);
+   const clock=ms=>Math.floor(ms/60000)+":"+String(Math.floor(ms/1000)%60).padStart(2,"0");
+   if(latestAttempt?.status==="FAILED"){
+    report.textContent="NÃO CORRIGIDO · "+latestAttempt.message;
+    report.style.borderColor="#a54840";
+   }else if(passed&&Number.isFinite(prior?.durationMs)&&Number.isFinite(prior?.targetMs)){
+    const gap=Math.round((prior.durationMs-prior.targetMs)/1000);
+    const fit=state.spotify.playlists?.[v+":"+number]?.editorialFit;
+    report.textContent="CONFIRMADO NO SPOTIFY · "+clock(prior.durationMs)+
+     " / alvo calibrado "+clock(prior.targetMs)+" / desvio "+(gap>=0?"+":"")+gap+" s · "+
+     prior.trackCount+" faixas · "+((fit?.removedIndexes||[]).length)+" cortes opcionais · "+
+     ((fit?.addedCues||[]).length)+" reservas. Verificação técnica; encaixe narrativo ainda depende da leitura.";
+    report.style.borderColor="#5c804b";
+   }else{
+    report.textContent=prior?.status==="FAILED"?("NÃO CORRIGIDO · "+(prior.autoFitResult||"Auditoria anterior falhou.")):
+     "Trilha cadastrada, mas ainda não confirmada no Spotify. Toque para auditar.";
+    report.style.borderColor=prior?.status==="FAILED"?"#a54840":"#354b33";
+   }
    check.onclick=async()=>{
     if(check.disabled)return;
     check.disabled=true;check.textContent="Auditando Spotify…";
@@ -83,16 +99,20 @@ const oldRender=render;render=function(){
      if(!runtime?.verified||runtime.status!=="WITHIN_RANGE"||!Number.isFinite(runtime.durationMs))
       throw Error("O Spotify não confirmou uma playlist dentro da meta.");
      const clock=ms=>Math.floor(ms/60000)+":"+String(Math.floor(ms/1000)%60).padStart(2,"0");
-     const fit=state.spotify.playlists?.[book+":"+number]?.editorialFit;
-     report.textContent="CONFIRMADO NO SPOTIFY · "+clock(runtime.durationMs)+" / meta "+
-      clock(runtime.targetMs)+" · "+runtime.trackCount+" faixas. "+
-      (fit?((fit.removedIndexes||[]).length+" cortes editoriais; "+(fit.addedCues||[]).length+" reservas adicionadas."):"Sequência conferida.");
-     report.style.borderColor="#5c804b";
+     state.spotify.auditResults=state.spotify.auditResults||{};
+     state.spotify.auditResults[number]={status:"VERIFIED",at:new Date().toISOString(),message:"Spotify confirmou a sequência e a duração"};
+     save();
+     // Rebuild the whole reading card and directive from one authoritative
+     // audited runtime; otherwise the target and the status remain stale.
+     render();
     }catch(err){
      const r=state.spotify.chapterRuntime?.[number];
-     report.textContent="NÃO CORRIGIDO · "+String(err?.message||err)+
-      (r?.durationMs&&r?.targetMs?" · Última medição: "+Math.round(r.durationMs/60000)+" / "+Math.round(r.targetMs/60000)+" min.":"");
-     report.style.borderColor="#a54840";
+     const message=String(err?.message||err)+
+      (r?.durationMs&&r?.targetMs?" · Última medição: "+clock(r.durationMs)+" / meta "+clock(r.targetMs)+".":"");
+     state.spotify.auditResults=state.spotify.auditResults||{};
+     state.spotify.auditResults[number]={status:"FAILED",message,at:new Date().toISOString()};
+     save();
+     render();
     }finally{
      window.removeEventListener("hs-spotify-audit-progress",update);
      check.disabled=false;check.textContent="Auditar duração Spotify";
