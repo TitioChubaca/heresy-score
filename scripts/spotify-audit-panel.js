@@ -98,6 +98,9 @@ button.onclick=async()=>{
  }finally{
   window.removeEventListener("hs-spotify-audit-progress",onProgress);
   button.disabled=false;button.textContent="Conferir / corrigir";
+  // Refresh the chapter card, calibrated target and directive from the
+  // just-audited state. Keep this detailed Settings output intact.
+  if(state.activeBookSlug==="fulgrim"&&!state.active&&typeof render==="function")render();
  }
 };
 select.onchange=()=>result(Number(select.value));
