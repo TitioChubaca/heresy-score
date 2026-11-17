@@ -94,31 +94,52 @@ function calibratedTarget(n){
  const blended=base*.25+measured*.75;
  return Math.round(Math.max(base*.78,Math.min(base*1.23,blended))*10)/10;
 }
-function chooseEditorialSequence(n,tracks,target){
+
+const within=(total,target)=>total>=target-45000&&total<=target+60000;
+function progress(n,phase,message){
+ const detail={chapter:n,phase,message,at:new Date().toISOString()};
+ window.HSSpotifyAuditProgress=detail;
+ window.dispatchEvent(new CustomEvent("hs-spotify-audit-progress",{detail}));
+}
+async function fetchApprovedReserve(option){
+ const [title,artist]=option.track;
+ const resolved=await spotifyResolveTrack(title,artist);
+ const uri=typeof resolved==="string"?resolved:resolved?.uri;
+ if(!uri?.startsWith("spotify:track:"))throw Error("Reserva inexistente: "+title);
+ const t=await spotifyApi("/tracks/"+encodeURIComponent(uri.split(":").pop()));
+ if(t?.uri!==uri||norm(t?.name)!==norm(title)||
+  !(t?.artists||[]).some(a=>norm(a.name)===norm(artist))||
+  !Number.isFinite(t?.duration_ms)||t.duration_ms<=0)
+  throw Error("A gravação da reserva não corresponde à selecionada: "+title);
+ return {...option,uri,ms:t.duration_ms,title:t.name};
+}
+function chooseProtectedSequence(n,tracks,target,reserves){
  const plan=SCORE_META[n]?.editorialFitPlan;
- // DO NOT remove arbitrary cues: the old subset fitter crossed dialogue,
- // action and atmosphere boundaries to make the arithmetic look correct.
- if(!plan||!Array.isArray(plan.optionalIndexes)||!plan.optionalIndexes.length||!target||tracks.length!==SCORES[n].length)return null;
- const allowed=[...new Set(plan.optionalIndexes)].filter(i=>Number.isInteger(i)&&i>0&&i<tracks.length-1);
- const protectedCue=new Set([0,tracks.length-1,...(plan.protectedIndexes||[])]);
- if(!allowed.length||allowed.some(i=>protectedCue.has(i))||allowed.length>12)return null;
- const initial=tracks.reduce((sum,t)=>sum+t.ms,0);
- if(initial<=target+60000)return null;
+ const full=tracks.reduce((sum,t)=>sum+t.ms,0);
+ if(within(full,target))return {uris:tracks.map(t=>t.uri),removed:[],added:[],total:full,loss:0};
+ if(!plan||tracks.length!==SCORES[n].length)return null;
+ const optional=[...new Set(plan.optionalIndexes||[])],protectedSet=new Set([0,tracks.length-1,...(plan.protectedIndexes||[])]);
+ if(optional.length>12||reserves.length>8||optional.some(i=>!Number.isInteger(i)||protectedSet.has(i)||i<=0||i>=tracks.length-1))return null;
  let best=null;
- for(let mask=1;mask<(1<<allowed.length);mask++){
-  const removed=allowed.filter((_,j)=>mask&(1<<j));
-  const removing=new Set(removed);
-  const kept=tracks.filter((_,i)=>!removing.has(i));
-  const total=kept.reduce((sum,t)=>sum+t.ms,0);
-  if(total<target-90000||total>target+60000||kept.length<Math.ceil(tracks.length*.6))continue;
-  const msBefore=index=>tracks.reduce((sum,t,i)=>sum+(i<index&&!removing.has(i)?t.ms:0),0);
-  const anchorLoss=(plan.anchors||[]).reduce((sum,a)=>{
-   if(removing.has(a.index))return sum+100;
-   return sum+Math.abs(msBefore(a.index)-a.at*target)/60000*(a.weight||1);
-  },0);
-  const durationLoss=Math.abs(total-target)/60000;
-  const loss=durationLoss*2+anchorLoss*.8+removed.length*.25;
-  if(!best||loss<best.loss)best={uris:kept.map(t=>t.uri),removed,total,error:Math.abs(total-target),anchorLoss,loss};
+ for(let rmMask=0;rmMask<(1<<optional.length);rmMask++){
+  const removed=optional.filter((_,i)=>rmMask&(1<<i)),exclude=new Set(removed);
+  if(tracks.length-removed.length<Math.ceil(tracks.length*.6))continue;
+  for(let addMask=0;addMask<(1<<reserves.length);addMask++){
+   if(!rmMask&&!addMask)continue;
+   const added=reserves.filter((_,i)=>addMask&(1<<i));
+   const sequence=[],starts={};let total=0;
+   for(let i=0;i<tracks.length;i++){
+    if(!exclude.has(i)){starts[i]=total;sequence.push(tracks[i]);total+=tracks[i].ms;}
+    for(const cue of added)if(cue.afterIndex===i){sequence.push(cue);total+=cue.ms;}
+   }
+   if(!within(total,target))continue;
+   const anchorLoss=(plan.anchors||[]).reduce((sum,a)=>sum+
+    (exclude.has(a.index)?100:Math.abs(starts[a.index]-a.at*target)/60000*(a.weight||1)),0);
+   const loss=Math.abs(total-target)/30000+anchorLoss*.6+(removed.length+added.length)*.35;
+   if(!best||loss<best.loss)best={uris:sequence.map(t=>t.uri),removed,
+    added:added.map(x=>({title:x.title,role:x.role,afterIndex:x.afterIndex})),
+    total,loss,anchorLoss};
+  }
  }
  return best;
 }
@@ -171,6 +192,7 @@ spotifySyncChapter=async function(n){
  }
  let id="";
  try{
+  progress(n,"connecting","Verificando a playlist e a autorização no Spotify...");
   // Always validate current Spotify contents, even for a cached preflight.
   const ensured=await spotifyEnsurePlaylist(n);
   id=ensured.id;
@@ -182,43 +204,50 @@ spotifySyncChapter=async function(n){
    Array.isArray(cached.verifiedSequence)&&cached.verifiedSequence.length===SCORES[n].length)
     ?cached.verifiedSequence.slice():await canonicalUris(SCORES[n]);
   if(state.activeBookSlug!==BOOK||state.active)throw Error("Contexto de leitura mudou");
+  progress(n,"loading","Lendo músicas já presentes no Spotify...");
   let actual=await playlistTracks(id);
   let changed="";
   // Re-evaluate against the full authored source, not a previously cut list.
   // This prevents a prior cut from being silently restored or compounded.
   const target=Math.round((SCORE_META[n]?.estimatedMinutes||0)*60000);
-  // Earlier builds pruned any interior cue; those saved cuts may have
-  // destroyed a scene transition and must NEVER be reused.
-  const retained=(cached?.editorialFit?.mode==="scene-protected-duration-fit"&&
-    cached.editorialFit.source===source&&
-    Array.isArray(cached.editorialFit.uris))?cached.editorialFit.uris:null;
-  let desired=retained||expected;
-  if(target>0){
-   const full=urisEqual(actual.map(t=>t.uri),expected)?actual:await canonicalTrackData(expected);
-   const fullMs=full.reduce((sum,t)=>sum+t.ms,0);
-   if(fullMs>target+60000){
-    const fit=chooseEditorialSequence(n,full,target);
-    if(fit){
-     desired=fit.uris;
-     const entry=state.spotify.playlists?.[key];
-     if(entry)entry.editorialFit={source,uris:fit.uris,removedIndexes:fit.removed,
-      targetMs:target,plannedMs:fit.total,mode:"scene-protected-duration-fit",anchorLoss:fit.anchorLoss};
-    }else{
-     // Do not replace a playlist with the overlong source when fitting fails.
-     desired=retained||expected;
-    }
-   }else{
-    desired=expected;
-    if(cached)delete cached.editorialFit;
+  if(!Number.isFinite(target)||target<=0)throw Error("Meta de leitura indisponível.");
+  progress(n,"measuring","Medindo gravações e conferindo transições protegidas...");
+  const full=urisEqual(actual.map(t=>t.uri),expected)?actual:await canonicalTrackData(expected);
+  const initialMs=full.reduce((sum,t)=>sum+t.ms,0);
+  const plan=SCORE_META[n]?.editorialFitPlan;
+  const reserves=[];
+  if(!within(initialMs,target)&&plan?.approvedExtensions?.length){
+   progress(n,"reserves","Conferindo reservas de ambientação/tensão específicas deste capítulo...");
+   for(const option of plan.approvedExtensions){
+    reserves.push(await fetchApprovedReserve(option));
+    progress(n,"reserves","Reservas conferidas "+reserves.length+"/"+plan.approvedExtensions.length);
    }
   }
+  const fit=chooseProtectedSequence(n,full,target,reserves);
+  if(!fit){
+   const explanation=!plan?"falta plano de transições editoriais.":
+    "as músicas opcionais e reservas aprovadas não permitem chegar à meta sem cortar partes essenciais.";
+   throw Error((initialMs<target?"TRILHA CURTA":"TRILHA LONGA")+
+    ": "+hhmm(initialMs)+" / meta "+hhmm(target)+"; "+explanation+
+    " Playlist anterior preservada, nenhuma correção declarada.");
+  }
+  const desired=fit.uris;
+  const fitEntry=state.spotify.playlists?.[key];
+  if(fitEntry)fitEntry.editorialFit={
+   source,uris:desired,removedIndexes:fit.removed,addedCues:fit.added,
+   plannedMs:fit.total,targetMs:target,mode:"scene-protected-bidirectional-fit",anchorLoss:fit.anchorLoss
+  };
+  progress(n,"planned","Plano: "+hhmm(initialMs)+" → "+hhmm(fit.total)+
+   " / meta "+hhmm(target)+"; cortes "+fit.removed.length+", acréscimos "+fit.added.length+".");
   if(!urisEqual(actual.map(t=>t.uri),desired)||
      actual.some(t=>!Number.isFinite(t.ms)||t.ms<=0)){
    // The only authority for playlist content is the editorial chapter cue sheet.
    // A previous auto-inserted bridge or obsolete saved playlist is reconciled here.
+   progress(n,"writing","Salvando as músicas no Spotify...");
    await spotifyApi("/playlists/"+encodeURIComponent(id)+"/items",{
     method:"PUT",body:JSON.stringify({uris:desired})
    });
+   progress(n,"verifying","Conferindo a playlist depois da gravação...");
    actual=await verify(id,desired);
    changed="source-reconciled";
   } else {
@@ -238,9 +267,10 @@ spotifySyncChapter=async function(n){
   }
   state.spotify.playlistId=id;
   state.spotify.playlistUrl=entry.url||"https://open.spotify.com/playlist/"+id;
-  save();return id;
+  save();progress(n,"success","Spotify confirmou "+hhmm(state.spotify.chapterRuntime[n].durationMs)+" / meta "+hhmm(target)+".");return id;
  }catch(err){
   const raw=String(err?.message||err);
+  progress(n,"error",raw);
   const message=/\b403\b|scope|forbidden/i.test(raw)?"Spotify sem permissão de leitura da playlist privada. Reautorize com Conectar Spotify nas Configurações. Detalhe: "+raw:raw;
   const r=state.spotify.chapterRuntime=state.spotify.chapterRuntime||{};
   r[n]={...(r[n]||{}),verified:false,status:"FAILED",autoFitResult:"NÃO CONFIRMADO: "+message.slice(0,180)};
@@ -259,7 +289,7 @@ spotifySyncChapter=async function(n){
  inFlight.set(n,work);
  try{return await work;}finally{if(inFlight.get(n)===work)inFlight.delete(n);}
 };
-window.HSSpotifyRuntimeQA={version:"0.16.6",get:n=>state.spotify.chapterRuntime?.[n]||null,
+window.HSSpotifyRuntimeQA={version:"0.16.7",get:n=>state.spotify.chapterRuntime?.[n]||null,
  readOnly:n=>state.spotify.chapterRuntime?.[n]?.verified===true,
  ready:n=>state.spotify.chapterRuntime?.[n]?.status==="WITHIN_RANGE"};
 })();
