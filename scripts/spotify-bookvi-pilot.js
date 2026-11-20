@@ -61,6 +61,14 @@ spotifySyncChapter=async function(n){
    emit(n,"measuring","Gravações exatas confirmadas "+(i+1)+"/"+refs.length+".");
   }
   const desired=verified.map(x=>x.uri),actualMs=verified.reduce((sum,x)=>sum+x.ms,0),diff=actualMs-targetMs;
+  const positions=[0,.19,.31,.51,.65,.81];
+  const plan={slots:refs.map((cue,i)=>({role:cue.role,at:positions[i],required:cue.required,
+   anchorWeight:i===0||i===refs.length-1?3:1,
+   choices:[{uri:verified[i].uri,role:cue.role,durationMs:verified[i].ms,intensity:cue.intensity}]}))};
+  const editorial=window.HSEditorialScore?.fit?.(plan,targetMs);
+  if(!editorial?.ok||!same(editorial.uris,desired))
+   throw Error("A sequência de papéis musicais obrigatórios falhou na validação editorial. "+
+    (editorial?.reason||"Motor narrativo indisponível."));
   if(diff< -45000||diff>60000)throw Error("Prelude fora da meta: "+clock(actualMs)+
     " vs "+clock(targetMs)+" ("+(diff>0?"+":"")+Math.round(diff/1000)+
     "s). Exige nova curadoria; a playlist não será escrita.");
