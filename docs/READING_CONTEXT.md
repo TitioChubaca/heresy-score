@@ -1,20 +1,26 @@
-# Warhammer Reading Context — updated 2026-11-16
+# Warhammer — Reading Context (updated 2026-11-20)
 
-**Current book:** Fulgrim, Horus Heresy V (English Kindle).
-**Verified reader log:** chapters I–XXI COMPLETE. **Next: XXII, UNREAD.**
-**Spoiler ceiling:** XXI. Never show scenes, later-era appearances, names/fates or hints from XXII–XXV in replies or artwork.
+**Spoiler ceiling: Fulgrim, Chapter XXV (BOOK V COMPLETED).**
+**Next book: Descent of Angels (VI) — NOT STARTED.**
+Never disclose Book VI plot, later character identities, outcomes, transformations, spoilers via fanart or track titles.
 
-## Reading and soundtrack preferences
-- Canon before speculation; cite community interpretations as noncanon, correct erroneous claims without spoiling.
-- The musical score should progress through actual chapter scenes without reader interaction.
-- Read clock is not identical to Spotify playback position. Use verified chapter duration and word counts only as a projection; skip invalid 1-minute entry in XVI.
-- The user has repeatedly rejected Discordant Feast as mismatched; avoid it.
-- Older soundtrack fitting algorithm removed arbitrary middle cues and damaged ambience-to-action transitions. New fitting protects curated cues and uses only approved reserve bridges.
-- Persistent audit result is required: either verified Spotify duration/order, already within tolerance, or explicit why fitting failed. Do not say a Spotify playlist is fixed until read-back from the authenticated app.
-- Official safe 2D art > fanart credited > existing provisional AI portrait. Do not replace art with an empty placeholder due to failed external hotlink.
-- Source material for future chapters is PRIVATE; do not publish spoilers in the application metadata.
+Completed reading sequence:
+I — Horus Rising
+II — False Gods
+III — Galaxy in Flames (recorded rating 4.5/5)
+IV — The Flight of the Eisenstein
+V — Fulgrim (25 chapters, final rating **3/5 Dreadnoughts**).
+Do not invent ratings for the other books.
 
-Below is retained historical context; this current header supersedes prior chapter ceilings.
+Reader feedback carried forward:
+- Soundtrack must track atmosphere, conversations, tension, action, consequences and scene transitions WITHOUT requiring any taps while reading.
+- Valid Fulgrim time logs: 23 sessions; XVI and XXII are invalid 1-minute timers. Last book soundtrack often fitted elapsed time without fitting emotional intensity; no more arbitrary stopwatch-based cue cuts.
+- Official era-safe 2D art first; then credited fanart; retain existing AI only as honest temporary fallback. Never substitute a blank for a working illustration.
+- Canonical text first, community speculation separately; when a reading interpretation is not supported by the actual book, say so without spoiling later developments.
+
+Book VI source MOBI is available privately for authoring. It has four parts, a Prelude, 23 numbered chapters and an Aftermath; no chapter from it has yet been cleared for discussion.
+The old historical snapshot following this separator is superseded where dates or spoiler limits conflict.
+
 
 ---
 
