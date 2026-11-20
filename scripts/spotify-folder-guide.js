@@ -7,14 +7,17 @@ const panel=document.querySelector('[data-view-panel="settings"]');
 if(!panel)return;
 const box=document.createElement("section");
 box.className="panel";box.id="hsSpotifyFolderHelp";
-box.innerHTML='<h2>Spotify · pasta Heresy Score</h2>'+
- '<p class="small">O Spotify não permite criar ou mover pastas pela API. Crie manualmente <strong>Heresy Score — Horus Heresy</strong> na Sua Biblioteca → + → Pasta. Você pode adicionar subpastas por livro.</p>'+
- '<p class="small">Para evitar uma playlist nova fora da pasta, crie uma <strong>playlist vazia dentro da pasta</strong>, abra ⋯ → Compartilhar → Copiar link, e vincule-a abaixo. Isso é opcional: o app também pode criar uma playlist não pública, que você pode mover depois.</p>'+
- '<label class="small" for="hsSpotifyFolderPlaylistLink">Link da playlist vazia para o próximo capítulo</label>'+
+box.innerHTML='<h2>Spotify · playlists automáticas</h2>'+
+ '<p class="small"><strong>Modo padrão:</strong> o Heresy Score cria automaticamente uma playlist não pública para cada unidade ao auditar ou iniciar a leitura. Se ela já existir, o aplicativo a reutiliza. <strong>Não precisa criar playlist, copiar links nem escolher uma pasta.</strong></p>'+
+ '<p class="small">A pasta <strong>Heresy Score — Horus Heresy</strong> é opcional. O Spotify não oferece criação, consulta ou movimentação de pastas pela API: para agrupá-las, mova a playlist pelo próprio Spotify. Essa limitação não afeta a criação automática.</p>'+
+ '<details class="hs-advanced-folder"><summary class="small">Avançado · vincular playlist existente (opcional)</summary>'+
+ '<p class="small">Use só se quiser criar uma lista vazia diretamente dentro de uma pasta no Spotify. O aplicativo verificará se ela é sua e se está vazia antes de vinculá-la.</p>'+
+ '<label class="small" for="hsSpotifyFolderPlaylistLink">Link da playlist vazia</label>'+
  '<input id="hsSpotifyFolderPlaylistLink" type="url" inputmode="url" autocomplete="off" placeholder="https://open.spotify.com/playlist/..." style="width:100%;min-width:0;min-height:44px;padding:10px;background:#101a0f;color:#d8d7c5;border:1px solid #536947">'+
  '<div class="actions"><button id="hsSpotifyFolderBind" type="button" class="btn">Vincular playlist existente</button></div>'+
  '<p id="hsSpotifyFolderResult" class="small" role="status" aria-live="polite"></p>'+
- '<a href="https://support.spotify.com/br-pt/article/playlist-folders/" target="_blank" rel="noopener noreferrer" class="small" style="color:#a8db72">Guia oficial: pastas de playlists</a>';
+ '</details>'+
+ '<a href="https://support.spotify.com/br-pt/article/playlist-folders/" target="_blank" rel="noopener noreferrer" class="small" style="color:#a8db72">Como organizar pastas no Spotify</a>';
 panel.append(box);
 const input=box.querySelector("#hsSpotifyFolderPlaylistLink");
 const status=box.querySelector("#hsSpotifyFolderResult");
