@@ -96,7 +96,7 @@ function show(){
     const details=card.querySelector(".details"),actions=card.querySelector(".actions");
     if(details)details.replaceChildren();
     if(actions){actions.replaceChildren();const note=document.createElement("span");note.className="small";note.textContent="Conteúdo e trilha protegidos até os capítulos anteriores serem concluídos.";actions.append(note)}
-    const ch=card.querySelector(".chname");if(ch)ch.textContent="CHAPTER "+String(number).padStart(2,"0")+" // SEALED";
+    const ch=card.querySelector(".chname");if(ch)ch.textContent=(state.activeBookSlug===HSBooks.VI?HSBooks.unitLabel(HSBooks.VI,number):"CHAPTER "+String(number).padStart(2,"0"))+" // SEALED";
    }
   }
  });
