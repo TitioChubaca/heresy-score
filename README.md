@@ -1,4 +1,4 @@
-# Heresy Score — v0.17.2 · Book VI foundation / CI repair
+# Heresy Score — v0.17.3 · Book VI Prelude Spotify pilot + folder organization
 
 Progress: Fulgrim (V) completed, 25/25 chapters, reader score 3/5 Dreadnoughts.
 Next: Descent of Angels (VI) **NOT STARTED**. Strict Book VI spoiler protocol.
@@ -11,15 +11,17 @@ Next: Descent of Angels (VI) **NOT STARTED**. Strict Book VI spoiler protocol.
 - Readability pass: larger text, 44px tap targets, compact screens, gothic style retained.
 - Narrative-score contract for required scene roles/optional transitions; technical Spotify fitting cannot drop essential cues using this new contract. **Not yet integrated with Book VI Spotify output.**
 - Spotify pagination max 50 items, atomic PWA install for essential files, central version/diagnostics and CI regression workflow.
-- Prelude and later soundtracks: **NOT YET CURATED OR SPOTIFY-VERIFIED**; no Begin Chapter until approved.
+- **Prelude pilot:** six spoiler-safe instrumental tracks with exact Spotify IDs, public-time estimate **16:38**, calibrated reading target **16:26**. The app validates artist/title/URI/duration and rereads the user's Spotify playlist before displaying **SPOTIFY OK**. Listening and transition quality remain **editorially unverified**.
+- Other Book VI units: **NO MUSIC OR CHARACTER SPOILERS PUBLISHED**; their playlists remain sealed.
+- Spotify folders: no Web API support for creating/moving folders. Settings now guide creating folders on mobile/desktop and can safely link an owned **EMPTY playlist** already created inside a folder; auto-created playlists remain non-public and can be moved manually.
 
 ## Scope not yet done
-- Listen to and approve exact VI tracks; fit narrative map and enable Prelude.
+- Listen to and approve the Prelude's full recordings and emotional transitions; confirm authenticated Spotify readback on the reader's device.
 - Replace external image hotlinks/old AI art with actually renderable, rights-safe original images.
 - Verify the newest GitHub CI run and Android device UI, cloud roundtrip and visual regression; no authenticated new-device test completed. An actual failed CI run at commit 0e75ab3 was caused by an outdated test expectation for the improved Spotify HTTP 403 message; this assertion was fixed. Green status for latest commit still unconfirmed.
 - Modularize legacy IV/V wrappers and add safe cloud merge conflict resolution.
 
-[Implementation ledger](docs/BOOK_VI_IMPLEMENTATION_2026-11-20.md) · [Full audit](docs/APP_AUDIT_2026-11-20.md) · [Spoiler ceiling](docs/READING_CONTEXT.md)
+[Prelude pilot and folders](docs/BOOKVI_PRELUDE_PILOT_2026-11-20.md) · [Implementation ledger](docs/BOOK_VI_IMPLEMENTATION_2026-11-20.md) · [Full audit](docs/APP_AUDIT_2026-11-20.md) · [Spoiler ceiling](docs/READING_CONTEXT.md)
 
 Historical Spotify notes below are retained for regression context.
 
