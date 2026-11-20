@@ -17,7 +17,8 @@ function setBanner(){
  const eyebrow=document.querySelector(".bookhead .eyebrow");if(eyebrow)eyebrow.textContent="ARCHIVE "+(slug===iv?"IV":slug===v?"V":"VI")+" // THE HORUS HERESY";
  const cards=document.querySelectorAll(".book-record");
  if(cards[3]){cards[3].classList.toggle("active-book",slug===iv);cards[3].querySelector(".book-state").textContent=slug===iv?"selected":"completed"}
- if(cards[4]){cards[4].classList.toggle("sealed",false);cards[4].classList.toggle("active-book",slug===v);cards[4].querySelector(".btitle").textContent="Fulgrim";cards[4].querySelector(".book-state").textContent=slug===v?"selected":"completed"}
+ if(cards[4]){cards[4].classList.toggle("sealed",false);cards[4].classList.toggle("active-book",slug===v);cards[4].querySelector(".btitle").textContent="Fulgrim";cards[4].querySelector(".book-state").textContent=slug===v?"selected":"completed";
+ cards[4].querySelector(".bmeta").textContent="25 capítulos · concluído · 3/5 Dreadnoughts"}
  const sixth=document.getElementById("hsBookVIRecord");
  if(sixth){
   sixth.classList.toggle("active-book",slug===vi);
