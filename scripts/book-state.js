@@ -21,6 +21,8 @@ function migrate(raw){
  const v=ensureBook(state.books,V,"Fulgrim",25,"completed");
  const vi=ensureBook(state.books,VI,"Descent of Angels",25,"not-started");
  if(v.chapterCount==null)v.chapterCount=25;
+ if(!v.rating)v.rating={value:3,max:5,unit:"Dreadnoughts",source:"reader-confirmed 2026-11-20"};
+ if(Object.keys(v.done||{}).filter(k=>v.done[k]&&+k>=1&&+k<=25).length>=25)v.status="completed";
  iv.chapterCount=17;
  vi.chapterCount=25;
  // Only the currently selected Book IV may replenish Book IV from legacy state.done.
