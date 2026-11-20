@@ -79,5 +79,14 @@ function switchBook(state,slug){
  state.spotify.playlistId="";state.spotify.playlistUrl="";
  return state;
 }
-root.HSBooks={IV,V,VI,VERSION,migrate,persistActive,switchBook,validSlugs:[IV,V,VI]};
+function unitLabel(slug,sequenceIndex){
+ const n=Number(sequenceIndex);
+ if(slug===VI){
+  if(n===1)return "Prelude";
+  if(n===25)return "Aftermath";
+  if(n>=2&&n<=24)return "Capítulo "+(n-1);
+ }
+ return "Capítulo "+String(n).padStart(2,"0");
+}
+root.HSBooks={IV,V,VI,VERSION,migrate,persistActive,switchBook,unitLabel,validSlugs:[IV,V,VI]};
 })(typeof window!=="undefined"?window:globalThis);
