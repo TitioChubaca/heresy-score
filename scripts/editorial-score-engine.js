@@ -27,6 +27,21 @@ function validate(plan){
  }
  return problems;
 }
+function audioCompatible(slot,candidate,policy){
+ if(!policy?.requireFullAudioProfile)return true; // Historical pilot stays explicitly provisional.
+ const profile=candidate?.audioProfile;
+ if(!profile?.fullTrackMeasured||profile.source!=="independent_authorized_local_file")
+  return false;
+ const flags=new Set(profile.riskFlags||[]);
+ const calmRole=["atmosphere","dialogue","aftermath","closing"].includes(slot.role);
+ // A song with an abrupt or late surge can overwhelm a calm reading segment
+ // even when its aggregate Spotify duration and introductory mood are correct.
+ if(calmRole&&(flags.has("strong_second_half_vs_opening")||
+                flags.has("abrupt_loudness_rise")))return false;
+ if(policy.requireFullHumanListening&&
+    candidate?.audioReview?.fullListeningReviewed!==true)return false;
+ return true;
+}
 function fit(plan,targetMs,limits={under:45000,over:60000}){
  const issues=validate(plan);if(issues.length)return {ok:false,reason:issues.join(" ")};
  if(!finite(targetMs)||targetMs<=0)return {ok:false,reason:"Tempo-alvo inválido"};
@@ -36,8 +51,13 @@ function fit(plan,targetMs,limits={under:45000,over:60000}){
  for(const [index,slot] of plan.slots.entries()){
   const next=[];
   for(const state of states){
-   const possibilities=slot.choices.slice(0,6);
+   const possibilities=slot.choices.slice(0,6)
+    .filter(c=>audioCompatible(slot,c,plan.audioPolicy));
    if(slot.required===false)possibilities.push(null);
+   if(!possibilities.length)return {
+    ok:false,reason:"O slot obrigatório "+index+" ("+slot.role+
+     ") não tem gravações autorizadas compatíveis com as mudanças internas de intensidade."
+   };
    for(const cue of possibilities){
     const consumed=state.durationMs;
     const selected=cue?[...state.tracks,cue]:state.tracks;
@@ -61,5 +81,5 @@ function fit(plan,targetMs,limits={under:45000,over:60000}){
  return {ok:true,uris:selected.tracks.map(t=>t.uri),durationMs:selected.durationMs,targetMs,
   skippedOptionalSlots:selected.skipped,anchorError:selected.penalty,stages:selected.at};
 }
-root.HSEditorialScore={roles:[...roles],validate,fit,version:1};
+root.HSEditorialScore={roles:[...roles],validate,fit,audioCompatible,version:2};
 })(typeof window!=="undefined"?window:globalThis);
