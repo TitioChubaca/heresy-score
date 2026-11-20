@@ -56,7 +56,10 @@ bind.onclick=async()=>{
   // A playlist manually created by the user may be shown on their profile.
   // Explicitly unpublish it to preserve reading preferences.
   await spotifyApi("/playlists/"+encodeURIComponent(id),{
-   method:"PUT",body:JSON.stringify({public:false})
+   method:"PUT",body:JSON.stringify({public:false,
+    name:"Heresy Score | "+(slug===HSBooks.VI?"VI":slug===HSBooks.V?"V":"IV")+" — "+
+     (state.books?.[slug]?.title||slug)+" | "+HSBooks.unitLabel(slug,n),
+    description:"Trilha de leitura pessoal gerenciada pelo Heresy Score."})
   });
   state.spotify.playlists=state.spotify.playlists||{};
   state.spotify.playlists[key]={...(linked||{}),id,
