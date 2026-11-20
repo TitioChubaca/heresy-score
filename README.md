@@ -1,4 +1,4 @@
-# Heresy Score — v0.17.3 · Book VI Prelude Spotify pilot + folder organization
+# Heresy Score — v0.17.4 · Book VI Prelude Spotify pilot + folder organization
 
 Progress: Fulgrim (V) completed, 25/25 chapters, reader score 3/5 Dreadnoughts.
 Next: Descent of Angels (VI) **NOT STARTED**. Strict Book VI spoiler protocol.
