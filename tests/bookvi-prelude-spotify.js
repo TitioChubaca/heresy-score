@@ -52,7 +52,7 @@ function makeScenario(problem){
  assert.equal(ok.d.chapters[0].unitId,"prelude");
  assert.equal(ok.d.chapters[1].unitId,"ch01");
  assert.equal(Object.keys(ok.d.scores).length,1,"Only Prelude should have a published candidate score");
- assert.equal(ok.d.scoreMeta[1].editorialStatus,"PILOT_UNLISTENED");
+ assert.equal(ok.d.scoreMeta[1].editorialStatus,"PILOT_FULL_AUDIO_UNVERIFIED");
  await ok.ctx.spotifySyncChapter(1);
  const runtime=ok.ctx.state.spotify.chapterRuntime[1];
  assert.equal(runtime.verified,true);
