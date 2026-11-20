@@ -1,5 +1,5 @@
 # Book VI / Prelude — soundtrack pilot and Spotify folder management
-**Date:** 2026-11-20. **Version target:** v0.17.3.
+**Date:** 2026-11-20. **Version target:** v0.17.4.
 **Spoiler ceiling:** Descent of Angels is UNREAD. No private novel text or later character/plot content in this repository.
 
 ## Prelude editorial pilot
@@ -35,7 +35,7 @@ Suggested personal library structure:
   - VI — Descent of Angels
 
 Two supported workflows:
-1. Create an **empty playlist** inside the target folder in Spotify, copy its playlist URL, then in Heresy Score Settings use **Vincular playlist existente**. The app verifies ownership, empty playlist, uniqueness to chapter and sets non-public, then updates its contents when audited. Folder membership cannot be verified by API.
+1. Create an **empty playlist** inside the target folder in Spotify, copy its playlist URL, then in Heresy Score Settings use **Vincular playlist existente**. The app verifies ownership, empty playlist and uniqueness to chapter, sets it non-public, renames it to the book/unit convention, then updates its contents when audited. Folder membership cannot be verified by API.
 2. Let the app create a non-public playlist under a meaningful book/unit title and move it manually to the folder afterward. It will reuse that playlist ID on subsequent audits, never create duplicates simply because the playlist was moved.
 
 A non-public Web API playlist is not published on the profile but should not be treated as secret to someone possessing its link.
