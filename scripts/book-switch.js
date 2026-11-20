@@ -145,9 +145,13 @@ const oldRender=render;render=function(){
   if(tag)tag.textContent=completed?"Livro VI · "+completed+" unidades concluídas":"Livro VI · ainda não iniciado";
   const next=chapters.find(c=>!state.done?.[c.number]);
   const directive=document.getElementById("directive");
-  if(directive&&!state.active)directive.textContent=next?
-    "DESCENT OF ANGELS // "+next.title+" // curadoria musical pendente, leitura ainda não liberada.":
-    "DESCENT OF ANGELS // todas as unidades concluídas.";
+  if(directive&&!state.active){
+   const verified=next&&window.HSScoreReadiness?.spotifyPrepared?.(next.number);
+   directive.textContent=!next?"DESCENT OF ANGELS // todas as unidades concluídas.":
+    verified?"DESCENT OF ANGELS // "+next.title+" // PILOTO CONFIRMADO NO SPOTIFY · encaixe narrativo a avaliar":
+    SCORES[next.number]?"DESCENT OF ANGELS // "+next.title+" // PILOTO MUSICAL · audite as gravações no Spotify":
+    "DESCENT OF ANGELS // "+next.title+" // curadoria musical pendente, leitura ainda não liberada.";
+  }
  }
  if(state.activeBookSlug===v){
   const count=Object.keys(state.done||{}).length;
