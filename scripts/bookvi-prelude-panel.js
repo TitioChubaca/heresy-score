@@ -30,7 +30,7 @@ function mount(){
  }else{
   report.textContent="PILOTO · 6 músicas instrumentais. Referência: 16:38 / alvo estimado 16:26. "+
    "A auditoria confirma gravações, duração e ordem na sua conta. "+
-   "Para evitar playlists soltas, crie uma playlist vazia dentro da pasta Spotify e vincule nas Configurações antes de auditar.";
+   "A playlist não pública será criada automaticamente ao auditar, ou reutilizada se já existir. Pastas no Spotify são opcionais e exigem organização pelo Spotify.";
  }
  button.onclick=async()=>{
   button.disabled=true;
