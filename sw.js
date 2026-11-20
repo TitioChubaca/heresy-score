@@ -1,9 +1,31 @@
 const CACHE="heresy-score-v0169";
 const PATCH="./patch-v0102.js";
-const ASSETS=["./","./index.html","./manifest.webmanifest","./patch-v0102.js","./scripts/book-state.js","./scripts/private-art.js","./scripts/book-backup.js","./scripts/book-switch.js","./scripts/spotify-resilient.js","./scripts/score-readiness.js","./scripts/spotify-runtime-fit.js","./scripts/spotify-audit-panel.js","./scripts/chapter-deck.js","./scripts/compact-reader.js","./scripts/portrait-crop.js","./scripts/portrait-pack.js","./scripts/feedback-direction.js","./scripts/p2-diagnostics.js","./scripts/scene-transition-markers.js","./scripts/spotify-chapter-resume.js","./scripts/portrait-compendium-help.js","./scripts/fulgrim-archive-curated.js","./data/fulgrim-score.js","./data/fulgrim-future-scores.js","./data/fulgrim-chapter-metrics.json","./data/fulgrim-ch09-bridge.js","./data/fulgrim-curated-art.js","./assets/ui/portraits/fulgrim/fulgrim.webp","./assets/ui/portraits/fulgrim/solomon-demeter.webp","./assets/ui/portraits/fulgrim/ostian-delafour.webp","./assets/ui/portraits/fulgrim/serena-dangelus.webp","./assets/ui/portraits/fulgrim/bequa-kynska.webp","./assets/ui/portraits/fulgrim/paljor-dorji.webp","./assets/ui/portraits/fulgrim/julius-kaesoron.webp","./assets/ui/portraits/fulgrim/marius-vairosean.webp","./assets/ui/portraits/fulgrim/gaius-caphen.webp","./assets/ui/portraits/fulgrim/coraline-aseneca.webp","./assets/ui/portraits/fulgrim/eidolon.webp","./assets/ui/portraits/fulgrim/vespasian.webp","./assets/ui/portraits/fulgrim/fabius.webp","./assets/ui/portraits/fulgrim/saul-tarvitz.webp","./assets/ui/portraits/fulgrim/lucius.webp","./assets/ui/portraits/fulgrim/ferrus-manus.webp","./data/eisenstein-score.js","./data/eisenstein-compendium.js","./assets/ui/icons/app-icon-maskable-512.png","./assets/ui/icons/app-icon-512.png","./assets/ui/icons/app-icon-192.png","./assets/ui/symbols/aquila.png","./assets/ui/symbols/skull-bw-1.png","./assets/ui/symbols/administratum.png","./assets/ui/animated/administratum.gif"];
+const ASSETS=["./","./index.html","./manifest.webmanifest","./patch-v0102.js","./scripts/book-state.js","./scripts/private-art.js","./scripts/book-backup.js","./scripts/book-switch.js","./scripts/spotify-resilient.js","./scripts/score-readiness.js","./scripts/spotify-runtime-fit.js","./scripts/spotify-audit-panel.js","./scripts/chapter-deck.js","./scripts/compact-reader.js","./scripts/portrait-crop.js","./scripts/portrait-pack.js","./scripts/feedback-direction.js","./scripts/p2-diagnostics.js","./scripts/scene-transition-markers.js","./scripts/spotify-chapter-resume.js","./scripts/portrait-compendium-help.js","./scripts/fulgrim-archive-curated.js","./data/fulgrim-score.js","./data/fulgrim-future-scores.js","./data/descent-of-angels.js","./data/fulgrim-chapter-metrics.json","./data/fulgrim-ch09-bridge.js","./data/fulgrim-curated-art.js","./assets/ui/portraits/fulgrim/fulgrim.webp","./assets/ui/portraits/fulgrim/solomon-demeter.webp","./assets/ui/portraits/fulgrim/ostian-delafour.webp","./assets/ui/portraits/fulgrim/serena-dangelus.webp","./assets/ui/portraits/fulgrim/bequa-kynska.webp","./assets/ui/portraits/fulgrim/paljor-dorji.webp","./assets/ui/portraits/fulgrim/julius-kaesoron.webp","./assets/ui/portraits/fulgrim/marius-vairosean.webp","./assets/ui/portraits/fulgrim/gaius-caphen.webp","./assets/ui/portraits/fulgrim/coraline-aseneca.webp","./assets/ui/portraits/fulgrim/eidolon.webp","./assets/ui/portraits/fulgrim/vespasian.webp","./assets/ui/portraits/fulgrim/fabius.webp","./assets/ui/portraits/fulgrim/saul-tarvitz.webp","./assets/ui/portraits/fulgrim/lucius.webp","./assets/ui/portraits/fulgrim/ferrus-manus.webp","./data/eisenstein-score.js","./data/eisenstein-compendium.js","./assets/ui/icons/app-icon-maskable-512.png","./assets/ui/icons/app-icon-512.png","./assets/ui/icons/app-icon-192.png","./assets/ui/symbols/aquila.png","./assets/ui/symbols/skull-bw-1.png","./assets/ui/symbols/administratum.png","./assets/ui/animated/administratum.gif"];
 
-self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE).then(async c=>{await Promise.allSettled(ASSETS.map(async asset=>{const res=await fetch(asset,{cache:"reload"});if(res.ok)await c.put(asset,res)}));}).then(()=>self.skipWaiting())));
-self.addEventListener("activate",e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));
+/* Install essential executable sources atomically. An incomplete new build
+   must NEVER replace a fully working previous offline cache. */
+self.addEventListener("install",event=>event.waitUntil((async()=>{
+ const cache=await caches.open(CACHE);
+ const essential=ASSETS.filter(p=>p==="./"||/\.(?:js|json|css|html|webmanifest)$/.test(p));
+ const optional=ASSETS.filter(p=>!essential.includes(p));
+ await Promise.all(essential.map(async path=>{
+  const response=await fetch(path,{cache:"reload"});
+  if(!response.ok)throw Error("Heresy Score required asset failed: "+path+" ("+response.status+")");
+  await cache.put(path,response);
+ }));
+ // Artwork can fail independently; never block the reading shell because of
+ // an optional portrait. The UI must expose its normal local fallback.
+ await Promise.allSettled(optional.map(async path=>{
+  const response=await fetch(path,{cache:"reload"});
+  if(response.ok)await cache.put(path,response);
+ }));
+ await self.skipWaiting();
+})()));
+self.addEventListener("activate",event=>event.waitUntil((async()=>{
+ const keys=await caches.keys();
+ await Promise.all(keys.filter(k=>k.startsWith("heresy-score-v")&&k!==CACHE).map(k=>caches.delete(k)));
+ await self.clients.claim();
+})()));
 
 async function patchedPage(request){
   let res;
@@ -48,4 +70,4 @@ self.addEventListener("fetch",e=>{
  })());
 });
 
-self.addEventListener("activate",event=>{event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(k=>k.startsWith("heresy-score-v")&&k!==CACHE).map(k=>caches.delete(k)));await self.clients.claim();})());});
+
