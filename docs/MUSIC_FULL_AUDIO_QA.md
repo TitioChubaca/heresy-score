@@ -40,6 +40,22 @@ python tools/audio-qa/analyze_audio.py /private/music/authorized-track.flac \
   --confirm-authorized-audio
 ```
 
+Batch processing is also supported, so the reader does **not** need to
+upload or open every song individually. If an independent, authorized
+soundtrack directory is available:
+
+```bash
+python tools/audio-qa/analyze_library.py /private/authorized-soundtracks \
+  --private-output-directory /private/heresy-audio-qa \
+  --max-files 150 --confirm-authorized-audio
+```
+
+The batch tool scans each full track and writes private JSON metadata keyed
+by SHA-256, without copying the sound file. It skips previously scanned
+files. It does NOT fetch tracks from Spotify, match different masters or
+automatically approve soundtrack candidates. Source availability remains
+the blocker for the six selected Prelude OST tracks.
+
 The Spotify URI is merely a reference label; it does not prove the independent
 recording and the Spotify master are identical. Never assume a shared title
 means a shared version, mix, duration or dynamic range.
@@ -77,6 +93,8 @@ not mean stable emotion; scene matching needs critical full-track listening.
    note. Only then promote from PILOT to approved.
 
 ### Current Prelude / Book VI
+
+The app explicitly shows three separate counters: full-track structural scan, full critical audition, and editorial approval. All are 0/6 until evidence exists. The scene-selection engine can reject a quiet-scene candidate if its full-audio profile flags an abrupt or late swell; the track's introduction and total runtime cannot override that warning.
 
 Six exact URI references exist with a technical target of 16:26 and public
 song durations totaling 16:38. **Zero of six have full-audio structural QA or
