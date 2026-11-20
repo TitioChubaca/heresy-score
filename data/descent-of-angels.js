@@ -1,6 +1,6 @@
 /* Book VI: Descent of Angels — reader-safe structural registry.
    PRIVATE novel text and future scene maps are NOT shipped.
-   The score is NOT approved; no Spotify playlist should be created. */
+   Only Prelude has a PILOT soundtrack. Other units remain uncurated. No Spotify playlist may be labeled confirmed without authenticated read-back. */
 (()=>{"use strict";
 const chapters=[
   {
@@ -259,9 +259,36 @@ const scoreMeta=Object.fromEntries(chapters.map(u=>[u.number,{
  readingEstimateMinutes:u.estimatedMinutes,estimatedMinutes:null,
  stage:"EDITORIAL_CURATION_PENDING",spotifyRuntimeStatus:"not-audited"
 }]));
+
+/* PRELUDE ONLY. Reader has not started Book VI.
+   Six publicly verifiable OST recordings, no future novel plot terms.
+   Editorial sequence is a first-pass PILOT, not a listened/approved mix.
+   The exact Spotify URIs are verified on public track pages; the app MUST
+   confirm recording metadata/duration with the user's authenticated API. */
+const preludeCues=[
+ {uri:"spotify:track:0VezF1gAZbBHitiRlVnxlr",title:"Majula",artist:"Motoi Sakuraba",role:"atmosphere",durationApproxSeconds:198,intensity:1,required:true},
+ {uri:"spotify:track:3jOjqaqG7Of1gb8eoFjWk5",title:"Catacombs",artist:"Yuka Kitamura",role:"suspense",durationApproxSeconds:113,intensity:2,required:true},
+ {uri:"spotify:track:4PpMIuuZUBU34wnRw2Fk0y",title:"Leyndell, Royal Capital",artist:"Yuka Kitamura",role:"transition",durationApproxSeconds:197,intensity:3,required:true},
+ {uri:"spotify:track:2upZ542q9ScxpYFnvLRf6O",title:"Roundtable Hold",artist:"Tsukasa Saitoh",role:"dialogue",durationApproxSeconds:141,intensity:2,required:true},
+ {uri:"spotify:track:1lNlOXH1goSj2dRBPUCzrg",title:"Fire Keepers",artist:"Motoi Sakuraba",role:"aftermath",durationApproxSeconds:163,intensity:1,required:true},
+ {uri:"spotify:track:0oLK0KuDVLT3JVDpQQLHOT",title:"Firelink Shrine",artist:"Yuka Kitamura",role:"closing",durationApproxSeconds:186,intensity:2,required:true}
+];
+const preludeTargetMinutes=3238/197;
+const score={1:preludeCues.map(c=>[c.title,c.artist])};
+scoreMeta[1]={
+ ...scoreMeta[1],estimatedMinutes:preludeTargetMinutes,baseEstimatedMinutes:preludeTargetMinutes,
+ startCue:preludeCues[0].title,finalCueIndex:preludeCues.length-1,
+ editorialStatus:"PILOT_UNLISTENED",stage:"PILOT_EXACT_URI_PENDING_DEVICE_QA",
+ recordingReferences:preludeCues.map(({uri,title,artist,role,intensity,required,durationApproxSeconds})=>
+  ({uri,title,artist,role,intensity,required,durationApproxSeconds})),
+ scoreSource:"private reader-supplied MOBI, no plot information in public metadata",
+ playbackPolicy:"do-not-start-until-exact-Spotify-readback"
+};
+chapters[0].startCue=preludeCues[0].title;
+chapters[0].estimatedMinutes=preludeTargetMinutes;
 window.HS_DESCENT_DATA={
  slug:"descent-of-angels",title:"Descent of Angels",chapterCount:25,
  partsCount:4,source:"reader-provided MOBI",sourceVerified:"structure-only",
- chapters,scores:{},scoreMeta,people:[],archive:[]
+ chapters,scores:score,scoreMeta,people:[],archive:[]
 };
 })();
