@@ -1,4 +1,4 @@
-# Heresy Score — v0.17.1 · Book VI foundation
+# Heresy Score — v0.17.2 · Book VI foundation / CI repair
 
 Progress: Fulgrim (V) completed, 25/25 chapters, reader score 3/5 Dreadnoughts.
 Next: Descent of Angels (VI) **NOT STARTED**. Strict Book VI spoiler protocol.
@@ -7,7 +7,7 @@ Next: Descent of Angels (VI) **NOT STARTED**. Strict Book VI spoiler protocol.
 - Book VI selectable in the library, with stable units: Prelude, Chapters 1–23, Aftermath (25 total), all initially unread.
 - Existing IV/V logs and per-book Spotify runtime results isolated by book during switching (state v4). Verified in mocks. Supabase Fulgrim 25-row digest unchanged.
 - Backup export and non-destructive restore (preview, explicit confirmation, import missing only), without credentials.
-- Dramatis Personae: search within unlocked names, filter by known group, known relationships in dossiers; sealed cards hidden. Book VI characters and places not yet published.
+- Dramatis Personae: search within unlocked names, filter by known group, known relationships in dossiers; sealed cards hidden. Ships/locations now also searchable with sealed records excluded. Book VI characters and places not yet published.
 - Readability pass: larger text, 44px tap targets, compact screens, gothic style retained.
 - Narrative-score contract for required scene roles/optional transitions; technical Spotify fitting cannot drop essential cues using this new contract. **Not yet integrated with Book VI Spotify output.**
 - Spotify pagination max 50 items, atomic PWA install for essential files, central version/diagnostics and CI regression workflow.
@@ -16,7 +16,7 @@ Next: Descent of Angels (VI) **NOT STARTED**. Strict Book VI spoiler protocol.
 ## Scope not yet done
 - Listen to and approve exact VI tracks; fit narrative map and enable Prelude.
 - Replace external image hotlinks/old AI art with actually renderable, rights-safe original images.
-- Verify GitHub CI and Android device UI, cloud roundtrip and visual regression; no authenticated new-device test completed.
+- Verify the newest GitHub CI run and Android device UI, cloud roundtrip and visual regression; no authenticated new-device test completed. An actual failed CI run at commit 0e75ab3 was caused by an outdated test expectation for the improved Spotify HTTP 403 message; this assertion was fixed. Green status for latest commit still unconfirmed.
 - Modularize legacy IV/V wrappers and add safe cloud merge conflict resolution.
 
 [Implementation ledger](docs/BOOK_VI_IMPLEMENTATION_2026-11-20.md) · [Full audit](docs/APP_AUDIT_2026-11-20.md) · [Spoiler ceiling](docs/READING_CONTEXT.md)
