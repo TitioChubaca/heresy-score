@@ -1,20 +1,29 @@
 /* Book switch layer: do not expose uncurated Fulgrim chapters or scores. */
 (()=>{
-const iv=HSBooks.IV,v=HSBooks.V;
+const iv=HSBooks.IV,v=HSBooks.V,vi=HSBooks.VI;
 const ivData={scores:{...SCORES},meta:{...SCORE_META},chapters:chapters.map(x=>({...x})),people:[...people],archive:[...archiveRecords]};
 const clearScore=()=>{for(const k of Object.keys(SCORES))delete SCORES[k];for(const k of Object.keys(SCORE_META))delete SCORE_META[k]};
 function installData(slug){
  clearScore();chapters.splice(0);people.splice(0);archiveRecords.splice(0);
  if(slug===iv){Object.assign(SCORES,ivData.scores);Object.assign(SCORE_META,ivData.meta);chapters.push(...ivData.chapters);people.push(...ivData.people);archiveRecords.push(...ivData.archive)}
- else {const d=window.HS_FULGRIM_DATA;if(d){Object.assign(SCORES,d.scores);Object.assign(SCORE_META,d.scoreMeta);chapters.push(...d.chapters);people.push(...d.people);archiveRecords.push(...d.archive)}else chapters.push({number:1,title:"CHAPTER 01 // SCORE NOT CURATED",estimatedMinutes:null,startCue:null})}
+ else {const d=slug===v?window.HS_FULGRIM_DATA:slug===vi?window.HS_DESCENT_DATA:null;
+  if(d){Object.assign(SCORES,d.scores);Object.assign(SCORE_META,d.scoreMeta);chapters.push(...d.chapters);people.push(...d.people);archiveRecords.push(...d.archive)}
+  else chapters.push({number:1,title:"PREPARAÇÃO PENDENTE",estimatedMinutes:null,startCue:null});
+ }
 }
 function setBanner(){
  const slug=state.activeBookSlug||iv,title=state.books[slug]?.title||"";
  const head=document.querySelector(".bookhead .title");if(head)head.textContent=title;
- const eyebrow=document.querySelector(".bookhead .eyebrow");if(eyebrow)eyebrow.textContent="ARCHIVE "+(slug===iv?"IV":"V")+" // THE HORUS HERESY";
+ const eyebrow=document.querySelector(".bookhead .eyebrow");if(eyebrow)eyebrow.textContent="ARCHIVE "+(slug===iv?"IV":slug===v?"V":"VI")+" // THE HORUS HERESY";
  const cards=document.querySelectorAll(".book-record");
  if(cards[3]){cards[3].classList.toggle("active-book",slug===iv);cards[3].querySelector(".book-state").textContent=slug===iv?"selected":"completed"}
- if(cards[4]){cards[4].classList.toggle("sealed",false);cards[4].classList.toggle("active-book",slug===v);cards[4].querySelector(".btitle").textContent="Fulgrim";cards[4].querySelector(".book-state").textContent=slug===v?"selected":"preparing"}
+ if(cards[4]){cards[4].classList.toggle("sealed",false);cards[4].classList.toggle("active-book",slug===v);cards[4].querySelector(".btitle").textContent="Fulgrim";cards[4].querySelector(".book-state").textContent=slug===v?"selected":"completed"}
+ const sixth=document.getElementById("hsBookVIRecord");
+ if(sixth){
+  sixth.classList.toggle("active-book",slug===vi);
+  sixth.querySelector(".book-state").textContent=slug===vi?"selected":"not started";
+  sixth.querySelector(".bmeta").textContent=slug===vi?"0 / 25 unidades · trilha em curadoria":"25 unidades · próximo livro";
+ }
  const panel=document.getElementById("hsBookSwitch");
  if(panel)panel.value=slug;
  const locked=slug===v&&!state.done?.[1];
@@ -122,6 +131,23 @@ const oldRender=render;render=function(){
   }
  }
 
+ if(state.activeBookSlug===vi){
+  const completed=Object.keys(state.done||{}).filter(k=>state.done[k]).length;
+  const total=chapters.length||25;
+  const progressBar=document.getElementById("progress");
+  if(progressBar)progressBar.style.width=Math.min(100,completed/total*100)+"%";
+  const text=document.getElementById("progressText");
+  if(text)text.textContent=completed+" / "+total+" unidades concluídas // Livro VI";
+  const archiveLabel=document.getElementById("bookArchiveProgress");
+  if(archiveLabel)archiveLabel.textContent="17 capítulos · concluído";
+  const tag=document.getElementById("clearanceLabel");
+  if(tag)tag.textContent=completed?"Livro VI · "+completed+" unidades concluídas":"Livro VI · ainda não iniciado";
+  const next=chapters.find(c=>!state.done?.[c.number]);
+  const directive=document.getElementById("directive");
+  if(directive&&!state.active)directive.textContent=next?
+    "DESCENT OF ANGELS // "+next.title+" // curadoria musical pendente, leitura ainda não liberada.":
+    "DESCENT OF ANGELS // todas as unidades concluídas.";
+ }
  if(state.activeBookSlug===v){
   const count=Object.keys(state.done||{}).length;
   const prog=document.getElementById("progress");if(prog)prog.style.width=Math.min(100,(count/25)*100)+"%";
@@ -138,7 +164,7 @@ const oldRender=render;render=function(){
  }
 };
 function change(slug){
- if(slug!==iv&&slug!==v)return;
+ if(![iv,v,vi].includes(slug))return;
  if(typeof beginPending!=="undefined"&&beginPending){
   toast("Aguarde o preparo da sessao atual");
   const p=document.getElementById("hsBookSwitch");if(p)p.value=state.activeBookSlug;
@@ -149,7 +175,7 @@ function change(slug){
   HSBooks.switchBook(state,slug);
   installData(slug);
   restoreUnreadChapterV();
-  state.spotify.scoreDurations={};state.spotify.chapterRuntime={};
+  // HSBooks.switchBook restores the book-specific audit snapshot; do not clear it.
   // Per-chapter playlists live in state.spotify.playlists. Clear the active
   // pointer on switches; do not let Open Spotify link to another book's score.
   state.spotify.playlistId="";
@@ -158,12 +184,19 @@ function change(slug){
   save();render();applyView("reading");
   // Reapply any personal-only portraits that were imported before this book had a roster.
   window.dispatchEvent(new Event("hs-book-changed"));
-  toast(slug===iv?"Eisenstein archive loaded":"Fulgrim archive selected; next score follows reader clearance");
+  toast(slug===iv?"Eisenstein archive loaded":slug===v?"Fulgrim archive loaded":"Descent of Angels selected · spoiler-safe preparation");
  }catch(e){toast(e.message);const p=document.getElementById("hsBookSwitch");if(p)p.value=state.activeBookSlug}
 }
 const nav=document.querySelector('[data-view-panel="books"]');
 const panel=document.createElement("section");panel.id="hsBooksPanel";panel.className="panel";
-panel.innerHTML='<h2>Active Book // Library</h2><p class="small">O progresso, as anotações e a sincronização na nuvem são separados por livro. Não é possível trocar durante uma leitura ativa. Os próximos scores são pré-curados e exigem confirmação de duração e ordem no Spotify antes da leitura.</p><label class="small">Selected book <select id="hsBookSwitch" style="width:100%;margin-top:8px;background:#101a0f;color:#d2cbb7;padding:12px;border:1px solid #536746"><option value="flight-of-the-eisenstein">IV — The Flight of the Eisenstein</option><option value="fulgrim">V — Fulgrim (scores I–XXV precurados)</option></select></label>';
+panel.innerHTML='<h2>Active Book // Library</h2><p class="small">O progresso, as anotações e a sincronização na nuvem são separados por livro. Não é possível trocar durante uma leitura ativa. Os próximos scores são pré-curados e exigem confirmação de duração e ordem no Spotify antes da leitura.</p><label class="small">Selected book <select id="hsBookSwitch" style="width:100%;margin-top:8px;background:#101a0f;color:#d2cbb7;padding:12px;border:1px solid #536746"><option value="flight-of-the-eisenstein">IV — The Flight of the Eisenstein</option><option value="fulgrim">V — Fulgrim (concluído)</option><option value="descent-of-angels">VI — Descent of Angels (curadoria em andamento)</option></select></label>';
+const library=document.querySelector('[data-view-panel="books"] .library');
+if(library&&!document.getElementById("hsBookVIRecord")){
+ const card=document.createElement("div");
+ card.className="book-record";card.id="hsBookVIRecord";
+ card.innerHTML='<div class="book-num">VI</div><div><div class="btitle">Descent of Angels</div><div class="bmeta">25 unidades · próximo livro</div></div><span class="book-state">not started</span>';
+ library.append(card);
+}
 nav.append(panel);
 document.getElementById("hsBookSwitch").onchange=e=>change(e.target.value);
 
@@ -204,7 +237,7 @@ batch.onclick=async()=>{
  }
 };
 
-if(state.activeBookSlug===v)installData(v);
+if(state.activeBookSlug===v||state.activeBookSlug===vi)installData(state.activeBookSlug);
 render();
 // Initialization also needs a second portrait pass: private-art loads before the book router.
 window.dispatchEvent(new Event("hs-book-changed"));
