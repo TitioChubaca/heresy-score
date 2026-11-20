@@ -1,3 +1,15 @@
+# Warhammer conversation routing — current handoff (2026-11-20)
+
+- **Book V Fulgrim**: COMPLETE (25/25 chapters), final reader score 3/5 Dreadnoughts. Its conversation may remain an archive/debate space for Book V only.
+- **Book VI Descent of Angels**: NOT STARTED. Start a separate discussion; absolutely no Book VI plot/art spoilers until chapter completion is explicitly confirmed.
+- **Heresy Score App Lab**: technical planning, GitHub, Spotify, cloud, dramaturgy, images and UX. Before shipping Book VI, follow the audit in [APP_AUDIT_2026-11-20.md](APP_AUDIT_2026-11-20.md).
+- **Data handoff**: [READING_CONTEXT.md](READING_CONTEXT.md) is the spoiler ceiling, [HERESY_SCORE_CONTEXT.md](HERESY_SCORE_CONTEXT.md) is the technical continuity record. Source MOBI remains private; do not paste book VI future scene maps into public repository.
+- **Order of next work**: snapshot/backup -> generic book support -> reliable music model and tests -> Dramatis Personae/image UX -> Book VI prelude pilot; do not mark an implementation verified before on-device testing.
+
+Older instructions below are historical; this header supersedes stale current-book references.
+
+---
+
 # Warhammer Project Conversation Router
 
 Last updated: 2026-11-07
