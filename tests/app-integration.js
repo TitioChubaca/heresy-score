@@ -27,6 +27,6 @@ assert.match(sw,/Promise\.all\(essential\.map/,"Essential app scripts must insta
 assert.equal((sw.match(/addEventListener\("activate"/g)||[]).length,1,"Single SW activation");
 const release=read("scripts/app-build.js").match(/version:"([^"]+)"/)[1];
 const cache=sw.match(/const CACHE="heresy-score-v(\d+)"/)[1];
-assert.equal(cache,"v"+release.replace(/\./g,"").padStart(4,"0").slice(1),
+assert.equal(cache,release.replace(/\./g,""),
  "SW cache version should match app build code");
 console.log("PASS script order, all linked files, PWA precache and atomic install.");
