@@ -278,9 +278,11 @@ const score={1:preludeCues.map(c=>[c.title,c.artist])};
 scoreMeta[1]={
  ...scoreMeta[1],estimatedMinutes:preludeTargetMinutes,baseEstimatedMinutes:preludeTargetMinutes,
  startCue:preludeCues[0].title,finalCueIndex:preludeCues.length-1,
- editorialStatus:"PILOT_UNLISTENED",stage:"PILOT_EXACT_URI_PENDING_DEVICE_QA",
+ editorialStatus:"PILOT_FULL_AUDIO_UNVERIFIED",stage:"PILOT_EXACT_URI_PENDING_DEVICE_QA",
  recordingReferences:preludeCues.map(({uri,title,artist,role,intensity,required,durationApproxSeconds})=>
-  ({uri,title,artist,role,intensity,required,durationApproxSeconds})),
+  ({uri,title,artist,role,intensity,required,durationApproxSeconds,
+   fullAudioQA:{status:"NOT_ANALYZED",independentAudioSource:false,
+    structuralProfile:false,fullListeningReviewed:false,roleFitApproved:false}})),
  scoreSource:"private reader-supplied MOBI, no plot information in public metadata",
  playbackPolicy:"do-not-start-until-exact-Spotify-readback"
 };
