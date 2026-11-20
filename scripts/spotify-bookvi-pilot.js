@@ -107,7 +107,7 @@ spotifySyncChapter=async function(n){
    verified:true,status:"WITHIN_RANGE",durationMs:measured,targetMs,trackCount:confirmed.length,
    finalCueIndex:confirmed.length-1,verifiedAt:time,sourceSignature:signature,
    auditTracks:confirmed.map((t,i)=>({position:i+1,title:t.title,seconds:Math.round(t.ms/1000)})),
-   editorialStatus:"PILOT_UNLISTENED",autoFitResult:"PILOTO CONFIRMADO TECNICAMENTE · "+
+   editorialStatus:"PILOT_FULL_AUDIO_UNVERIFIED",autoFitResult:"PILOTO CONFIRMADO TECNICAMENTE · "+
    clock(measured)+" / "+clock(targetMs)+" · revisão narrativa pendente"
   };
   state.spotify.auditResults=state.spotify.auditResults||{};
