@@ -25,7 +25,7 @@ function currentPlaylist(){
 async function playlistTracks(id){
  // The playlist itself is authoritative: trackCache may represent other markets,
  // old playlist revisions, or a previous chapter's curated music.
- const list=[],limit=100;
+ const list=[],limit=50;
  for(let offset=0;offset<500;offset+=limit){
   const page=await spotifyApi("/playlists/"+encodeURIComponent(id)+"/items?limit="+limit+"&offset="+offset);
   const items=page?.items||[];
