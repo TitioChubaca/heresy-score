@@ -1,0 +1,15 @@
+# Private user-supplied novels and game soundtrack recordings
+*.mobi
+*.epub
+*.mp3
+*.flac
+*.wav
+*.ogg
+*.m4a
+*.aiff
+*.aif
+private-audio-qa/
+.local-audio/
+.private-maps/
+__pycache__/
+*.pyc
