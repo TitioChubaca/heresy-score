@@ -561,3 +561,11 @@ QA caveat: validated code syntax and mocked UI/state behavior; real Android scre
 - Spotify playlist pagination limit=50 in runtime audit and resume. PWA essential install atomic and only one activate listener. Central build v0.17.1 with CI tests for app integration, editorial roles, backup and IV/V/VI migration.
 - Remaining scope: CI execution status not confirmed, no Android on-device UI validation, no VI curated Spotify score, incomplete real-art/hotlink replacement, legacy wrapper modularization and cloud merge conflicts. Do not claim complete.
 - Implementation ledger: docs/BOOK_VI_IMPLEMENTATION_2026-11-20.md. Strict Book VI spoiler ceiling at zero chapters.
+
+## 2026-11-20 — v0.17.2 / GitHub CI failure triage and archives
+- Reader received multiple GitHub failure emails. Connected Gmail search found one explicit failing action notification for run 44785160572 (main 0e75ab3). GitHub job log showed syntax and Book VI/narrative tests passed, but tests/spotify-runtime-reconciliation.js expected the substring 'permissão' after simulated HTTP 403. Runtime now correctly says 'Spotify recusou LER a playlist' and names playlist-read-private; regression expectation was too restrictive. Test updated to recognize specific reason and 403. No evidence of failed real Spotify OAuth call in that job.
+- Workflow concurrency now cancels redundant runs on repeated main commits; automated validations REMAIN ENABLED.
+- Scripts and mandatory PWA assets checked via GitHub connector for existence: 33 text/application + 23 image items, all present; separate './' shell served by index.html. This checks repository objects, not real CDN/device responses.
+- New archive-search-v2 filters only unlocked locations, factions and ships. Sealed future cards and metadata are omitted from searches; mock filter test passed, and a Node regression test was added to CI.
+- PWA and app build advanced to v0.17.2 with cache name heresy-score-v0172. No Book VI plot, score, character or place was made public; Book VI remains 0/25.
+- Full current GitHub Actions green status has NOT been independently confirmed via accessible connector; do not report workflow green until job result available. User's Android deployment was not visually tested in this turn.
