@@ -15,7 +15,7 @@ const inspectedTracks=new Map();
 async function playlistTracks(id){
  const found=[];
  for(let offset=0;offset<500;offset+=100){
-  const page=await spotifyApi("/playlists/"+encodeURIComponent(id)+"/items?limit=100&offset="+offset);
+  const page=await spotifyApi("/playlists/"+encodeURIComponent(id)+"/items?limit=50&offset="+offset);
   if(!Array.isArray(page?.items))throw Error("Spotify não retornou a lista de faixas");
   for(const e of page.items){
    const t=e?.item||e?.track;
