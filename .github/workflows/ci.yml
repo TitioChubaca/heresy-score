@@ -34,6 +34,7 @@ jobs:
         run: |
           set -euo pipefail
           node tests/bookvi-prelude-spotify.js
+          node tests/spotify-folder-guide.js
           node tests/spotify-bidirectional-fit.js
           node tests/spotify-runtime-reconciliation.js
           node tests/spotify-audit-ui-consistency.js
