@@ -61,5 +61,41 @@ const oldRenderRoster=renderRoster;
 renderRoster=function(){oldRenderRoster();refresh()};
 search.oninput=refresh;group.onchange=refresh;
 window.addEventListener("hs-book-changed",()=>{search.value="";group.value="all";refresh()});
+// Known Book V ties are unlocked only at their first relevant mention.
+// Future books may provide their own relations in a chapter-gated registry.
+const knownBookVRelations=[
+ {a:"Fulgrim",b:"Ferrus Manus",label:"Amizade entre primarcas",unlock:4},
+ {a:"Serena d'Angelus",b:"Ostian Delafour",label:"Vínculo artístico",unlock:1},
+ {a:"Julius Kaesoron",b:"Lycaon",label:"Capitão e equerry",unlock:9},
+ {a:"Fulgrim",b:"Fabius",label:"Primarca e apotecário",unlock:3},
+ {a:"Saul Tarvitz",b:"Lucius",label:"Oficiais da III Legião",unlock:4},
+ {a:"Eldrad Ulthran",b:"Khiraen Goldhelm",label:"Delegação de Ulthwé",unlock:14}
+];
+const dialog=document.getElementById("personDialog");
+const note=document.getElementById("personDialogNote");
+const relations=document.createElement("section");relations.id="hsPersonRelations";
+relations.className="small";relations.style.cssText="border-top:1px solid #30402c;padding-top:12px;margin-top:14px;line-height:1.6";
+if(dialog&&note){
+ note.after(relations);
+ const originalOpen=openPerson;
+ openPerson=function(p){
+  originalOpen(p);
+  const activeRelations=state.activeBookSlug===HSBooks.V?knownBookVRelations:
+   (state.activeBookSlug===HSBooks.VI?window.HS_DESCENT_DATA?.relations||[]:[]);
+  const known=new Set(people.filter(allowed).map(x=>x.name));
+  const matches=activeRelations.filter(x=>(x.unlock||1)<=maxClearance()&&
+   (x.a===p.name||x.b===p.name)&&known.has(x.a)&&known.has(x.b));
+  relations.replaceChildren();
+  if(!matches.length){relations.hidden=true;return}
+  relations.hidden=false;
+  const title=document.createElement("strong");title.textContent="RELAÇÕES JÁ CONHECIDAS";
+  relations.append(title);
+  for(const link of matches){
+   const other=link.a===p.name?link.b:link.a;
+   const line=document.createElement("div");line.textContent=other+" — "+link.label;
+   line.style.marginTop="7px";relations.append(line);
+  }
+ };
+}
 refresh();
 })();
