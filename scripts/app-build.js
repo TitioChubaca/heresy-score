@@ -1,2 +1,2 @@
 /* Single browser-visible release ID used by UI and diagnostics. */
-window.HSBuild=Object.freeze({version:"0.17.2",phase:"Book VI foundation",released:"2026-11-20"});
+window.HSBuild=Object.freeze({version:"0.17.3",phase:"Book VI Prelude Spotify pilot",released:"2026-11-20"});
