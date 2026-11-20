@@ -30,6 +30,7 @@ jobs:
           node tests/book-state-v4.js
           node tests/backup-restore-v2.js
           node tests/editorial-score-engine.js
+          node tests/music-quality-gate.js
       - name: Spotify fitting and UI regression tests
         run: |
           set -euo pipefail
