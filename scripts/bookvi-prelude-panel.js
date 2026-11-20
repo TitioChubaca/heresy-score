@@ -20,17 +20,23 @@ function mount(){
  report.setAttribute("role","status");report.setAttribute("aria-live","polite");
  const passed=!!window.HSScoreReadiness?.spotifyPrepared?.(1);
  const info=state.spotify.chapterRuntime?.[1],last=state.spotify.auditResults?.[1];
+ const quality=window.HSMusicQA?.review?.(SCORE_META[1]?.recordingReferences||[]);
+ const qaSummary=quality?(" · Áudio integral analisado: "+quality.structurallyAnalyzed+"/"+quality.total+
+  "; escuta completa: "+quality.fullyListened+"/"+quality.total+
+  "; aprovadas editorialmente: "+quality.approved+"/"+quality.total+"."):"";
  if(last?.status==="FAILED"){
   report.style.borderColor="#a54840";
   report.textContent="NÃO CONFIRMADO: "+last.message;
  }else if(passed&&Number.isFinite(info?.durationMs)){
   report.style.borderColor="#65835d";
   report.textContent="CONFIRMADO NO SPOTIFY: "+clock(info.durationMs)+" / alvo "+clock(info.targetMs)+
-   " · "+info.trackCount+" músicas. Curadoria PILOTO: qualidade narrativa ainda precisa ser avaliada durante a leitura.";
+   " · "+info.trackCount+" músicas. VERIFICAÇÃO TÉCNICA APENAS."+qaSummary+
+   " O encaixe emocional continua não aprovado; uma faixa pode mudar de tom durante a gravação.";
  }else{
   report.textContent="PILOTO · 6 músicas instrumentais. Referência: 16:38 / alvo estimado 16:26. "+
    "A auditoria confirma gravações, duração e ordem na sua conta. "+
-   "A playlist não pública será criada automaticamente ao auditar, ou reutilizada se já existir. Pastas no Spotify são opcionais e exigem organização pelo Spotify.";
+   "A playlist não pública será criada automaticamente ao auditar, ou reutilizada se já existir. Pastas no Spotify são opcionais e exigem organização pelo Spotify."+
+   qaSummary+" Nenhuma dessas músicas teve o áudio integral analisado nesta versão.";
  }
  button.onclick=async()=>{
   button.disabled=true;
