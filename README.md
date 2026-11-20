@@ -1,8 +1,14 @@
-# Heresy Score — v0.16.7
+# Heresy Score — deployed app v0.16.9 / quality audit 2026-11-20
 
-Mobile-first, spoiler-safe reading soundtrack companion for *The Horus Heresy*.
+A spoiler-safe, mobile-first reading soundtrack companion for *The Horus Heresy*.
 
-**Progress verified from private reader logs on 2026-11-16:** *Fulgrim* chapters I–XXI completed; XXII is the next unread chapter. Never expose future plot or character fates to the reader.
+**Current reading state:** Book V *Fulgrim* COMPLETE (25/25, reader rating 3/5 Dreadnoughts). Book VI *Descent of Angels* is **NOT STARTED**. Do not expose its events, later characters or art to the reader.
+
+**Current development state:** Book VI is **NOT INTEGRATED**. The 2026-11-20 review found critical technical debt in the hardcoded IV/V book model, Spotify scene-alignment, PWA installation and image handling. No new executable app version was released as part of this review.
+
+**Next source of truth:** [Full app audit and implementation roadmap](docs/APP_AUDIT_2026-11-20.md). Reading/spoiler context is [docs/READING_CONTEXT.md](docs/READING_CONTEXT.md). Historical technical decisions are in [docs/HERESY_SCORE_CONTEXT.md](docs/HERESY_SCORE_CONTEXT.md).
+
+The previous Spotify change notes below are retained for historical continuity; older progress or version numbers are superseded by the header above.
 
 ## Spotify audit reliability repair — 2026-11-16
 
