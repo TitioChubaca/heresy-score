@@ -5,7 +5,7 @@
 "use strict";
 const slug=HSBooks.V;
 function signature(n){return JSON.stringify(SCORES[n]||[])}
-function playlistKey(n){return slug+":"+n}
+function playlistKey(n){return (state.activeBookSlug===HSBooks.VI?HSBooks.VI:slug)+":"+n}
 const originalSync=spotifySyncChapter;
 spotifySyncChapter=async function(n){
  if(state.activeBookSlug!==slug)return originalSync(n);
@@ -34,7 +34,7 @@ spotifySyncChapter=async function(n){
 window.HSScoreReadiness={
  isPrepared:n=>!!SCORES[n],
  spotifyPrepared:n=>{const p=state.spotify.playlists?.[playlistKey(n)],r=state.spotify.chapterRuntime?.[n];
-  return !!p?.id&&p.scoreSignature===signature(n)&&!!p.preflightComplete&&["0.16.7","0.16.8"].includes(p.sourceVerifiedBy)&&r?.verified&&r.status==="WITHIN_RANGE"},
+  return !!p?.id&&p.scoreSignature===signature(n)&&!!p.preflightComplete&&["0.16.7","0.16.8","0.17.3"].includes(p.sourceVerifiedBy)&&r?.verified&&r.status==="WITHIN_RANGE"},
  scoreCount:()=>Object.keys(SCORES).length
 };
 // Never alter state.done when new music scores are published.
