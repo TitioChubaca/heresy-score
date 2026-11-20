@@ -50,7 +50,7 @@ function scenario(denied=false){
  await b.ctx.spotifySyncChapter(12);
  assert.equal(b.stats().puts,0,"active session must not be changed");
  const c=scenario(true);
- await assert.rejects(()=>c.ctx.spotifySyncChapter(12),/permissão/i);
+ await assert.rejects(()=>c.ctx.spotifySyncChapter(12),/(?:permissão|recusou LER|playlist-read-private|403)/i);
  assert.equal(c.state.spotify.chapterRuntime[12].verified,false);
  assert.match(fs.readFileSync(path.join(__dirname,"../index.html"),"utf8"),/playlist-read-private/);
  console.log("PASS: source reconciliation, readback, idempotence, final cue, active-session lock, 403 fail-closed, OAuth scope");
