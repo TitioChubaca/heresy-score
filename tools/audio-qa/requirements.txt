@@ -1,0 +1,4 @@
+# Offline audio analysis only; never consumes Spotify streaming audio.
+numpy>=1.24,<3
+librosa>=0.10.2,<0.12
+soundfile>=0.12,<1
