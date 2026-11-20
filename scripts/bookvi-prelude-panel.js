@@ -60,7 +60,24 @@ function mount(){
    render();
   }
  };
- actions.append(button,report);
+ const cueDetails=document.createElement("details");
+ cueDetails.style.cssText="grid-column:1/-1;flex-basis:100%;font-size:12px;border-top:1px solid #354b33;padding:8px 0";
+ const summary=document.createElement("summary");
+ summary.textContent="Conhecer as seis gravações do piloto (sem spoilers)";
+ cueDetails.append(summary);
+ for(const [i,cue] of (SCORE_META[1]?.recordingReferences||[]).entries()){
+  const item=document.createElement("div");
+  item.style.cssText="padding:6px 0;line-height:1.6";
+  const link=document.createElement("a");
+  link.textContent=(i+1)+". "+cue.title+" — "+cue.artist;
+  link.href="https://open.spotify.com/track/"+cue.uri.split(":").pop();
+  link.target="_blank";link.rel="noopener noreferrer";link.style.color="#a8db72";
+  const role=document.createElement("span");role.textContent=" · "+cue.role+" · "+
+   Math.floor(cue.durationApproxSeconds/60)+":"+
+   String(cue.durationApproxSeconds%60).padStart(2,"0")+" (referência)";
+  item.append(link,role);cueDetails.append(item);
+ }
+ actions.append(button,report,cueDetails);
 }
 render=function(...args){const result=base(...args);mount();return result;};
 if(state.activeBookSlug===HSBooks.VI)render();
