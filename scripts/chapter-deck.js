@@ -101,7 +101,9 @@ function show(){
   }
  });
  const title=toolbar.querySelector("#hsDeckTitle");
- title.textContent="Capítulo "+String(selected).padStart(2,"0")+" / "+chapters.length;
+ title.textContent=state.activeBookSlug===HSBooks.VI?
+  (HSBooks.unitLabel(HSBooks.VI,selected)+" · "+selected+"/"+chapters.length+" unidades"):
+  ("Capítulo "+String(selected).padStart(2,"0")+" / "+chapters.length);
  const tag=toolbar.querySelector("#hsDeckStatus");
  tag.textContent=selected===active?"Leitura atual":state.done?.[selected]?"Concluído · log disponível":"Futuro · protegido contra spoilers";
  toolbar.querySelector('[data-dir="-1"]').disabled=selected<=1;
