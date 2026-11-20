@@ -1,14 +1,27 @@
-# Heresy Score — deployed app v0.16.9 / quality audit 2026-11-20
+# Heresy Score — v0.17.1 · Book VI foundation
 
-A spoiler-safe, mobile-first reading soundtrack companion for *The Horus Heresy*.
+Progress: Fulgrim (V) completed, 25/25 chapters, reader score 3/5 Dreadnoughts.
+Next: Descent of Angels (VI) **NOT STARTED**. Strict Book VI spoiler protocol.
 
-**Current reading state:** Book V *Fulgrim* COMPLETE (25/25, reader rating 3/5 Dreadnoughts). Book VI *Descent of Angels* is **NOT STARTED**. Do not expose its events, later characters or art to the reader.
+## Delivered in this code release
+- Book VI selectable in the library, with stable units: Prelude, Chapters 1–23, Aftermath (25 total), all initially unread.
+- Existing IV/V logs and per-book Spotify runtime results isolated by book during switching (state v4). Verified in mocks. Supabase Fulgrim 25-row digest unchanged.
+- Backup export and non-destructive restore (preview, explicit confirmation, import missing only), without credentials.
+- Dramatis Personae: search within unlocked names, filter by known group, known relationships in dossiers; sealed cards hidden. Book VI characters and places not yet published.
+- Readability pass: larger text, 44px tap targets, compact screens, gothic style retained.
+- Narrative-score contract for required scene roles/optional transitions; technical Spotify fitting cannot drop essential cues using this new contract. **Not yet integrated with Book VI Spotify output.**
+- Spotify pagination max 50 items, atomic PWA install for essential files, central version/diagnostics and CI regression workflow.
+- Prelude and later soundtracks: **NOT YET CURATED OR SPOTIFY-VERIFIED**; no Begin Chapter until approved.
 
-**Current development state:** Book VI is **NOT INTEGRATED**. The 2026-11-20 review found critical technical debt in the hardcoded IV/V book model, Spotify scene-alignment, PWA installation and image handling. No new executable app version was released as part of this review.
+## Scope not yet done
+- Listen to and approve exact VI tracks; fit narrative map and enable Prelude.
+- Replace external image hotlinks/old AI art with actually renderable, rights-safe original images.
+- Verify GitHub CI and Android device UI, cloud roundtrip and visual regression; no authenticated new-device test completed.
+- Modularize legacy IV/V wrappers and add safe cloud merge conflict resolution.
 
-**Next source of truth:** [Full app audit and implementation roadmap](docs/APP_AUDIT_2026-11-20.md). Reading/spoiler context is [docs/READING_CONTEXT.md](docs/READING_CONTEXT.md). Historical technical decisions are in [docs/HERESY_SCORE_CONTEXT.md](docs/HERESY_SCORE_CONTEXT.md).
+[Implementation ledger](docs/BOOK_VI_IMPLEMENTATION_2026-11-20.md) · [Full audit](docs/APP_AUDIT_2026-11-20.md) · [Spoiler ceiling](docs/READING_CONTEXT.md)
 
-The previous Spotify change notes below are retained for historical continuity; older progress or version numbers are superseded by the header above.
+Historical Spotify notes below are retained for regression context.
 
 ## Spotify audit reliability repair — 2026-11-16
 
