@@ -1,4 +1,4 @@
-# Heresy Score — v0.17.4 · Book VI Prelude Spotify pilot + folder organization
+# Heresy Score — v0.17.5 · Full-track soundtrack QA foundation
 
 Progress: Fulgrim (V) completed, 25/25 chapters, reader score 3/5 Dreadnoughts.
 Next: Descent of Angels (VI) **NOT STARTED**. Strict Book VI spoiler protocol.
@@ -14,6 +14,32 @@ Next: Descent of Angels (VI) **NOT STARTED**. Strict Book VI spoiler protocol.
 - **Prelude pilot:** six spoiler-safe instrumental tracks with exact Spotify IDs, public-time estimate **16:38**, calibrated reading target **16:26**. The app validates artist/title/URI/duration and rereads the user's Spotify playlist before displaying **SPOTIFY OK**. Listening and transition quality remain **editorially unverified**.
 - Other Book VI units: **NO MUSIC OR CHARACTER SPOILERS PUBLISHED**; their playlists remain sealed.
 - Spotify folders: no Web API support for creating/moving folders. Settings now guide creating folders on mobile/desktop and can safely link an owned **EMPTY playlist** already created inside a folder; auto-created playlists remain non-public and can be moved manually.
+
+## Full recording QA: no fake musical approval
+
+The Spotify API checks track identity, runtime and playlist order; it does
+not provide raw full-length audio to this app. Spotify forbids feeding its
+content into AI models. Because a calm OST intro can become loud mid-song,
+the 6-track Book VI Prelude remains **PILOT_FULL_AUDIO_UNVERIFIED**, not
+musically approved.
+
+- New `tools/audio-qa/analyze_audio.py` profiles an independently authorized
+  full recording from beginning to end, flagging volume swells, brightness
+  changes, onset/activity, and late peaks. It never downloads or captures Spotify.
+- `tools/audio-qa/analyze_library.py` scans one legal local folder in batch,
+  privately, without uploading music or requiring the reader to upload each
+  recording separately.
+- `scripts/music-quality-gate.js` tracks structural analysis, full listening,
+  and editorial approval as separate states (currently 0/6 for Prelude).
+- `scripts/editorial-score-engine.js` can reject a profiled candidate that
+  abruptly becomes loud when its scene requires quiet atmosphere or dialogue.
+  This profile-aware gate is optional until independently authorized full
+  recordings have been obtained and scanned; it is not a substitute for listening.
+- **Spotify playlist creation is automatic by default**. Manual playlist link
+  entry is relegated to an optional Advanced section. Spotify folders cannot
+  be manipulated through the official Web API.
+
+See [full audio QA / source rights and limitations](docs/MUSIC_FULL_AUDIO_QA.md).
 
 ## Scope not yet done
 - Listen to and approve the Prelude's full recordings and emotional transitions; confirm authenticated Spotify readback on the reader's device.
