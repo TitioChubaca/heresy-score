@@ -22,7 +22,7 @@ jobs:
           set -euo pipefail
           find scripts data tests -type f -name '*.js' -print0 | xargs -0 -n 1 node --check
           node --check sw.js
-          python3 -m py_compile tools/audio-qa/analyze_audio.py tests/test_full_audio_qa.py
+          python3 -m py_compile tools/audio-qa/analyze_audio.py tools/audio-qa/analyze_library.py tests/test_full_audio_qa.py
       - name: Book safety and narrative score tests
         run: |
           set -euo pipefail
