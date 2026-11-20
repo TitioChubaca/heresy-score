@@ -156,6 +156,11 @@ def main() -> int:
         "human_listening_verdict": "PENDING",
     })
     output = args.output.expanduser().resolve()
+    # A private fingerprint and derived timeline should not accidentally be
+    # committed to a public GitHub repository.
+    repository_root = Path(__file__).resolve().parents[2]
+    if output.is_relative_to(repository_root):
+        parser.error("Write private audio reports outside the repository")
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n",
                       encoding="utf-8")
