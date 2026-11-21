@@ -33,35 +33,44 @@ async function confirm(id,expected){
    return tracks;
   if(attempt<3)await delay(250*(attempt+1));
  }
- throw Error("Spotify não confirmou a sequência e duração do Prelude após a gravação. Não liberado.");
+ throw Error("Spotify não confirmou a sequência e a duração da unidade após a gravação. Não liberado.");
 }
-spotifySyncChapter=async function(n){
+const activeChecks=new Map();
+const syncUnwrapped=async function(n){
  if(state.activeBookSlug!==BOOK)return original(n);
- if(n!==1)throw Error("Só o Prelude possui curadoria piloto; unidades futuras continuam protegidas.");
+ if(![1,2,3].includes(n)||!SCORES[n])throw Error("Esta unidade ainda não tem curadoria musical piloto; nenhuma playlist foi criada.");
  if(state.active)throw Error("Não alterar a playlist durante uma leitura ativa.");
  const refs=SCORE_META[n]?.recordingReferences;
  if(!Array.isArray(refs)||refs.length!==SCORES[n]?.length||refs.length<3)
-  throw Error("Plano musical do Prelude ausente ou incompleto.");
+  throw Error("Plano musical da unidade "+n+" ausente ou incompleto.");
  const key=BOOK+":"+n,signature=JSON.stringify(SCORES[n]),targetMs=Math.round(SCORE_META[n].estimatedMinutes*60000);
  if(!targetMs)throw Error("Tempo de leitura não está definido para o Prelude.");
  try{
-  emit(n,"measuring","Conferindo os seis títulos, artistas, URIs e durações reais...");
+  emit(n,"measuring","Conferindo títulos, artistas, URIs e durações reais da unidade "+n+"...");
   const verified=[];
   for(let i=0;i<refs.length;i++){
    if(state.activeBookSlug!==BOOK)throw Error("Livro alterado durante a conferência.");
-   const cue=refs[i],id=cue.uri?.split(":")[2];
+   const cue=refs[i];
+   // Prelude has source-grounded exact IDs. Subsequent early-book recordings
+   // are resolved by title + composer, then STRICTLY verified by Spotify GET.
+   // Never trust the first search hit (or its cached URI) without checking.
+   const candidateUri=cue.uri||await spotifyResolveTrack(cue.title,cue.artist);
+   const id=candidateUri?.split(":")[2];
    if(!/^[A-Za-z0-9]{22}$/.test(id||""))throw Error("URI inválida para "+cue.title);
    const t=await spotifyApi("/tracks/"+encodeURIComponent(id));
-   if(t?.uri!==cue.uri||norm(t.name)!==norm(cue.title)||
+   if(t?.uri!==candidateUri||norm(t.name)!==norm(cue.title)||
       !(t.artists||[]).some(a=>norm(a.name)===norm(cue.artist))||
-      !Number.isFinite(t.duration_ms)||t.duration_ms<=0)
+      !Number.isFinite(t.duration_ms)||t.duration_ms<=0||
+      (n!==1&&Math.abs(t.duration_ms-cue.durationApproxSeconds*1000)>8000))
     throw Error("Gravação indisponível/divergente: "+cue.title+" — "+cue.artist+
       ". Não substituir automaticamente por outra versão.");
    verified.push({uri:t.uri,ms:t.duration_ms,title:t.name,artists:t.artists.map(a=>a.name)});
    emit(n,"measuring","Gravações exatas confirmadas "+(i+1)+"/"+refs.length+".");
   }
   const desired=verified.map(x=>x.uri),actualMs=verified.reduce((sum,x)=>sum+x.ms,0),diff=actualMs-targetMs;
-  const positions=[0,.19,.31,.51,.65,.81];
+  const positions=SCORE_META[n]?.editorialPositions||
+   refs.map((_,i)=>i/refs.length);
+  if(positions.length!==refs.length)throw Error("Mapa editorial incompleto; não publicar a playlist.");
   const plan={slots:refs.map((cue,i)=>({role:cue.role,at:positions[i],required:cue.required,
    anchorWeight:i===0||i===refs.length-1?3:1,
    choices:[{uri:verified[i].uri,role:cue.role,durationMs:verified[i].ms,intensity:cue.intensity}]}))};
@@ -69,7 +78,7 @@ spotifySyncChapter=async function(n){
   if(!editorial?.ok||!same(editorial.uris,desired))
    throw Error("A sequência de papéis musicais obrigatórios falhou na validação editorial. "+
     (editorial?.reason||"Motor narrativo indisponível."));
-  if(diff< -45000||diff>60000)throw Error("Prelude fora da meta: "+clock(actualMs)+
+  if(diff< -45000||diff>60000)throw Error("Trilha fora da meta para "+HSBooks.unitLabel(BOOK,n)+": "+clock(actualMs)+
     " vs "+clock(targetMs)+" ("+(diff>0?"+":"")+Math.round(diff/1000)+
     "s). Exige nova curadoria; a playlist não será escrita.");
   emit(n,"connecting","Duração planejada "+clock(actualMs)+" / alvo "+clock(targetMs)+
@@ -80,7 +89,7 @@ spotifySyncChapter=async function(n){
   const needsWrite=!same(found.map(t=>t.uri),desired)||
     found.some((t,i)=>t.ms!==verified[i]?.ms);
   if(needsWrite){
-   emit(n,"writing","Gravando seis músicas na playlist já associada ao Prelude...");
+   emit(n,"writing","Gravando "+desired.length+" músicas na playlist já associada à unidade...");
    await spotifyApi("/playlists/"+encodeURIComponent(id)+"/items",{
     method:"PUT",body:JSON.stringify({uris:desired})
    });
@@ -100,7 +109,7 @@ spotifySyncChapter=async function(n){
   entry.trackCount=confirmed.length;
   entry.verifiedAt=time;
   entry.sourceVerifiedBy="0.17.3";
-  entry.editorialStatus="PILOT_UNLISTENED";
+  entry.editorialStatus="PILOT_FULL_AUDIO_UNVERIFIED";
   entry.lastCorrection=needsWrite?"playlist-updated-and-verified":"existing-playlist-verified";
   state.spotify.chapterRuntime=state.spotify.chapterRuntime||{};
   state.spotify.chapterRuntime[n]={
@@ -131,8 +140,21 @@ spotifySyncChapter=async function(n){
   if(state.spotify.playlists?.[key])state.spotify.playlists[key].preflightComplete=false;
   save();
   emit(n,"error",message);
-  throw Error("Prelude não confirmado no Spotify: "+message);
+  throw Error(HSBooks.unitLabel(BOOK,n)+" não confirmado no Spotify: "+message);
  }
 };
-window.HSBookVIQA={version:"0.17.3",status:()=>state.spotify.chapterRuntime?.[1]||null};
+spotifySyncChapter=async function(n){
+ if(state.activeBookSlug!==BOOK)return original(n);
+ const key=BOOK+":"+n;
+ if(activeChecks.has(key))return activeChecks.get(key);
+ const promise=syncUnwrapped(n);
+ activeChecks.set(key,promise);
+ try{return await promise}finally{activeChecks.delete(key)}
+};
+window.HSBookVIQA={
+ version:"0.17.6",
+ status:n=>state.spotify.chapterRuntime?.[n]||null,
+ verified:n=>state.spotify.chapterRuntime?.[n]?.verified===true&&
+  state.spotify.chapterRuntime?.[n]?.status==="WITHIN_RANGE"
+};
 })();
