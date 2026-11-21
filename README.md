@@ -9,10 +9,10 @@ Next: Descent of Angels (VI) **NOT STARTED**. Strict Book VI spoiler protocol.
 - Backup export and non-destructive restore (preview, explicit confirmation, import missing only), without credentials.
 - Dramatis Personae: search within unlocked names, filter by known group, known relationships in dossiers; sealed cards hidden. Ships/locations now also searchable with sealed records excluded. Book VI characters and places not yet published.
 - Readability pass: larger text, 44px tap targets, compact screens, gothic style retained.
-- Narrative-score contract for required scene roles/optional transitions; technical Spotify fitting cannot drop essential cues using this new contract. **Not yet integrated with Book VI Spotify output.**
+- Narrative-score contract for scene roles/required cues now checks the first three Book VI preflight pilots; technical validation does not certify whole-recording dynamics or emotional fit.
 - Spotify pagination max 50 items, atomic PWA install for essential files, central version/diagnostics and CI regression workflow.
 - **Prelude pilot:** six spoiler-safe instrumental tracks with exact Spotify IDs, public-time estimate **16:38**, calibrated reading target **16:26**. The app validates artist/title/URI/duration and rereads the user's Spotify playlist before displaying **SPOTIFY OK**. Listening and transition quality remain **editorially unverified**.
-- Other Book VI units: **NO MUSIC OR CHARACTER SPOILERS PUBLISHED**; their playlists remain sealed.
+- First three Book VI units have unlistened music pilots; units 4–25 remain without scores and future character/place content remains sealed.
 - Spotify folders: no Web API support for creating/moving folders. Settings now guide creating folders on mobile/desktop and can safely link an owned **EMPTY playlist** already created inside a folder; auto-created playlists remain non-public and can be moved manually.
 
 ## Full recording QA: no fake musical approval
@@ -88,14 +88,13 @@ test expectations: old tests expected Book VI to have only Prelude score
 and previously expected the earlier editorial-status string. Tests now
 require precisely the first three scored units and all later units sealed;
 mock API tests cover those three, exact duration, distinct playlist IDs and
-no duplicate writes. Do not claim a full GitHub Actions GREEN result unless
-confirmed from a current completed run. Avoid declaring intermediate commits
+no duplicate writes. Runtime commit `ba07b3b7` has verified GREEN CI run `44848542392` and successful Pages deploy `44848542524` (20/11/2026 local); recheck after future pushes. Avoid declaring intermediate commits
 successful releases.
 
 ## Scope not yet done
 - Listen to and approve the Prelude's full recordings and emotional transitions; confirm authenticated Spotify readback on the reader's device.
 - Replace external image hotlinks/old AI art with actually renderable, rights-safe original images.
-- Verify the newest GitHub CI run and Android device UI, cloud roundtrip and visual regression; no authenticated new-device test completed. An actual failed CI run at commit 0e75ab3 was caused by an outdated test expectation for the improved Spotify HTTP 403 message; this assertion was fixed. Green status for latest commit still unconfirmed.
+- GitHub runtime CI and Pages are green; Android device UI, live Spotify authorization, cloud roundtrip and visual regression remain unverified. An actual failed CI run at commit 0e75ab3 was caused by an outdated test expectation for the improved Spotify HTTP 403 message; this assertion was fixed. Green status of runtime commit `ba07b3b7` has since been confirmed.
 - Modularize legacy IV/V wrappers and add safe cloud merge conflict resolution.
 
 [Prelude pilot and folders](docs/BOOKVI_PRELUDE_PILOT_2026-11-20.md) · [Implementation ledger](docs/BOOK_VI_IMPLEMENTATION_2026-11-20.md) · [Full audit](docs/APP_AUDIT_2026-11-20.md) · [Spoiler ceiling](docs/READING_CONTEXT.md)

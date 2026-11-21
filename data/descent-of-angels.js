@@ -1,6 +1,6 @@
 /* Book VI: Descent of Angels — reader-safe structural registry.
    PRIVATE novel text and future scene maps are NOT shipped.
-   Only Prelude has a PILOT soundtrack. Other units remain uncurated. No Spotify playlist may be labeled confirmed without authenticated read-back. */
+   Prelude and Chapters 1–2 have unlistened PILOT soundtracks. Other units remain uncurated. No Spotify playlist may be labeled confirmed without authenticated read-back. */
 (()=>{"use strict";
 const chapters=[
   {

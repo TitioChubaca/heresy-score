@@ -1,4 +1,19 @@
 # Heresy Score — Active Product Pipeline
+
+## SPRINT ATUAL — LIVRO VI · v0.17.6 (20/11/2026)
+
+Estado autoritativo detalhado: `docs/HERESY_SCORE_CONTEXT.md`, seção ESTADO ATUAL. As tarefas antigas abaixo são histórico de 0.11.x e não representam o estado presente.
+
+- [x] 25 unidades estruturadas para VI; nenhuma leitura VI registrada.
+- [x] 25 registros `fulgrim` preservados; nota 3/5; isolamento IV/V/VI em testes.
+- [x] Três scores piloto criados, playlist não pública com preparação automática na sessão autenticada; sem iniciar áudio/cronômetro.
+- [x] Último commit runtime `ba07b3b7`: CI verde (run 44848542392), Pages verde (run 44848542524). Checar novo commit antes de declarar release verde.
+- [ ] **QA real:** PWA Android + Spotify conectado, janela 3/3, durações efetivas, playlists corretas/sem duplicações; ainda não verificado.
+- [ ] **QA musical:** escuta integral e correção de repetições de 3 faixas entre Capítulos 1 e 2; validar transições e dinâmica, não só tempo.
+- [ ] **QA de histórico:** backups não destrutivos, troca de livro, sessão offline e sincronização real sem perder logs.
+- [ ] **Melhorias seguintes:** imagens e direitos, falhas de cache, conflitos Supabase, modularização. Nunca revelar conteúdo privado futuro.
+
+### Histórico anterior (referência apenas)
 **Updated:** 2026-10-24 — v0.11.6
 **Protocol:** v0.11.4
 **Reader clearance:** `The Flight of the Eisenstein` completed including XVII; `Fulgrim` Chapter I completed. Nothing from Book V Chapter II+ may be exposed before reading.

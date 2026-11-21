@@ -1,5 +1,22 @@
 # Heresy Score — Technical and Musical Context
 
+## ESTADO ATUAL / HANDOFF — 20/11/2026 · v0.17.6
+
+**Esta seção é autoritativa; o texto anterior abaixo é histórico.**
+
+- **Leitura e spoilers:** livros I–V concluídos, *Fulgrim* 25/25 e 3/5 Dreadnoughts; *Descent of Angels* VI ainda 0/25. Não publicar cenas, personagens, spoilers ou mapas privados do livro VI, inclusive por metadados, imagens ou nomes de faixas.
+- **Estrutura VI:** Prelude, capítulos 1–23 e Aftermath = 25 unidades. IDs `prelude`, `ch01`–`ch23`, `aftermath`, índices 1–25. Índice 2 é o Capítulo 1, não Capítulo 2.
+- **Código:** GitHub `TitioChubaca/heresy-score`; versão PWA `0.17.6`; commit runtime `ba07b3b7`. GitHub Actions CI run `44848542392` **success** e Pages deploy run `44848542524` **success**, verificados em 20/11, Brasília. Revalidar qualquer commit posterior.
+- **Logs Supabase (consulta somente leitura):** `fulgrim` = 25 registros, `descent-of-angels` = 0. Logs extras legados do livro IV permanecem sem alteração; não apagar ou corrigir sem auditoria.
+- **Três unidades piloto:** Prelude (6 faixas, referência 16:38/alvo 16:26), Capítulo 1 (8, referência 21:58/alvo 22:09), Capítulo 2 (8, referência 22:52/alvo 22:50). As durações são de catálogo, NÃO tempos autenticados na conta Spotify, e as faixas NÃO foram escutadas integralmente nem aprovadas musicalmente.
+- **Automação em primeiro plano:** `scripts/bookvi-read-ahead.js` prepara janela móvel de 3 unidades quando a PWA está aberta, em VI, sem leitura em andamento, com Spotify conectado. Não inicia cronômetro nem reprodução. `spotify-bookvi-pilot.js` confere artista/título/URI/duração, grava ou reutiliza playlist não pública e relê a ordem pela API. Contador 3/3 sinaliza apenas preflight técnico, não aprovação do clima da trilha.
+- **Pendência externa:** ainda não houve teste do Spotify autenticado do leitor no Android, nem confirmação das três playlists reais, offline PWA ou roundtrip de sincronização em outro dispositivo. CI verde usa testes automatizados/mocks.
+- **Risco editorial detectado:** três títulos se repetem entre os pilotos dos Capítulos 1 e 2 (`Eternal City`, `Academy of Raya Lucaria`, `Divine Tower`). Reavaliar antes de tratar a seleção como aprovada. Leitmotif requer intenção narrativa comprovada, não mera conveniência de catálogo.
+- **Próximo passo:** no celular, abrir a PWA atualizada em VI com Spotify autenticado; conferir 3/3 e tempos reais sem iniciar a leitura; registrar falhas se houver. Em paralelo, revisar gravações completas em fonte autorizada, dinâmica, transições, final e repetição. Manter ~3 unidades à frente, sem operações obrigatórias durante a leitura.
+- **Backlog:** arte segura com proveniência/fallback no dispositivo, teste backup/restore, conflitos da nuvem e wrappers legados. A automação editorial diária já existe; não duplicar agendamento nem afirmar que ela altera playlists remotamente.
+
+### Histórico anterior (suplantado pelo checkpoint acima)
+
 Last updated: 2026-11-07
 Current patch protocol: **v0.15.5**
 Current book: **Fulgrim (Book V)**

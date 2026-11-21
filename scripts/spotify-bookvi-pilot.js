@@ -1,4 +1,4 @@
-/* Book VI Prelude ONLY: exact-URI, fail-closed Spotify audit.
+/* Book VI first three units: exact-recording, fail-closed Spotify audit.
    Neither the 2026-11-20 private novel nor scene notes are bundled.
    This verifies recording metadata and runtime, NOT emotional suitability. */
 (()=>{
