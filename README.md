@@ -1,4 +1,4 @@
-# Heresy Score — v0.17.5 · Full-track soundtrack QA foundation
+# Heresy Score — v0.17.6 · Automatic 3-unit Spotify window
 
 Progress: Fulgrim (V) completed, 25/25 chapters, reader score 3/5 Dreadnoughts.
 Next: Descent of Angels (VI) **NOT STARTED**. Strict Book VI spoiler protocol.
@@ -40,6 +40,57 @@ musically approved.
   be manipulated through the official Web API.
 
 See [full audio QA / source rights and limitations](docs/MUSIC_FULL_AUDIO_QA.md).
+
+## Book VI: three units prepared ahead
+
+Book VI *Descent of Angels* remains unread (0/25); no future novel plot is disclosed.
+The first three MUSIC PILOTS are now authored and catalogued using the
+reader-supplied private MOBI and source-supported album metadata:
+
+| Source unit | Internal index | Words approx. | Reading target | Public-duration pilot | Difference |
+|---|---:|---:|---:|---:|---:|
+| Prelude | 1 | 3,238 | 16:26 | 16:38, 6 cues | +12 sec |
+| Chapter 1 | 2 | 4,365 | 22:09 | 21:58, 8 cues | -11 sec |
+| Chapter 2 | 3 | 4,498 | 22:50 | 22:52, 8 cues | +2 sec |
+
+Those durations are **album references**, not yet authenticated Spotify
+readback and not full-song emotional approval. The first 3 units are
+**PILOT_FULL_AUDIO_UNVERIFIED**. Source metadata contains only title,
+composer, generic musical role and numeric transition anchors; the original
+novel and private narrative maps stay outside the public repository.
+
+### Hands-free Spotify preflight
+
+`scripts/bookvi-read-ahead.js` keeps a visible **3-unit window** from the
+current unread chapter. When the reader opens Book VI in a visible browser
+with Spotify connected, it automatically prepares (or reuses) the next
+three non-public per-unit playlists, strictly verifying recording title,
+composer, whole-track duration, URI sequence and readback. It does not
+start playback or a reading timer and will not repeat previously confirmed
+preflights unnecessarily. Any error is visibly marked **PENDING**, not
+falsely ready.
+
+After a unit is completed the window advances. If the third future unit has
+not yet been curated, the app reports the editorial gap instead of
+inventing a score. A daily conditional review at 18:00 America/Sao_Paulo
+has also been configured in this project to monitor and replenish future
+curation when suitable materials and checks are available. This scheduled
+editorial check cannot authenticate the user's Spotify app on its own.
+
+Current prerequisite for *actual* playlist creation: the reader must open
+the updated app in the Book VI library while connected to Spotify.
+No account changes or existing Fulgrim logs were made from the code editor.
+
+### CI failure triage
+
+The recent email storm comes from rapid GitHub push commits and stale
+test expectations: old tests expected Book VI to have only Prelude score
+and previously expected the earlier editorial-status string. Tests now
+require precisely the first three scored units and all later units sealed;
+mock API tests cover those three, exact duration, distinct playlist IDs and
+no duplicate writes. Do not claim a full GitHub Actions GREEN result unless
+confirmed from a current completed run. Avoid declaring intermediate commits
+successful releases.
 
 ## Scope not yet done
 - Listen to and approve the Prelude's full recordings and emotional transitions; confirm authenticated Spotify readback on the reader's device.
