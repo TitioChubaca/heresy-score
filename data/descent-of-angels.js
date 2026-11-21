@@ -328,6 +328,10 @@ for(const item of earlyScorePlans){
  score[n]=cues.map(c=>[c.title,c.artist]);
  scoreMeta[n]={...scoreMeta[n],estimatedMinutes,baseEstimatedMinutes:estimatedMinutes,
   startCue:cues[0].title,finalCueIndex:cues.length-1,
+  // Relative passage boundaries from private editorial structure,
+  // published as generic numeric markers with NO plot references.
+  editorialPositions:n===2?[0,.12,.23,.34,.51,.67,.78,.91]:
+                    [0,.13,.28,.39,.51,.61,.77,.87],
   editorialStatus:"PILOT_FULL_AUDIO_UNVERIFIED",
   stage:"PILOT_SPOTIFY_URI_RESOLUTION_PENDING",
   recordingReferences:cues,
