@@ -288,6 +288,56 @@ scoreMeta[1]={
 };
 chapters[0].startCue=preludeCues[0].title;
 chapters[0].estimatedMinutes=preludeTargetMinutes;
+// Early-book three-unit buffer: source chapter ONE and TWO were reviewed
+// privately. Only generic MUSIC ROLES are public; no story beats, future
+// characters or events are serialized into the PWA.
+// Public reference timings from the original Elden Ring OST album, not
+// authenticated Spotify metadata and NOT full-track listening approval.
+// For records without a prior verified track ID, the runtime must resolve
+// title+artist against Spotify, GET the exact recording and fail closed on
+// any mismatch. NEVER invent a URI to satisfy a timing target.
+const earlyScorePlans=[
+ {number:2,wordCount:4365,cues:[
+  ["Caves","Yoshimi Kudo","suspense",170,2],
+  ["Tunnels","Yuka Kitamura","suspense",139,2],
+  ["Roundtable Hold","Tsukasa Saitoh","dialogue",141,1],
+  ["Old Castle","Yoshimi Kudo","atmosphere",236,2],
+  ["Eternal City","Yuka Kitamura","suspense",208,3],
+  ["Academy of Raya Lucaria","Yuka Kitamura","dialogue",118,2],
+  ["Divine Tower","Yuka Kitamura","transition",174,2],
+  ["Stormveil Castle","Tai Tomisawa","closing",132,2]
+ ]},
+ {number:3,wordCount:4498,cues:[
+  ["Limgrave","Tsukasa Saitoh","atmosphere",191,1],
+  ["Character Creation","Shoi Miyazawa","transition",165,2],
+  ["Liurnia of the Lakes","Yoshimi Kudo","dialogue",180,1],
+  ["Great Underground Rivers","Yuka Kitamura","dialogue",159,1],
+  ["Academy of Raya Lucaria","Yuka Kitamura","suspense",118,2],
+  ["Eternal City","Yuka Kitamura","transition",208,2],
+  ["Altus Plateau","Shoi Miyazawa","atmosphere",177,2],
+  ["Divine Tower","Yuka Kitamura","closing",174,2]
+ ]}
+];
+for(const item of earlyScorePlans){
+ const cues=item.cues.map(([title,artist,role,durationApproxSeconds,intensity])=>({
+  uri:null,title,artist,role,durationApproxSeconds,intensity,required:true,
+  fullAudioQA:{status:"NOT_ANALYZED",independentAudioSource:false,
+    structuralProfile:false,fullListeningReviewed:false,roleFitApproved:false}
+ }));
+ const n=item.number,estimatedMinutes=item.wordCount/197;
+ score[n]=cues.map(c=>[c.title,c.artist]);
+ scoreMeta[n]={...scoreMeta[n],estimatedMinutes,baseEstimatedMinutes:estimatedMinutes,
+  startCue:cues[0].title,finalCueIndex:cues.length-1,
+  editorialStatus:"PILOT_FULL_AUDIO_UNVERIFIED",
+  stage:"PILOT_SPOTIFY_URI_RESOLUTION_PENDING",
+  recordingReferences:cues,
+  scoreSource:"Private reader-supplied MOBI; public album metadata for recording candidates",
+  playbackPolicy:"verify-exact-spotify-metadata-and-sequence-before-reading"
+ };
+ chapters[n-1].startCue=cues[0].title;
+ chapters[n-1].estimatedMinutes=estimatedMinutes;
+}
+
 window.HS_DESCENT_DATA={
  slug:"descent-of-angels",title:"Descent of Angels",chapterCount:25,
  partsCount:4,source:"reader-provided MOBI",sourceVerified:"structure-only",
