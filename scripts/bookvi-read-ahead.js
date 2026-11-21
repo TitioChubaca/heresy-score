@@ -40,7 +40,9 @@ function details(extra=""){
    aud?.status==="FAILED"?"PENDENTE — "+String(aud.message||"Spotify não confirmou").slice(0,135):
    SCORES[c.number]?"trilha piloto cadastrada; Spotify ainda não verificado":"curadoria musical ainda pendente");
  });
- label.textContent=content.join(" | ")+(extra?" | "+extra:"");
+ const confirmed=items.filter(c=>verified(c.number)).length;
+ label.textContent="Verificadas "+confirmed+"/"+items.length+" | "+
+  content.join(" | ")+(extra?" | "+extra:"");
 }
 async function prepare(force=false){
  if(state.activeBookSlug!==BOOK||state.active||!spotifyConnected()||
