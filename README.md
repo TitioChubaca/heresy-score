@@ -1,4 +1,43 @@
-# Heresy Score — v0.17.6 · Automatic 3-unit Spotify window
+# Heresy Score — v0.17.7 · Próximas três trilhas do Livro VI
+## Checkpoint atual — 22/11/2026 — release 0.17.7
+
+O leitor confirmou a conclusão de Prelude + Capítulos 1 e 2 de Descent of Angels.
+No armazenamento Supabase, são as unidades técnicas 1, 2 e 3, com tempos
+registrados de 17, 22 e 23 minutos; nenhuma leitura posterior foi confirmada.
+O Prelude recebeu comentário especialmente positivo. No Capítulo 2, o leitor
+registrou volume desigual entre músicas e picos altos após aumentar o volume.
+
+Próximas três unidades para preparar sem iniciar leitura nem reprodução:
+Capítulo 3 (unidade 4), Capítulo 4 (unidade 5), Capítulo 5 (unidade 6).
+As trilhas piloto desses capítulos foram mapeadas privadamente com o MOBI real,
+e o código público contém apenas títulos de OST, durações de referência,
+funções musicais genéricas e posições numéricas sem detalhes narrativos.
+Nenhum personagem, cena futura ou texto original é publicado.
+
+Referências de catálogo / metas estimadas:
+- Capítulo 3: 9 cues, 24:39 / alvo aproximado 25:09.
+- Capítulo 4: 6 cues, 11:47 / alvo aproximado 11:39.
+- Capítulo 5: 8 cues, 25:16 / alvo aproximado 25:40.
+
+A duração da gravação e a playlist só podem ser confirmadas na sessão Spotify
+autenticada pelo app no celular, depois de reconsulta da API. A curadoria
+de dinâmica integral permanece PILOT_FULL_AUDIO_UNVERIFIED. A confirmação
+técnica de uma playlist não significa que as mudanças de intensidade sejam boas.
+
+A versão 0.17.7 ajusta o motor e os testes para preparar essas três unidades
+automaticamente na PWA, mantendo verificações prévias e histórico.
+Os próximos capítulos 6–23 e Aftermath continuam sem trilha publicada.
+
+Fontes musicais públicas:
+- Elden Ring OST: https://musicbrainz.org/release/5039f414-4ada-4921-96af-b9783921dbd0
+- Hollow Knight OST oficial do compositor: https://christopherlarkin.bandcamp.com/album/hollow-knight-original-soundtrack
+
+**Limite de spoilers:** Descent of Angels Capítulo 2 concluído; Capítulo 3
+e posteriores seguem fechados. Não deduzir progresso pelo pré-carregamento.
+
+---
+
+
 
 Progress: Fulgrim (V) completed, 25/25 chapters, reader score 3/5 Dreadnoughts.
 Next: Descent of Angels (VI) **NOT STARTED**. Strict Book VI spoiler protocol.

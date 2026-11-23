@@ -1,4 +1,19 @@
 # Warhammer — Reading Context (updated 2026-11-20)
+## Teto de spoiler atualizado — 22/11/2026
+
+Descent of Angels: Prelude, Capítulo 1 e Capítulo 2 concluídos e confirmados
+pelo próprio leitor e pelo Supabase. A contagem técnica é 1=Prelude,
+2=Capítulo 1, 3=Capítulo 2. O próximo capítulo narrativo é o 3.
+Não revelar cenas, personagens, destinos, imagens ou etiquetas de trilhas
+futuras. Tempos lidos: 17, 22, 23 minutos. Feedback de trilha:
+Prelude particularmente bom; capítulo 2 com diferenças de volume perceptíveis.
+A existência de playlists preparadas não aumenta o limite de spoilers.
+
+Os parágrafos históricos abaixo são anteriores a esta atualização e não
+podem prevalecer sobre ela.
+---
+
+
 
 **Spoiler ceiling: Fulgrim, Chapter XXV (BOOK V COMPLETED).**
 **Next book: Descent of Angels (VI) — NOT STARTED.**
