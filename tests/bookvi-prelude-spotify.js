@@ -1,5 +1,5 @@
 /* node tests/bookvi-prelude-spotify.js
-   Exact-URI and search-resolution QA for the first 3 Book VI units.
+   Exact-URI and search-resolution QA for the first 6 Book VI units.
    Fake Spotify only; no account access, audio, tokens or book spoilers. */
 "use strict";
 const assert=require("node:assert/strict");
@@ -20,7 +20,7 @@ function makeScenario(problem){
  ctx.SCORES=data.scores;ctx.SCORE_META=data.scoreMeta;
  const tracks=new Map(),lookup=new Map();
  let auto=0;
- for(let n=1;n<=3;n++)for(const cue of data.scoreMeta[n].recordingReferences){
+ for(let n=1;n<=6;n++)for(const cue of data.scoreMeta[n].recordingReferences){
   const key=cue.title+"|"+cue.artist;
   let uri=cue.uri||lookup.get(key);
   if(!uri){
@@ -65,33 +65,33 @@ function makeScenario(problem){
   throw Error("Unmocked Spotify API: "+endpoint);
  };
  vm.runInNewContext(read("scripts/spotify-bookvi-pilot.js"),ctx);
- return {ctx,data,metrics:()=>({writes,created,tracksByUnit:[1,2,3].map(n=>(actual.get(n)||[]).length)})};
+ return {ctx,data,metrics:()=>({writes,created,tracksByUnit:[1,2,3,4,5,6].map(n=>(actual.get(n)||[]).length)})};
 }
 (async()=>{
  const ok=makeScenario();
  assert.equal(ok.data.chapters[0].unitId,"prelude");
  assert.equal(ok.data.chapters[1].unitId,"ch01");
  assert.equal(ok.data.chapters[2].unitId,"ch02");
- assert.equal(Object.keys(ok.data.scores).join(","),"1,2,3");
+ assert.equal(Object.keys(ok.data.scores).join(","),"1,2,3,4,5,6");
  assert.equal(ok.data.scoreMeta[1].editorialStatus,"PILOT_FULL_AUDIO_UNVERIFIED");
- for(let n=1;n<=3;n++){
+ for(let n=1;n<=6;n++){
   await ok.ctx.spotifySyncChapter(n);
   const runtime=ok.ctx.state.spotify.chapterRuntime[n];
   assert.equal(runtime.verified,true);
   assert.equal(runtime.status,"WITHIN_RANGE");
-  assert.equal(runtime.trackCount,n===1?6:8);
+  assert.equal(runtime.trackCount,({1:6,2:8,3:8,4:9,5:6,6:8})[n]);
   const expected=ok.data.scoreMeta[n].recordingReferences
     .reduce((sum,c)=>sum+c.durationApproxSeconds*1000,0);
   assert.equal(runtime.durationMs,expected,"Exactly the authored full recordings must be confirmed");
   assert(Math.abs(runtime.durationMs-runtime.targetMs)<=60000);
-  assert.equal(ok.ctx.state.spotify.playlists["descent-of-angels:"+n].sourceVerifiedBy,"0.17.6");
+  assert.equal(ok.ctx.state.spotify.playlists["descent-of-angels:"+n].sourceVerifiedBy,"0.17.7");
  }
- assert.equal(ok.metrics().writes,3);
- assert.equal(ok.metrics().created,3);
- assert.deepEqual(ok.metrics().tracksByUnit,[6,8,8]);
- for(let n=1;n<=3;n++)await ok.ctx.spotifySyncChapter(n);
- assert.equal(ok.metrics().writes,3,"Repeat preflight must not rewrite preverified playlists");
- assert.equal(ok.metrics().created,3,"Repeat preflight must not duplicate playlists");
+ assert.equal(ok.metrics().writes,6);
+ assert.equal(ok.metrics().created,6);
+ assert.deepEqual(ok.metrics().tracksByUnit,[6,8,8,9,6,8]);
+ for(let n=1;n<=6;n++)await ok.ctx.spotifySyncChapter(n);
+ assert.equal(ok.metrics().writes,6,"Repeat preflight must not rewrite preverified playlists");
+ assert.equal(ok.metrics().created,6,"Repeat preflight must not duplicate playlists");
  const wrong=makeScenario("artist");
  await assert.rejects(()=>wrong.ctx.spotifySyncChapter(1),/Gravação indisponível\/divergente/i);
  assert.equal(wrong.metrics().writes,0);
@@ -100,6 +100,6 @@ function makeScenario(problem){
  await assert.rejects(()=>tooLong.ctx.spotifySyncChapter(1),/(?:validação editorial|fora da meta)/i);
  assert.equal(tooLong.metrics().writes,0);
  assert.equal(tooLong.metrics().created,0);
- await assert.rejects(()=>ok.ctx.spotifySyncChapter(4),/curadoria musical piloto/i);
- console.log("PASS Book VI 3-unit buffer: exact/resolved recordings, duration, readback, idempotence, fail-closed and future-sealing.");
+ await assert.rejects(()=>ok.ctx.spotifySyncChapter(7),/curadoria musical piloto/i);
+ console.log("PASS Book VI six pilots with three-unit buffer: exact/resolved recordings, duration, readback, idempotence, fail-closed and future-sealing.");
 })().catch(err=>{console.error(err);process.exitCode=1});
