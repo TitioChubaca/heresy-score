@@ -1,4 +1,4 @@
-/* Book VI first three units: exact-recording, fail-closed Spotify audit.
+/* Book VI published pilots: exact-recording, fail-closed Spotify audit.
    Neither the 2026-11-20 private novel nor scene notes are bundled.
    This verifies recording metadata and runtime, NOT emotional suitability. */
 (()=>{
@@ -38,13 +38,13 @@ async function confirm(id,expected){
 const activeChecks=new Map();
 const syncUnwrapped=async function(n){
  if(state.activeBookSlug!==BOOK)return original(n);
- if(![1,2,3].includes(n)||!SCORES[n])throw Error("Esta unidade ainda não tem curadoria musical piloto; nenhuma playlist foi criada.");
+ if(!Number.isInteger(n)||n<1||n>6||!SCORES[n]||!Array.isArray(SCORE_META[n]?.recordingReferences))throw Error("Esta unidade ainda não tem curadoria musical piloto; nenhuma playlist foi criada.");
  if(state.active)throw Error("Não alterar a playlist durante uma leitura ativa.");
  const refs=SCORE_META[n]?.recordingReferences;
  if(!Array.isArray(refs)||refs.length!==SCORES[n]?.length||refs.length<3)
   throw Error("Plano musical da unidade "+n+" ausente ou incompleto.");
  const key=BOOK+":"+n,signature=JSON.stringify(SCORES[n]),targetMs=Math.round(SCORE_META[n].estimatedMinutes*60000);
- if(!targetMs)throw Error("Tempo de leitura não está definido para o Prelude.");
+ if(!targetMs)throw Error("Tempo de leitura não definido para esta unidade.");
  try{
   emit(n,"measuring","Conferindo títulos, artistas, URIs e durações reais da unidade "+n+"...");
   const verified=[];
@@ -108,7 +108,7 @@ const syncUnwrapped=async function(n){
   entry.finalCueIndex=confirmed.length-1;
   entry.trackCount=confirmed.length;
   entry.verifiedAt=time;
-  entry.sourceVerifiedBy="0.17.6";
+  entry.sourceVerifiedBy="0.17.7";
   entry.editorialStatus="PILOT_FULL_AUDIO_UNVERIFIED";
   entry.lastCorrection=needsWrite?"playlist-updated-and-verified":"existing-playlist-verified";
   state.spotify.chapterRuntime=state.spotify.chapterRuntime||{};
@@ -152,7 +152,7 @@ spotifySyncChapter=async function(n){
  try{return await promise}finally{activeChecks.delete(key)}
 };
 window.HSBookVIQA={
- version:"0.17.6",
+ version:"0.17.7",
  status:n=>state.spotify.chapterRuntime?.[n]||null,
  verified:n=>state.spotify.chapterRuntime?.[n]?.verified===true&&
   state.spotify.chapterRuntime?.[n]?.status==="WITHIN_RANGE"

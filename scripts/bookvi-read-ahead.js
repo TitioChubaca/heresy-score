@@ -115,7 +115,7 @@ document.addEventListener("visibilitychange",()=>{
  if(document.visibilityState==="visible"){lastAttemptedKey="";queue()}
 });
 window.addEventListener("pageshow",()=>queue());
-window.HSBookVIReadAhead={prepare,details,version:"0.17.6",windowSize:WINDOW};
+window.HSBookVIReadAhead={prepare,details,version:"0.17.7",windowSize:WINDOW};
 details();
 queue();
 })();

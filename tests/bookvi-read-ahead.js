@@ -14,7 +14,7 @@ const state={activeBookSlug:"descent-of-angels",active:null,done:{},spotify:{
 }};
 const books={VI:"descent-of-angels",unitLabel:(_,n)=>n===1?"Prelude":"Capítulo "+(n-1)};
 const chapters=Array.from({length:25},(_,i)=>({number:i+1,title:i?"CHAPTER "+i:"PRELUDE"}));
-const SCORES={1:[["A","C"]],2:[["B","C"]],3:[["C","C"]]};
+const SCORES=Object.fromEntries(Array.from({length:6},(_,i)=>[i+1,[["Cue "+(i+1),"Composer"]]]));
 let calls=[],renders=0;
 const ctx={window,document,state,HSBooks:books,chapters,SCORES,
  spotifyConnected:()=>true,
@@ -33,11 +33,16 @@ vm.runInNewContext(source,ctx);
  assert.match(status.textContent,/Verificadas 3\/3/);
  await window.HSBookVIReadAhead.prepare();
  assert.equal(calls.join(","),"1,2,3","Do not repeat successful audits on render");
- state.done[1]={minutes:16};
+ state.done[1]={minutes:17};state.done[2]={minutes:22};state.done[3]={minutes:23};
  await window.HSBookVIReadAhead.prepare(true);
- assert.equal(calls.join(","),"1,2,3","Previously verified future units are reused");
- assert.match(status.textContent,/curadoria musical ainda pendente/,"When buffer exceeds available pilot, show an honest gap");
- state.active={chapter:2};await window.HSBookVIReadAhead.prepare(true);
- assert.equal(calls.join(","),"1,2,3","Never modify playlists during active reading");
+ assert.equal(calls.join(","),"1,2,3,4,5,6","After Prelude and Chapters 1–2, prepare Chapters 3–5 (indices 4–6)");
+ assert.match(status.textContent,/Verificadas 3\/3/,"Next three Spotify units verified");
+ await window.HSBookVIReadAhead.prepare();
+ assert.equal(calls.join(","),"1,2,3,4,5,6","No duplicate preflights");
+ state.done[4]={minutes:25};
+ await window.HSBookVIReadAhead.prepare(true);
+ assert.match(status.textContent,/curadoria musical ainda pendente/,"Seventh unit remains pending");
+ state.active={chapter:5};await window.HSBookVIReadAhead.prepare(true);
+ assert.equal(calls.join(","),"1,2,3,4,5,6","No Spotify mutation during active reading");
  console.log("PASS auto-three preflight, logged completion, restored pointer, and no in-reading mutation.");
 })().catch(e=>{console.error(e);process.exitCode=1});

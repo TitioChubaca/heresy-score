@@ -288,10 +288,10 @@ scoreMeta[1]={
 };
 chapters[0].startCue=preludeCues[0].title;
 chapters[0].estimatedMinutes=preludeTargetMinutes;
-// Early-book three-unit buffer: source chapter ONE and TWO were reviewed
+// Early-book soundtrack pilot buffer: source chapter ONE and TWO were reviewed
 // privately. Only generic MUSIC ROLES are public; no story beats, future
 // characters or events are serialized into the PWA.
-// Public reference timings from the original Elden Ring OST album, not
+// Public reference timings from album catalogs, not
 // authenticated Spotify metadata and NOT full-track listening approval.
 // For records without a prior verified track ID, the runtime must resolve
 // title+artist against Spotify, GET the exact recording and fail closed on
@@ -318,6 +318,43 @@ const earlyScorePlans=[
   ["Divine Tower","Yuka Kitamura","closing",174,2]
  ]}
 ];
+
+/* Book VI music pilots: Chapters 3–5, internal indices 4–6.
+   Novel sections were reviewed privately in their real source order.
+   Public metadata is limited to generic roles, music titles and numeric
+   positions; no future narrative event or person data is in this file.
+   Catalog durations and full-audio dynamic suitability are provisional. */
+earlyScorePlans.push(
+ {number:4,wordCount:4956,positions:[0,.127,.231,.303,.402,.541,.573,.807,.938],cues:[
+  ["Consecrated Snowfield","Yoshimi Kudo","atmosphere",157,1],
+  ["Caelid","Yuka Kitamura","suspense",225,2],
+  ["Subterranean Shunning-Grounds","Shoi Miyazawa","suspense",150,2],
+  ["Mt. Gelmir","Yoshimi Kudo","suspense",164,2],
+  ["Miquella's Haligtree","Tai Tomisawa","aftermath",122,1],
+  ["Volcano Manor","Yoshimi Kudo","transition",152,2],
+  ["Prison Town","Yoshimi Kudo","dialogue",159,2],
+  ["Mountaintops of the Giants","Tai Tomisawa","suspense",203,2],
+  ["Formidable Foe I","Yuka Kitamura","action",147,4]
+ ]},
+ {number:5,wordCount:2295,positions:[0,.131,.331,.513,.659,.772],cues:[
+  ["Erdtree Knights","Tai Tomisawa","action",167,4],
+  ["Old Warriors","Yoshimi Kudo","action",114,4],
+  ["Formidable Foe II","Tai Tomisawa","action",85,4],
+  ["Invader","Shoi Miyazawa","action",110,4],
+  ["Resting Grounds","Christopher Larkin","aftermath",132,1],
+  ["Reflection","Christopher Larkin","closing",99,1]
+ ]},
+ {number:6,wordCount:5058,positions:[0,.086,.193,.243,.307,.517,.601,.733],cues:[
+  ["Crossroads","Christopher Larkin","dialogue",147,1],
+  ["Fungal Wastes","Christopher Larkin","dialogue",184,2],
+  ["Kingdom's Edge","Christopher Larkin","transition",141,2],
+  ["Soul Sanctum","Christopher Larkin","suspense",270,2],
+  ["City of Tears","Christopher Larkin","dialogue",178,1],
+  ["White Palace","Christopher Larkin","atmosphere",258,2],
+  ["Dream","Christopher Larkin","atmosphere",121,1],
+  ["Greenpath","Christopher Larkin","closing",217,1]
+ ]}
+);
 for(const item of earlyScorePlans){
  const cues=item.cues.map(([title,artist,role,durationApproxSeconds,intensity])=>({
   uri:null,title,artist,role,durationApproxSeconds,intensity,required:true,
@@ -330,8 +367,8 @@ for(const item of earlyScorePlans){
   startCue:cues[0].title,finalCueIndex:cues.length-1,
   // Relative passage boundaries from private editorial structure,
   // published as generic numeric markers with NO plot references.
-  editorialPositions:n===2?[0,.12,.23,.34,.51,.67,.78,.91]:
-                    [0,.13,.28,.39,.51,.61,.77,.87],
+  editorialPositions:item.positions||(n===2?[0,.12,.23,.34,.51,.67,.78,.91]:
+                    [0,.13,.28,.39,.51,.61,.77,.87]),
   editorialStatus:"PILOT_FULL_AUDIO_UNVERIFIED",
   stage:"PILOT_SPOTIFY_URI_RESOLUTION_PENDING",
   recordingReferences:cues,
