@@ -46,8 +46,8 @@ style.textContent=[
  'body.hs-reader-ux .chapters{padding:0 15px 6px;min-height:0}',
  'body.hs-reader-ux .chapter{padding:17px!important;background:var(--hs-surface);border:1px solid var(--hs-outline);border-radius:16px;box-shadow:none!important}',
  'body.hs-reader-ux .chapter .rivet{display:none!important}',
- 'body.hs-reader-ux .chapter .row{margin-bottom:8px}',
- 'body.hs-reader-ux .chapter .chname{font:600 21px Georgia,serif;letter-spacing:.015em;line-height:1.2}',
+ 'body.hs-reader-ux .chapter .row{margin-bottom:8px;justify-content:flex-end}',
+ 'body.hs-reader-ux .chapter .chname{display:none!important}',
  'body.hs-reader-ux .chapter .tag{font-size:10px;padding:5px 8px;letter-spacing:.06em}',
  'body.hs-reader-ux .chapter .details{font-size:14px;line-height:1.4;color:#aab9a0;margin:7px 0 15px}',
  'body.hs-reader-ux .chapter .details span:not(:first-child){display:none!important}',
@@ -181,6 +181,14 @@ if(notes && saveBtn && laterBtn && !document.getElementById("hsFeedbackIssues"))
  };
 }
 
+// Navigation wording is presentation-only; the existing data-view routes stay
+// untouched. No alterations to the reader's saved view or reading logs.
+const navTitles={reading:"Leitura",books:"Biblioteca",personae:"Personagens",
+ archive:"Universo",logs:"Histórico",settings:"Configurações"};
+document.querySelectorAll(".navitem[data-view]").forEach(b=>{
+ if(navTitles[b.dataset.view])b.textContent=navTitles[b.dataset.view];
+});
+
 const now=document.getElementById("now");
 if(now){
  const controls=now.querySelector(".now-controls");
@@ -262,6 +270,7 @@ function showUX(){
  const actions=selected.querySelector(".actions");
  const main=actions?.querySelector(".btn");
  if(!main)return;
+ if(state.done?.[selectedNumber]){main.textContent="Ver registro";return;}
  if(selectedNumber!==current||state.active||!SCORES[current])return;
  main.textContent="Começar leitura";
  main.title="Iniciar cronômetro e solicitar reprodução da trilha no Spotify";
