@@ -1,5 +1,29 @@
 # Heresy Score — Active Product Pipeline
 
+## Atualização confirmada — 23/11/2026
+
+**Teto de spoiler: *Descent of Angels* até o Capítulo 3, inclusive.**
+O leitor concluiu Prelude e Capítulos 1, 2 e 3: **4 de 25 unidades**.
+Os índices do aplicativo/Supabase são 1=Prelude, 2=Capítulo 1,
+3=Capítulo 2, 4=Capítulo 3. Registros conferidos: **17, 22, 23 e 25
+minutos**. Capítulo 4 (índice 5) é a próxima leitura. Não revelar nada
+do Capítulo 4 em diante, inclusive indiretas em imagens, nomes de
+personagens futuros ou mapas privados de cenas.
+
+A captura da PWA v0.17.7 mostra a janela de três playlists com **2/3
+verificadas**: Capítulos 4 e 5 preparados tecnicamente, enquanto o
+Capítulo 6 ainda não possui curadoria publicada. Não é erro de
+sincronização nem autorização para expor acontecimentos futuros.
+
+**Preferência nova de UX:** tela principal deve priorizar leitura,
+cronômetro e acesso imediato ao Spotify. Feedback pós-leitura é
+opcional, preferencialmente anotações e problemas específicos, sem
+avaliações positivas automáticas. Preservar dados históricos e
+o debrief detalhado para consulta.
+
+---
+
+
 ## UX ATUAL — 23/11/2026 · v0.17.8 (sprint de usabilidade)
 
 - Feedback do leitor no Android: tela de leitura tinha pré-auditoria Spotify e estados internos muito extensos; abrir Spotify e concluir capítulo escondidos no player; formulário de sete dimensões estimulava notas `good` por inércia.
