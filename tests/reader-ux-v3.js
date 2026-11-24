@@ -7,7 +7,7 @@ const root=path.resolve(__dirname,"..");
 const read=p=>fs.readFileSync(path.join(root,p),"utf8");
 const src=read("scripts/reader-ux-v3.js");
 const w={};
-vm.runInNewContext(src,{window:w,document:{querySelector:()=>null}},{
+vm.runInNewContext(src,{window:w,document:{querySelector:()=>null,getElementById:()=>null}},{
  filename:"reader-ux-v3.js",timeout:1000
 });
 assert(w.HSReaderUXModel,"Pure helper model should be available without the DOM");
