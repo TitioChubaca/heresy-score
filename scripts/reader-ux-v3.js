@@ -127,8 +127,10 @@ if(notes && saveBtn && laterBtn && !document.getElementById("hsFeedbackIssues"))
  const originalOpen=openLog;
  openLog=function(n){
   originalOpen(n);
-  const selected=new Set(state.done?.[n]?.feedbackIssues||[]);
+  const d=state.done?.[n]||{};
+  const selected=new Set(d.feedbackIssues||[]);
   issueButtons.forEach(button=>button.setAttribute("aria-pressed",String(selected.has(button.dataset.issue))));
+  laterBtn.textContent=(d.notes||d.feedbackIssues?.length||d.length||d.intensity||d.opening||d.peak)?"Cancelar":"Sem observações";
   advanced.open=false;
  };
  const originalSave=saveBtn.onclick;
@@ -140,7 +142,18 @@ if(notes && saveBtn && laterBtn && !document.getElementById("hsFeedbackIssues"))
   return originalSave?.apply(this,args);
  };
  // Closing the feedback form does not roll back the already saved timer/log.
- laterBtn.title="O tempo de leitura já foi registrado automaticamente";
+ laterBtn.title="Sem observações também salva e sincroniza o registro neutro";
+ const baseLater=laterBtn.onclick;
+ laterBtn.onclick=function(...args){
+  if(laterBtn.textContent==="Cancelar"){
+   return baseLater?.apply(this,args);
+  }
+  // No default "good" ratings. Still push the already measured reading
+  // minutes to the cloud when the reader had nothing particular to report.
+  notes.value="";
+  issueButtons.forEach(b=>b.setAttribute("aria-pressed","false"));
+  return saveBtn.onclick?.call(saveBtn);
+ };
  const originalRenderLogs=renderLogs;
  renderLogs=function(){
   originalRenderLogs();
