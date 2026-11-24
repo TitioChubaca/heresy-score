@@ -268,22 +268,30 @@ function showUX(){
  if(!actions.querySelector(".hs-open-spotify")){
   const spotifyBtn=document.createElement("button");
   spotifyBtn.type="button";spotifyBtn.className="btn hs-open-spotify";
-  spotifyBtn.textContent="Abrir Spotify";
   const url=ready?playlistFor(slug,current,state.spotify.playlists):null;
-  spotifyBtn.disabled=!url;
-  spotifyBtn.title=url?"Abrir playlist do capítulo no Spotify":"Playlist ainda não confirmada";
+  spotifyBtn.textContent=url?"Abrir Spotify":connected?"Verificar trilha":"Conectar Spotify";
+  spotifyBtn.title=url?"Abrir playlist do capítulo no Spotify":"Abrir Configurações para conferir a playlist";
   spotifyBtn.onclick=()=>{
    const activeNumber=nextUnit(chapters,state.done,state.active);
    if(activeNumber!==current)return;
    const href=window.HSScoreReadiness?.spotifyPrepared?.(current)?
     playlistFor(slug,current,state.spotify.playlists):null;
-   if(!href)return;
+   if(!href){
+    setView("settings");
+    if(technical){technical.open=true;setTimeout(()=>technical.scrollIntoView({block:"start",behavior:"smooth"}),90);}
+    return;
+   }
+   // A direct user tap keeps this a normal Android Spotify-app deep link,
+   // instead of opening a blocked popup after awaiting Spotify API calls.
    window.open(href,"_blank","noopener");
   };
   actions.append(spotifyBtn);
   if(!url){
    const hint=document.createElement("div");hint.className="hs-spotify-hint";
-   hint.textContent=connected?"A playlist será disponibilizada após a verificação automática.":"Conecte o Spotify em Configurações.";
+   const failure=state.spotify.auditResults?.[current];
+   hint.textContent=failure?.status==="FAILED"?
+    "Spotify pendente: "+String(failure.message||"Não foi possível verificar a faixa.").slice(0,150):
+    connected?"A playlist está sendo conferida automaticamente.":"Conecte sua conta Spotify antes da leitura.";
    actions.append(hint);
   }
  }
