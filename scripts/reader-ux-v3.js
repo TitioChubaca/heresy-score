@@ -210,6 +210,19 @@ if(readAhead){
  settings.append(technical);
 }
 
+// Historical debrief remains accessible under Logs, not on the daily reading
+// home screen. Do not remove it: older detailed marks and exports depend on it.
+const debrief=document.querySelector('[data-view-panel="reading"] .debrief');
+const logPage=document.querySelector('[data-view-panel="logs"]');
+if(debrief&&logPage){
+ const legacy=document.createElement("details");
+ legacy.className="hs-tech-settings";
+ const label=document.createElement("summary");
+ label.textContent="Resumo do último registro (detalhado)";
+ legacy.append(label,debrief);
+ logPage.append(legacy);
+}
+
 const header=document.querySelector(".bookhead");
 let statusNode=null;
 if(header){
