@@ -29,6 +29,7 @@ jobs:
           node tests/app-integration.js
           node tests/archive-search-v2.js
           node tests/book-state-v4.js
+          node tests/reader-ux-v3.js
           node tests/backup-restore-v2.js
           node tests/editorial-score-engine.js
           node tests/music-quality-gate.js

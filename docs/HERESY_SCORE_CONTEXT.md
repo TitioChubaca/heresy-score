@@ -1,4 +1,43 @@
 # Heresy Score — Technical and Musical Context
+
+## Atualização confirmada — 23/11/2026
+
+**Teto de spoiler: *Descent of Angels* até o Capítulo 3, inclusive.**
+O leitor concluiu Prelude e Capítulos 1, 2 e 3: **4 de 25 unidades**.
+Os índices do aplicativo/Supabase são 1=Prelude, 2=Capítulo 1,
+3=Capítulo 2, 4=Capítulo 3. Registros conferidos: **17, 22, 23 e 25
+minutos**. Capítulo 4 (índice 5) é a próxima leitura. Não revelar nada
+do Capítulo 4 em diante, inclusive indiretas em imagens, nomes de
+personagens futuros ou mapas privados de cenas.
+
+A captura da PWA v0.17.7 mostra a janela de três playlists com **2/3
+verificadas**: Capítulos 4 e 5 preparados tecnicamente, enquanto o
+Capítulo 6 ainda não possui curadoria publicada. Não é erro de
+sincronização nem autorização para expor acontecimentos futuros.
+
+**Preferência nova de UX:** tela principal deve priorizar leitura,
+cronômetro e acesso imediato ao Spotify. Feedback pós-leitura é
+opcional, preferencialmente anotações e problemas específicos, sem
+avaliações positivas automáticas. Preservar dados históricos e
+o debrief detalhado para consulta.
+
+---
+
+
+## UX ATUAL — 23/11/2026 · v0.17.8 (sprint de usabilidade)
+
+- Feedback do leitor no Android: tela de leitura tinha pré-auditoria Spotify e estados internos muito extensos; abrir Spotify e concluir capítulo escondidos no player; formulário de sete dimensões estimulava notas `good` por inércia.
+- Camada nova `scripts/reader-ux-v3.js`, carregada por último sem mexer em lógica de Spotify, cronômetro, nuvem ou desbloqueio. Histórico preservado. PWA cache/versionamento 0.17.8.
+- Tela principal simplificada: livro, progresso, capítulo selecionado, estado curto da trilha e **Começar leitura + Abrir Spotify** visíveis como ações distintas. O Spotify abre a playlist verificada do mesmo livro/unidade em clique direto, evitando pop-up assíncrono e playlist de outro capítulo.
+- Preparação de próximas três trilhas e antigo painel de diagnóstico movidos para o painel de **Configurações**, em elemento recolhido. Isso não desliga a preparação em primeiro plano.
+- Player compacto expõe **Pausa, Spotify e Concluir**; ações avançadas continuam disponíveis no player expandido.
+- Log: anotação livre + tags opcionais de problemas (volume, duração curta/longa, música fora da cena, transição abrupta), sem nota positiva padrão. Antigas avaliações de 7 quesitos continuam disponíveis em `Avaliações detalhadas`. `Sem observações` deve salvar e fazer push neutro como `Salvar e continuar`, e `Cancelar` ao editar comentários antigos deve preservar o log.
+- Campos `feedbackIssues` são armazenados no JSON de cada log, sem alterar schema do Supabase; métricas anteriores intactas e campos opcionais vazios não equivalem a "good".
+- **QA pendiente no dispositivo:** testar navegação, botões Spotify, atualizar PWA offline, concluir capítulo e sincronizar um log sem comentário. CI verifica integração, modelo puro de livro/playlist, scripts e cache; não substitui experiência no Android.
+- Screenshot mostra 4/25 unidades, capítulo 4 em foco e 2/3 playlists na janela atual. Não confundir três playlists preparadas com avanço de spoiler. Não publicar narrativa futura.
+
+---
+
 ## Checkpoint atual — 22/11/2026 — release 0.17.7
 
 O leitor confirmou a conclusão de Prelude + Capítulos 1 e 2 de Descent of Angels.
