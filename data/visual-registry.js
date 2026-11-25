@@ -6,7 +6,7 @@
 (function(root){
 "use strict";
 const BOOK="descent-of-angels";
-const ATLAS="./assets/visuals/caliban-first-archive.webp";
+const ATLAS="./assets/visuals/caliban-first-archive.svg";
 const reconstruction="Reconstrução artística original — não é uma ilustração oficial";
 const records=Object.freeze([
  {id:"zahariel",name:"Zahariel",kind:"character",unlock:2,

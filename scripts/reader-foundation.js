@@ -31,6 +31,12 @@ if(now&&controls&&advanced&&pause&&spotify&&conclude){
  renderNow=function(...args){const res=formerNow(...args);setNames();return res};
  setNames();
 }
+// Last-loaded stylesheet wins over the retired in-script design patches.
+const stylesheet=document.createElement("link");
+stylesheet.rel="stylesheet";
+stylesheet.href="./styles/reader-foundation.css";
+stylesheet.id="hs-reader-foundation-css";
+document.head.append(stylesheet);
 document.body.dataset.hsUiSeries="warhammer-30k";
 let previousSession="";
 const earlier=render;
