@@ -1,5 +1,19 @@
 # Heresy Score — Active Product Pipeline
 
+## Fundação v0.18.0 — UX, imagens reais no aplicativo e base extensível (24/11/2026)
+
+**Objetivo:** eliminar sobreposição de botões, recuperar imagens nas seções e preparar o app para livros fora de Warhammer sem reescrever a lógica de leitura.
+
+- Shell de leitura mobile: ação principal e Spotify empilhados em telas estreitas; player Pausar / Spotify / Concluir com três colunas mínimas; demais controles em menu avançado. Botões DOM movidos, não clonados: Spotify/timer/log mantêm os eventos antigos.
+- Design tokens e CSS próprio em `styles/reader-foundation.css`, carregado por último por `scripts/reader-foundation.js`. Isso introduz uma base substitutiva para a sobreposição incremental de patches anteriores; wrappers legados ainda aguardam migração gradual.
+- `data/visual-registry.js` define o contrato de arte por `slug`, `unlock`, proveniência e tema; `scripts/visual-archive-ui.js` usa o mesmo registro para prévia na home, Dramatis Personae independente e arquivo independente de lugares. Outros livros podem registrar sua própria pele e seus próprios dados; o core é genérico.
+- Primeira arte local e **original ilustrativa, não canônica**: 4 ilustrações em `assets/visuals/caliban-first-archive.webp (principal) e assets/visuals/caliban-first-archive.svg (reserva offline)` (Zahariel, Nemiel, Florestas de Caliban, Aldurukh). Os quatro registros derivam apenas de dados conhecidos até Descent of Angels Capítulo 3, todos etiquetados como reconstruções.
+- O slideshow / galeria não substitui **Dramatis Personae** nem **Universo**: as duas abas continuam com busca, modais e detalhes desbloqueados por capítulo.
+- Não altera `state.done`, logs Supabase, playlists, scores nem pastas do Spotify. *Descent*: 4/25 e próximo Capítulo 4.
+- Gate do dispositivo: conferir em Android 320–430 px layout, 4 ilustrações offline, modais, busca, progressão e link de Spotify. CI não substitui essa conferência.
+- Leia `docs/PRODUCT_ARCHITECTURE_V1.md` para fronteiras e plano de migração modular futura.
+
+
 ## Atualização confirmada — 23/11/2026
 
 **Teto de spoiler: *Descent of Angels* até o Capítulo 3, inclusive.**

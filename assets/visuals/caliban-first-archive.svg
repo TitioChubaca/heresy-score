@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+<title>Caliban — arquivo visual de reconstruções</title>
+<desc>Quatro ilustrações originais e não canônicas: dois jovens cavaleiros, as florestas de Caliban e uma fortaleza da Ordem.</desc>
+<defs>
+ <linearGradient id="night" x2="0" y2="1"><stop stop-color="#42514a"/><stop offset=".53" stop-color="#1b2926"/><stop offset="1" stop-color="#0b1517"/></linearGradient>
+ <linearGradient id="mist" x2="0" y2="1"><stop stop-color="#82938a" stop-opacity=".63"/><stop offset="1" stop-color="#192a27" stop-opacity=".02"/></linearGradient>
+ <linearGradient id="iron" x2=".2" y2="1"><stop stop-color="#72857c"/><stop offset=".5" stop-color="#283735"/><stop offset="1" stop-color="#111e20"/></linearGradient>
+ <linearGradient id="stone" x2="0" y2="1"><stop stop-color="#9a9e88"/><stop offset=".45" stop-color="#606c64"/><stop offset="1" stop-color="#24332f"/></linearGradient>
+ <radialGradient id="pale"><stop stop-color="#c8c7ae" stop-opacity=".6"/><stop offset="1" stop-color="#afc8aa" stop-opacity="0"/></radialGradient>
+ <pattern id="grain" width="17" height="19" patternUnits="userSpaceOnUse"><circle cx="1" cy="7" r=".7" fill="#d7d2ae" opacity=".1"/><circle cx="13" cy="15" r=".8" fill="#000" opacity=".19"/></pattern>
+ <clipPath id="a"><rect x="0" y="0" width="400" height="400"/></clipPath>
+ <clipPath id="b"><rect x="400" y="0" width="400" height="400"/></clipPath>
+ <clipPath id="c"><rect x="0" y="400" width="400" height="400"/></clipPath>
+ <clipPath id="d"><rect x="400" y="400" width="400" height="400"/></clipPath>
+</defs>
+<!-- Zahariel: youthful human aspirant, not a Space Marine -->
+<g clip-path="url(#a)">
+<rect width="400" height="400" fill="url(#night)"/>
+<circle cx="250" cy="83" r="184" fill="url(#pale)"/>
+<path d="M15 0l23 400M72 0L61 400M332 0l-26 400M387 0l-27 400" stroke="#091713" stroke-width="23" opacity=".7"/>
+<path d="M0 400q52-154 134-173l62-44 70 23q100 32 134 194" fill="#171f20"/>
+<path d="M41 400q38-102 110-154l54 25 47-26q90 46 106 155" fill="url(#iron)" stroke="#9ca896" stroke-width="2"/>
+<path d="M144 259q-34 52-25 141h170q7-91-37-143" fill="#151d1e" stroke="#809083" stroke-width="2"/>
+<path d="M117 274l37-23 20 64-44 24zM260 255l32 29-32 55-42-22z" fill="#465853" stroke="#a4a893" stroke-width="2"/>
+<path d="M160 122q-14 23-9 85l21 45 23 14 39-17 21-53q12-70-28-87z" fill="#c4ab94" stroke="#564e45" stroke-width="3"/>
+<path d="M142 145q2-78 61-82 60 5 68 84l-17-25-29-13-56 15-20 28z" fill="#101819"/>
+<path d="M156 105q23-70 95-42l19 50-38-23-47 5-29 24z" fill="#232926"/>
+<path d="M172 177l17-7 11 4M217 174l15-6 13 5" stroke="#302a29" stroke-width="4" fill="none"/>
+<path d="M196 219q18 9 34-2" stroke="#62483d" stroke-width="3" fill="none"/>
+<path d="M167 252l-46 25 26 49 53 17 50-18 22-52-37-26" fill="none" stroke="#b3a989" stroke-width="4" opacity=".8"/>
+<path d="M133 347h131M143 363h116" stroke="#828b79" stroke-width="2" opacity=".5"/>
+<rect width="400" height="400" fill="url(#grain)"/>
+</g>
+<!-- Nemiel: different youthful aspirant and copper-blond hair -->
+<g clip-path="url(#b)">
+<rect x="400" width="400" height="400" fill="#26352e"/>
+<circle cx="690" cy="114" r="185" fill="url(#pale)"/>
+<path d="M418 0l30 400M772 0l-40 400" stroke="#101d17" stroke-width="31" opacity=".85"/>
+<path d="M403 400q30-145 140-179l61-34 67 19 81 59 48 135" fill="#181f1c"/>
+<path d="M448 400q36-90 110-149l49 24 49-26q90 50 111 151" fill="url(#iron)" stroke="#a3a58d" stroke-width="2"/>
+<path d="M544 262l-36 28 46 56 34-33zM658 255l43 40-47 52-26-33z" fill="#505e56" stroke="#b2a78b" stroke-width="2"/>
+<path d="M553 121q-15 26-5 85l15 37 36 22 41-18 19-49q9-57-18-85z" fill="#ceb298" stroke="#69574a" stroke-width="3"/>
+<path d="M542 149q-9-83 68-94 65 5 67 77l-25-21-33-16-45 21-19 35z" fill="#766549" stroke="#c8ad7e" stroke-width="2"/>
+<path d="M542 131q7-70 54-82l40 19 29 46-48-26-50 30z" fill="#9b805e"/>
+<path d="M570 171l16-4 13 4M615 171l14-7 13 4" stroke="#3e332b" stroke-width="4" fill="none"/>
+<path d="M582 216q23 10 40-2" stroke="#785648" stroke-width="3" fill="none"/>
+<path d="M546 261l-13 68 59 21 61-20-15-72" fill="none" stroke="#b4ad8d" stroke-width="4"/>
+<path d="M587 346l19-14 20 14-21 22z" fill="#71694d" stroke="#d7c49a" stroke-width="2"/>
+<rect x="400" width="400" height="400" fill="url(#grain)"/>
+</g>
+<!-- Forests: immense trunks, mist and tiny human scale -->
+<g clip-path="url(#c)" transform="translate(0 400)">
+<rect width="400" height="400" fill="url(#night)"/>
+<circle cx="230" cy="116" r="150" fill="url(#pale)"/>
+<path d="M0 295l95-75 64 42 70-70 78 50 93-85v243H0" fill="#1d302c"/>
+<path d="M0 335L80 269l48 24 92-55 94 41 86-66v187H0" fill="#243a33"/>
+<path d="M47 0q-11 155 5 400M109 0q-2 155-17 400M315 0q5 140 31 400M393 0q-28 180-14 400" stroke="#111c19" stroke-width="45"/>
+<path d="M24 115L0 54M26 116L90 51M109 152L45 63M311 113L263 51M347 135L399 79M372 220L318 136" stroke="#162921" stroke-width="19"/>
+<path d="M0 115Q160 55 400 117M0 227Q160 150 400 231" stroke="url(#mist)" stroke-width="53" opacity=".34" fill="none"/>
+<path d="M166 400l34-115 28 0 35 115" fill="#10191a"/>
+<path d="M197 314q-17-22-4-40 15-13 24 0 14 21-5 40" fill="#121d1b"/>
+<path d="M215 315l11 85h-56l16-85z" fill="#222b25"/>
+<path d="M228 326l40 51" stroke="#b1ab89" stroke-width="3"/>
+<path d="M0 370Q145 324 400 380" stroke="#516552" stroke-width="5" opacity=".4" fill="none"/>
+<rect width="400" height="400" fill="url(#grain)"/>
+</g>
+<!-- Fortress monastery: jagged mountains and soaring Gothic keep -->
+<g clip-path="url(#d)" transform="translate(400 400)">
+<rect width="400" height="400" fill="url(#night)"/>
+<circle cx="210" cy="96" r="176" fill="url(#pale)"/>
+<path d="M0 280L94 124l54 101 52-132 67 110 39-66 94 168v95H0z" fill="#33453f"/>
+<path d="M0 350l132-132 73 62 74-99 121 126v93H0" fill="#26352f"/>
+<path d="M30 400L110 275l41 27 71-80 61 48 56-23 61 153" fill="#15221e"/>
+<path d="M105 311V187l21-21V99h27v81l19 19v112z" fill="url(#stone)" stroke="#111a17" stroke-width="4"/>
+<path d="M180 313V141h39v-43l26-32 26 32v42h32v172z" fill="url(#stone)" stroke="#16221e" stroke-width="4"/>
+<path d="M312 326V188h23v-42l19-28 20 28v180z" fill="#627268" stroke="#14211c" stroke-width="4"/>
+<path d="M96 311l19-16h60v16M170 310l20-22h115v22M309 324l21-15h49v15" fill="#3d4d45" stroke="#18231e" stroke-width="2"/>
+<path d="M194 153h15v52h-15zM229 105h20v66h-20zM267 154h15v52h-15zM343 192h12v43h-12z" fill="#101a18"/>
+<path d="M201 153v-16m36-34V83m36 70v-16m77 51v-12" stroke="#c4b48a" stroke-width="2"/>
+<path d="M216 307v-43q19-35 39 0v43" fill="#172421" stroke="#9a9d88" stroke-width="3"/>
+<path d="M144 320Q218 313 300 334" stroke="#9b9c84" stroke-width="6" fill="none"/>
+<rect width="400" height="400" fill="url(#grain)"/>
+</g>
+</svg>

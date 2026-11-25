@@ -39,8 +39,10 @@ assert(html.indexOf('src="./scripts/reader-ux-v3.js"')>
  html.indexOf('src="./scripts/bookvi-read-ahead.js"'),
  "UX module is last after the Spotify buffer and deck wrappers");
 assert(sw.includes('"./scripts/reader-ux-v3.js"'),"UX module must be available offline");
-assert(sw.includes('const CACHE="heresy-score-v0178"'));
-assert(build.includes('version:"0.17.8"'));
+const currentBuild=(build.match(/version:"([^"]+)"/)||[])[1];
+assert(currentBuild,"Application must declare a release version");
+assert(sw.includes('const CACHE="heresy-score-v'+currentBuild.replace(/\./g,"")+'"'));
+assert(/^0\.\d+\.\d+$/.test(currentBuild),"Version uses semver patch convention");
 assert(src.includes('hs-open-spotify')&&src.includes('window.open(href,"_blank","noopener")'),
  "Chapter card must offer direct playlist access inside an immediate click handler");
 assert(src.includes('controls.append(spotify,finish)'),
