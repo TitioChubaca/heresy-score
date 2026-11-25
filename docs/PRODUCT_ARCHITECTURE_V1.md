@@ -68,7 +68,7 @@ registro publicado. Os conteúdos de referência são as primeiras
 unidades do MOBI privado fornecido pelo leitor, com acesso limitado
 ao teto de spoilers, sem publicação de trechos.
 
-A arte em `assets/visuals/caliban-first-archive.svg` é uma
+A arte em `assets/visuals/caliban-first-archive.webp (principal) e assets/visuals/caliban-first-archive.svg (reserva offline)` é uma
 **reconstrução original ilustrativa, não oficial e não canônica**:
 não deve ser identificada como retrato fiel dos personagens, nem
 confundida com uma imagem fornecida pela Games Workshop.
@@ -106,3 +106,7 @@ metadados públicos.
 - Melhorar o fluxo de curadoria e importação de imagens com validação
   automática de licença/proveniência e prévia real de cada arte.
 - Fazer testes reais responsivos com navegador automatizado e dispositivo.
+
+### Robustez da arte
+
+A atlas WebP principal foi validada com hash Git blob SHA-1 `aaea8b79167beaf1c45b428059fb252658f668a7`; o SVG de reserva evita um quadrante vazio caso o aparelho não decodifique WebP. Ambos ficam em precache essencial e são imagens locais, sem hotlinks.

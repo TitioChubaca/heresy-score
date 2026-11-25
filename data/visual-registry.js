@@ -6,7 +6,8 @@
 (function(root){
 "use strict";
 const BOOK="descent-of-angels";
-const ATLAS="./assets/visuals/caliban-first-archive.svg";
+const ATLAS="./assets/visuals/caliban-first-archive.webp";
+const BACKUP="./assets/visuals/caliban-first-archive.svg";
 const reconstruction="Reconstrução artística original — não é uma ilustração oficial";
 const records=Object.freeze([
  {id:"zahariel",name:"Zahariel",kind:"character",unlock:2,
@@ -25,7 +26,7 @@ const records=Object.freeze([
 const visuals={};
 visuals[BOOK]={theme:{
   name:"Caliban · Era das Ordens",accent:"#b9bc8e",accentStrong:"#dfdbb1",
-  surface:"#151918",background:"#0b0e0e",border:"#444945",artwork:ATLAS
+  surface:"#151918",background:"#0b0e0e",border:"#444945",artwork:ATLAS,fallback:BACKUP
  },records};
 function known(slug,clearance){
  const n=Number.isFinite(+clearance)?Math.max(0,Math.floor(+clearance)):0;
@@ -38,7 +39,7 @@ function theme(slug){return visuals[slug]?.theme||{
  surface:"#141919",background:"#0b0e0e",border:"#394541",artwork:null
 }}
 const api=Object.freeze({schema:1,books:visuals,known,entry,byName,theme,
- asset:ATLAS,provenance:reconstruction});
+ asset:ATLAS,backupAsset:BACKUP,provenance:reconstruction});
 root.HSReaderVisuals=api;
 
 const book=root.HS_DESCENT_DATA;
@@ -47,7 +48,7 @@ if(book?.slug===BOOK){
  // Reuse those models rather than creating a second competing archive.
  for(const v of records){
   const art={kind:"reconstruction",source:"original generated artwork",
-   asset:ATLAS,quadrant:v.quadrant,clearedAt:v.unlock,licenseNote:reconstruction};
+   asset:ATLAS,fallbackAsset:BACKUP,quadrant:v.quadrant,clearedAt:v.unlock,licenseNote:reconstruction};
   if(v.kind==="character")book.people.push({
     name:v.name,role:v.role+" // "+v.group,affiliation:v.group,
     unlock:v.unlock,visual:"Reconstrução original",image:null,

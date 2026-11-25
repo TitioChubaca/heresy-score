@@ -34,8 +34,12 @@ assert.equal(book.scores[1].length,6);
 assert.equal(book.scores[6].length,8);
 assert.equal(book.scores[7],undefined,"Visual registry must not publish future music");
 const file=api.asset.replace(/^\.\//,"");
-const svg=read(file);
-assert(file.startsWith("assets/visuals/")&&file.endsWith(".svg"));
+const photo=fs.readFileSync(path.join(__dirname,"..",file));
+assert(file.startsWith("assets/visuals/")&&file.endsWith(".webp"));
+assert.equal(photo.toString("ascii",0,4),"RIFF");
+assert.equal(photo.toString("ascii",8,12),"WEBP");
+assert(photo.length>5000&&photo.length<250000);
+const svg=read(api.backupAsset.replace(/^\.\//,""));
 assert.match(svg,/<svg/);
 assert.match(svg,/<\/svg>/);
 assert.equal((svg.match(/clip-path="url\(#(?:a|b|c|d)\)"/g)||[]).length,4);
@@ -49,7 +53,8 @@ assert(after('src="./scripts/reader-foundation.js"','src="./scripts/visual-archi
 for(const p of [
  "data/visual-registry.js","scripts/visual-archive-ui.js",
  "scripts/reader-foundation.js","styles/reader-foundation.css",
- "assets/visuals/caliban-first-archive.svg"
+ "assets/visuals/caliban-first-archive.svg",
+ "assets/visuals/caliban-first-archive.webp"
 ])assert(sw.includes('"./'+p+'"'),"PWA must precache "+p);
 assert.match(sw,/heresy-score-v0180/);
 assert.match(read("scripts/app-build.js"),/version:"0\.18\.0"/);
