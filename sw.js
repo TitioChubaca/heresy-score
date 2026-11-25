@@ -6,7 +6,7 @@ const ASSETS=["./","./index.html","./manifest.webmanifest","./patch-v0102.js",".
    must NEVER replace a fully working previous offline cache. */
 self.addEventListener("install",event=>event.waitUntil((async()=>{
  const cache=await caches.open(CACHE);
- const essential=ASSETS.filter(p=>p==="./"||/\.(?:js|json|css|html|webmanifest)$/.test(p));
+ const essential=ASSETS.filter(p=>p==="./"||p==="./assets/visuals/caliban-first-archive.svg"||/\.(?:js|json|css|html|webmanifest)$/.test(p));
  const optional=ASSETS.filter(p=>!essential.includes(p));
  await Promise.all(essential.map(async path=>{
   const response=await fetch(path,{cache:"reload"});
