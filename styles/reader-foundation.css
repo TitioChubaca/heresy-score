@@ -12,6 +12,7 @@
 html{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 body.hs-reader-ux{color:var(--hs-ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 body.hs-reader-ux .shell{max-width:780px;padding-inline:clamp(10px,3vw,20px)}
+body.hs-reader-ux.hs-session-active .shell{padding-bottom:calc(195px + env(safe-area-inset-bottom))!important}
 body.hs-reader-ux .frame{overflow:visible;border:1px solid var(--hs-edge);border-radius:var(--hs-radius-lg);
  background:linear-gradient(155deg,#17211c,#0b100f 70%);box-shadow:0 16px 42px #0006}
 body.hs-reader-ux .bookhead{background:none;border-bottom:1px solid var(--hs-edge);
