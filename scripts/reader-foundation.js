@@ -37,11 +37,17 @@ stylesheet.rel="stylesheet";
 stylesheet.href="./styles/reader-foundation.css";
 stylesheet.id="hs-reader-foundation-css";
 document.head.append(stylesheet);
-document.body.dataset.hsUiSeries="warhammer-30k";
+// The shell is genre-neutral. Warhammer is only a theme for current books.
+function themeSeries(slug){
+ return [HSBooks.IV,HSBooks.V,HSBooks.VI].includes(slug)?"warhammer-30k":"neutral";
+}
+document.body.dataset.hsUiSeries=themeSeries(state.activeBookSlug);
 let previousSession="";
 const earlier=render;
 render=function(...args){
  const result=earlier(...args);
+ document.body.dataset.hsUiSeries=themeSeries(state.activeBookSlug);
+ document.body.classList.toggle("hs-session-active",!!state.active);
  // Enter compact mode only when a fresh reading session starts.
  // Once in it, the reader remains free to expand or minimize manually.
  const key=state.active?state.activeBookSlug+":"+(state.active.startedAt||"active"):"";
