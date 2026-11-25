@@ -53,7 +53,7 @@ function card(entry){
  const button=document.createElement("button");button.type="button";button.className="hs-visual-card";
  button.setAttribute("aria-label","Abrir dossiê: "+entry.name);
  const image=document.createElement("span");image.className="hs-visual-media";
- image.append(artTile({asset:registry.asset,quadrant:entry.quadrant},entry.name));
+ image.append(artTile(entry.art||{asset:registry.theme(book()).artwork,quadrant:entry.quadrant},entry.name));
  const credit=document.createElement("span");credit.className="hs-art-credit";credit.textContent="Reconstrução";
  image.append(credit);
  const copy=document.createElement("span");copy.className="hs-visual-copy";
