@@ -1,5 +1,22 @@
 # Heresy Score — Active Product Pipeline
 
+## SITUAÇÃO ATUAL — 25/11/2026 · v0.18.1
+
+**Teto de spoiler do leitor:** *Descent of Angels* Prelude + Capítulos 1–5 concluídos (**6/25** unidades internas). Próxima leitura = Capítulo 6 (**unidade 7**). Conferido no Supabase em 25/11: 17, 22, 23, 25, 12 e 23 minutos. Nenhuma leitura posterior deve ser presumida. O conteúdo dos capítulos 6+ continua privado.
+
+**Prioridade UX:** o visual anterior parecia excessivamente neutro/"ChatGPT". Nova skin `styles/themes/horus-heresy.css` usa inspiração em livros negros Horus Heresy, heráldica, metal, bronze, pergaminho, tipografia editorial e botões angulares — sem interferir na estrutura genérica da plataforma, que poderá servir outros livros.
+
+**Estratégia musical agora:** o livro VI tem 25 unidades de *planejamento de faixas e papéis musicais* (`data/descent-of-angels.js` + `data/descent-of-angels-future-scores.js`); a nova tranche cobre as unidades 7–25. Esses planos foram formulados com inspeção privada do texto-base, contagem de palavras e papéis musicais genéricos; nenhuma cena, trecho ou personagem futuro foi ao GitHub público.
+
+**Música pronta não é playlist aprovada:** 7–25 têm `PREPLANNED_FULL_AUDIO_UNVERIFIED`. As durações de catálogo são de fontes oficiais; não há validação de toda a dinâmica das gravações nem confirmação da conta Spotify brasileira. A PWA, com autorização do leitor, verifica título/artista/duração/ordem e relê a playlist; jamais inventa Spotify URI ou modifica trilha durante leitura. Os score plans são candidatos — feedback posterior autoriza ajuste editorial. As unidades 1–6 e logs históricos permanecem preservados. **Só preparar três playlists à frente; não criar o resto sem sessão autenticada.**
+
+**Fontes públicas para metadados musicais:** [Hollow Knight OST / Christopher Larkin](https://christopherlarkin.bandcamp.com/album/hollow-knight-original-soundtrack) e [Warhammer 40,000: Darktide OST / Jesper Kyd](https://warhammermusic.bandcamp.com/album/warhammer-40000-darktide-original-soundtrack). Trilhas Darktide são *música oficial de outro período de Warhammer*; sua presença não é arte nem enredo canônico de Descent of Angels.
+
+**A validar no Android:** cache v0.18.1, botões com a skin Warhammer, paleta do arquivo visual, capítulo 6 próximo, status das playlists 7–9, a abertura no Spotify, preservação dos registros e a acessibilidade. CI não comprova visual/device audio.
+
+---
+
+
 ## Fundação v0.18.0 — UX, imagens reais no aplicativo e base extensível (24/11/2026)
 
 **Objetivo:** eliminar sobreposição de botões, recuperar imagens nas seções e preparar o app para livros fora de Warhammer sem reescrever a lógica de leitura.

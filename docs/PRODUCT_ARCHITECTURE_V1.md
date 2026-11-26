@@ -110,3 +110,12 @@ metadados públicos.
 ### Robustez da arte
 
 A atlas WebP principal foi validada com hash Git blob SHA-1 `aaea8b79167beaf1c45b428059fb252658f668a7`; o SVG de reserva evita um quadrante vazio caso o aparelho não decodifique WebP. Ambos ficam em precache essencial e são imagens locais, sem hotlinks.
+
+
+## Theme system and full-book music plan — 0.18.1
+
+The shared reading engine and default shell remain neutral. `styles/themes/horus-heresy.css` is loaded after the foundation CSS and applies only if `data-hs-ui-series="warhammer-30k"`. Future books should register a different skin without changing timer, cloud, navigation, or the music engine.
+
+A music score must distinguish **prepared catalog candidate**, **authenticated Spotify verification**, and **human-approved full-audio emotional fit** as separate phases. Book VI has all 25 musical cue sheets staged, but only the next three can be preflighted by the foreground Spotify OAuth session. Plans for unvisited chapters never imply narrative clearance.
+
+Before editing future-book scores, privately inspect the reader-supplied edition and keep the corresponding scene map PRIVATE. Public files contain only musical roles and relative numeric markers. Track catalog provenance and runtime fail-closed matching are required; never label Spotify metadata as a full-track sonic quality review.
