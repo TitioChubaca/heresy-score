@@ -15,8 +15,9 @@ const state={activeBookSlug:"descent-of-angels",active:null,done:{},spotify:{
 const books={VI:"descent-of-angels",unitLabel:(_,n)=>n===1?"Prelude":"Capítulo "+(n-1)};
 const chapters=Array.from({length:25},(_,i)=>({number:i+1,title:i?"CHAPTER "+i:"PRELUDE"}));
 const SCORES=Object.fromEntries(Array.from({length:25},(_,i)=>[i+1,[["Cue "+(i+1),"Composer"]]]));
+const SCORE_META=Object.fromEntries([7,8,9].map(n=>[n,{sceneReview:{reviewed:true}}]));
 let calls=[],renders=0;
-const ctx={window,document,state,HSBooks:books,chapters,SCORES,
+const ctx={window,document,state,HSBooks:books,chapters,SCORES,SCORE_META,
  spotifyConnected:()=>true,
  spotifySyncChapter:async n=>{calls.push(n);state.spotify.chapterRuntime[n]={verified:true,status:"WITHIN_RANGE",durationMs:1000,targetMs:1000}},
  save(){},render(){renders++},
@@ -42,7 +43,15 @@ vm.runInNewContext(source,ctx);
  state.done[4]={minutes:25};
  await window.HSBookVIReadAhead.prepare(true);
  assert.equal(calls.join(","),"1,2,3,4,5,6,7","Now prepare Chapter 6 after Chapter 3");
- state.active={chapter:5};await window.HSBookVIReadAhead.prepare(true);
- assert.equal(calls.join(","),"1,2,3,4,5,6,7","No Spotify mutation during active reading");
+ state.done[5]={minutes:12};state.done[6]={minutes:23};
+ await window.HSBookVIReadAhead.prepare(true);
+ assert.equal(calls.join(","),"1,2,3,4,5,6,7,8,9",
+  "After six completed units, prepare next three chapter-specific plans");
+ state.done[7]={minutes:39};
+ await window.HSBookVIReadAhead.prepare(true);
+ assert.equal(calls.join(","),"1,2,3,4,5,6,7,8,9",
+  "Unit 10 stays blocked until chapter-level review");
+ state.active={chapter:8};await window.HSBookVIReadAhead.prepare(true);
+ assert.equal(calls.join(","),"1,2,3,4,5,6,7,8,9","No Spotify mutation during active reading");
  console.log("PASS auto-three preflight, logged completion, restored pointer, and no in-reading mutation.");
 })().catch(e=>{console.error(e);process.exitCode=1});
