@@ -211,10 +211,17 @@ if(readAhead){
  technical=document.createElement("details");
  technical.className="hs-tech-settings";technical.id="hsTechSettings";
  const summary=document.createElement("summary");
- summary.textContent="Preparação e diagnósticos das playlists";
+ summary.textContent="Spotify · preparação das trilhas";
  technical.append(summary,readAhead);
  const directive=document.getElementById("directive")?.closest(".panel");
- if(directive)technical.append(directive);
+ if(directive){
+  const nested=document.createElement("details");
+  nested.className="hs-inner-diagnostics";
+  const nestedLabel=document.createElement("summary");
+  nestedLabel.textContent="Informações técnicas do leitor";
+  nested.append(nestedLabel,directive);
+  technical.append(nested);
+ }
  settings.append(technical);
 }
 
