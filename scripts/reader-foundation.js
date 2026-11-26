@@ -37,6 +37,9 @@ stylesheet.rel="stylesheet";
 stylesheet.href="./styles/reader-foundation.css";
 stylesheet.id="hs-reader-foundation-css";
 document.head.append(stylesheet);
+const hhStyle=document.createElement("link");
+hhStyle.rel="stylesheet";hhStyle.href="./styles/themes/horus-heresy.css";
+hhStyle.id="hs-theme-horus-heresy";document.head.append(hhStyle);
 // The shell is genre-neutral. Warhammer is only a theme for current books.
 function themeSeries(slug){
  return [HSBooks.IV,HSBooks.V,HSBooks.VI].includes(slug)?"warhammer-30k":"neutral";

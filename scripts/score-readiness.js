@@ -34,7 +34,7 @@ spotifySyncChapter=async function(n){
 window.HSScoreReadiness={
  isPrepared:n=>!!SCORES[n],
  spotifyPrepared:n=>{const p=state.spotify.playlists?.[playlistKey(n)],r=state.spotify.chapterRuntime?.[n];
-  return !!p?.id&&p.scoreSignature===signature(n)&&!!p.preflightComplete&&["0.16.7","0.16.8","0.17.3","0.17.6","0.17.7"].includes(p.sourceVerifiedBy)&&r?.verified&&r.status==="WITHIN_RANGE"},
+  return !!p?.id&&p.scoreSignature===signature(n)&&!!p.preflightComplete&&["0.16.7","0.16.8","0.17.3","0.17.6","0.17.7","0.18.1"].includes(p.sourceVerifiedBy)&&r?.verified&&r.status==="WITHIN_RANGE"},
  scoreCount:()=>Object.keys(SCORES).length
 };
 // Never alter state.done when new music scores are published.
