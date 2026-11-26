@@ -1,4 +1,24 @@
-# Heresy Score — v0.18.1 · Horus Heresy theme + music preplanning
+# Heresy Score — v0.18.2 · Leitura, Spotify robusto e curadoria por capítulo
+
+## CHECKPOINT 25/11/2026 — v0.18.2: Spotify, visual e curadoria sem atalhos
+
+**Teto de spoiler:** *Descent of Angels* Prelude e capítulos 1–5 concluídos (**6/25 unidades**); próxima leitura **Capítulo 6 / unidade 7**. Supabase só foi consultado, sem modificações. Dados existentes e playlists anteriores devem permanecer intactos.
+
+**Correção crítica:** no Android v0.18.1, o Spotify exibiu `candidateUri?.split is not a function` para os capítulos 6–8. O resolvedor pode devolver uma URI string ou um objeto `{uri}`/`{id}`, e o código do Livro VI presumiu string. A v0.18.2 normaliza os formatos válidos, rejeita estruturas inválidas ANTES de criar/gravar playlist, confere o resultado pela API Spotify, e testa as duas formas. Não habilitar fallback que omite faixas silenciosamente.
+
+**Identidade visual:** a skin bronze-heavy v0.18.1 ficou destoante da estética inicial (arquivo imperial preto e verde). Restauramos os elementos originais (aquila, skull, verde militar, texturas discretas e cards de arquivo), mantendo o layout responsivo e os botões Spotify/Leitura/Concluir. Painel de Spotify resumido por padrão; detalhes por capítulo e os quatro quadrados técnicos antigos ficam em submenus recolhidos. Não tratar mocks/CI como teste visual real no Android.
+
+**Política musical revisada e tecnicamente imposta:**
+- `data/descent-of-angels-future-scores.js` mantém a cobertura estrutural das unidades 7–25 como **rascunho de catálogo**, NÃO curadoria cinematográfica. A escolha anterior foi majoritariamente por heurísticas de duração, papel geral e penalidade de repetição; a documentação anterior exagerava o rigor da curadoria de acontecimentos.
+- `data/descent-next-scene-review.js` sobrepõe **somente as unidades 7, 8 e 9** (Capítulos 6–8), após revisão dos respectivos trechos do MOBI do leitor. Publicar apenas música, roles genéricas e posições numéricas. Nenhum fato futuro, evento, personagem, lugar ou trecho de romance deve constar no repositório ou UI antes da leitura.
+- Status 7–9: `SCENE_MAPPED_AUDIO_UNVERIFIED`. Trilha alinhada ao mapa de acontecimentos do texto, MAS **não foi escutada integralmente nem aprovada musicalmente**.
+- Status 10–25: `PREPLANNED_FULL_AUDIO_UNVERIFIED`, sem `sceneReview.reviewed`; **bloqueadas para criação/validação de playlists** até revisão narrativa individual. Não mascarar como "prontas" na home, na seção técnica, nem no indicador de playlists.
+- Os próximos três capítulos serão preparados via Spotify autenticado na PWA, com fail-closed por título, artista, duração, URI e ordem; não iniciam áudio/crônometro. Spotify metadata ≠ qualidade real da dinâmica: ainda falta audição de gravação inteira e feedback de volume.
+- A partir de então, é possível revisar o livro TODO numa mesma etapa de trabalho se cada capítulo tiver análise narrativa e revisão da trilha. O que não se pode afirmar sem arquivos de áudio/escuta é aprovação total do encaixe sonoro. Nunca confundir lote de capítulos com revisão por tempo de duração.
+
+**Gates ainda pendentes:** versão no Android, ausência de sobreposição, painel técnico compacto e colapsável, Spotify 3/3 real, logs anteriores, áudio integral e cenas mais complexas. Corrigir pelo motivo efetivo antes de prosseguir com aumento de escopo.
+
+---
 
 ## SITUAÇÃO ATUAL — 25/11/2026 · v0.18.1
 

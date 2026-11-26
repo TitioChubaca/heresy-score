@@ -1,231 +1,233 @@
-/* Horus Heresy skin / v0.18.1.
-   A series theme, not global UI. Other books inherit the neutral shell.
-   References: Horus Heresy black-book archival ornament, leather/bronze,
-   31st-millennium military seals, Caliban weathered iron and parchment.
-   No script changes, no narrative content and no copyrighted logos. */
+/* Heresy Score 0.18.2 — restored original 30k archival identity.
+   This is intentionally a LIGHT series skin, not another complete UI shell.
+   The original military-green/black design supplies the identity; the modern
+   reader-foundation supplies accessibility, spacing and nonoverlapping actions.
+   Non-Warhammer books are unaffected. */
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"]{
- --hh-brass:#aa8960;
- --hh-ivory:#e9dfc5;
- --hh-paper:#b6aa8b;
- --hh-black:#0d100f;
- --hh-stone:#242721;
- --hh-verdigris:#4c6151;
- --hh-line:#655841;
- --hh-wax:#7b483e;
- --hs-action:#c7ae7e;
- --hs-action-ink:#171711;
- --hs-ink:#e4dcc6;
- --hs-muted:#b8b5a3;
- --hs-edge:#595443;
- --hs-surface:#151b18;
- --hs-surface-raised:#242b25;
- color:var(--hh-ivory);
- background:
-  radial-gradient(ellipse at 50% -180px,rgba(125,98,61,.19),transparent 470px),
-  repeating-linear-gradient(90deg,transparent 0 35px,rgba(215,195,151,.013) 35px 36px),
-  #0c100e;
+ --hs-ink:#d9d7c4;
+ --hs-muted:#9cae91;
+ --hs-edge:#3b5436;
+ --hs-surface:#0c150e;
+ --hs-surface-raised:#122013;
+ --hs-action:#a3c974;
+ --hs-action-ink:#101810;
+ --hh-green:#a8db72;
+ --hh-green-dim:#79a554;
+ --hh-amber:#b99960;
+ color:var(--hs-ink);
+ background:radial-gradient(circle at 50% -170px,#1b2b1a,transparent 420px),
+  linear-gradient(#080d08,#030603);
 }
+/* Restore aquila-and-skull archivist header from the first app design. */
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .mast{
- background:linear-gradient(115deg,#181c19,#0c100e);
- border:1px solid #68583f;
- border-bottom:3px double #847251;
- padding:12px 12px 11px;
- position:relative;
- box-shadow:inset 0 0 0 3px #1b211b,0 7px 23px #0008;
- margin:9px 0 11px;
+ background:transparent;
+ border:0;
+ padding:0;
+ margin:14px 0 16px;
+ box-shadow:none;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .mast:before,
-body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .mast:after{
- content:"";position:absolute;height:7px;width:7px;background:#a38b5a;border:1px solid #302b20;z-index:2;
- box-shadow:inset 0 0 0 1px #d2b980;
- transform:rotate(45deg);pointer-events:none;
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .mast:after{content:none}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .sigil{
+ border-color:#4c6943;background:#091008;box-shadow:inset 0 0 17px #a8db7214;
 }
-body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .mast:before{left:5px;top:5px}
-body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .mast:after{right:5px;bottom:5px}
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .mast h1{
- font:700 clamp(23px,6vw,30px)/1.03 Georgia,"Times New Roman",serif;
- text-transform:uppercase;letter-spacing:.025em;color:#e3d5ad;
- text-shadow:0 2px 1px #000a;
+ color:var(--hh-green);font:700 clamp(22px,6vw,30px)/1.1 ui-monospace,Consolas,monospace;
+ letter-spacing:.12em;text-shadow:0 0 14px #a8db7228;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .mast .sub{
- font:600 9px/1.5 ui-monospace,monospace;
- letter-spacing:.12em;text-transform:uppercase;color:#a99672;margin-top:5px;
+ color:#91a487;font:600 10px/1.5 ui-monospace,monospace;
+ letter-spacing:.11em;
 }
-body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .mast .menu-btn{
- background:linear-gradient(#292a23,#181e1a);border:1px solid #897558;
- border-radius:2px;color:#d6c6a0;
- box-shadow:inset 0 0 0 2px #121813;
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .menu-btn{
+ border:1px solid #58754a;background:#0a120a;color:var(--hh-green);
+ border-radius:5px;box-shadow:none;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .rule{
- border:0;border-bottom:1px solid #66583d;opacity:.75;margin:12px 0 16px;
- background:linear-gradient(90deg,transparent,#564632 25%,#87704c 50%,#564632 75%,transparent);
- height:2px;position:relative;
+ border:0;height:1px;background:linear-gradient(90deg,transparent,#41543a,transparent);
+ margin:17px 0;
 }
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .rule img{
+ display:block;opacity:.9;
+}
+/* First-generation archive panels, but with consistent modern spacing. */
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .frame{
- border:1px solid #65573e;
- border-radius:4px;
- background:linear-gradient(160deg,rgba(32,38,31,.96),#0d1411 68%);
- box-shadow:inset 0 0 0 3px #161e17,0 15px 30px #0009;
+ border:1px solid #355133;border-radius:4px;
+ background:linear-gradient(180deg,#101a11,#080f09 70%);
+ box-shadow:inset 0 0 0 1px #172718,0 12px 26px #0009;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .bookhead{
- border-bottom:1px solid #756546;
+ border-color:#365333;
+ background:radial-gradient(circle at 88% 18%,#314d2c2d,transparent 65%),
+ linear-gradient(140deg,#122113,#090e0a);
  border-radius:0!important;
- background:
-  radial-gradient(ellipse at 100% 0%,rgba(125,100,60,.19),transparent 75%),
-  linear-gradient(125deg,#1d251d,#101611);
 }
-body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .bookhead .eyebrow,
-body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-visual-eyebrow{
- color:#b19a70;
- font:700 10px/1.5 ui-monospace,monospace;
- letter-spacing:.19em;text-transform:uppercase;
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .bookhead .ambient-gif{
+ display:block!important;position:absolute;right:-4px;top:-12px;
+ width:180px;height:180px;opacity:.09;pointer-events:none;
+ filter:grayscale(1) sepia(.25) hue-rotate(38deg) brightness(1.2);
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .bookhead .eyebrow{
+ color:var(--hh-amber);letter-spacing:.16em;
+ font:700 10px/1.4 ui-monospace,monospace;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .bookhead .title{
- font:600 clamp(27px,6.8vw,38px)/1.11 Georgia,"Times New Roman",serif;
- letter-spacing:.005em;color:#eee5cf;
- text-shadow:0 1px #080b08;
+ color:#e7e4d5;text-shadow:0 1px #000a;
+ font:600 clamp(26px,6.5vw,34px)/1.15 Georgia,serif;
+ letter-spacing:0;
 }
-body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .bookhead .progress{
- background:repeating-linear-gradient(90deg,#8f7b53 0 10px,#b59b69 10px 19px);
- box-shadow:0 0 7px #a38b5b33;
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .progressbar{
+ height:9px;border-radius:1px;background:#040804;
+ border:1px solid #33442f;padding:1px;
 }
-body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .bookhead .progressbar{
- border:1px solid #6c5942;background:#070d09;
- border-radius:1px;padding:1px;height:8px;
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .progress{
+ border-radius:0;background:repeating-linear-gradient(90deg,#779c57 0 8px,#a6cd7b 8px 12px);
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #hsQuickReadingStatus{
- font:500 13px/1.5 system-ui,sans-serif;color:#cccbad;
+ color:#adca99;font:500 13px/1.5 system-ui,sans-serif;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #hsQuickReadingStatus:before{
- border-radius:0;background:#bba16e;transform:rotate(45deg);
- box-shadow:0 0 0 2px #272b20;
+ background:#8eb85e;border-radius:50%;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-deck-nav{
- padding:18px 14px 14px!important;
- background:linear-gradient(180deg,#181f19,#141a16);
+ background:linear-gradient(#111b12,#0d140d);
+ padding:16px 14px 13px!important;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #hsDeckTitle{
- font:600 clamp(23px,5.7vw,28px)/1.18 Georgia,serif;color:#e5dcc1;
+ color:#e1dbc9;font:600 clamp(21px,5.7vw,27px)/1.18 Georgia,serif;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-deck-arrow{
- border-radius:2px!important;
- border:1px solid #796e50!important;
- background:linear-gradient(#252923,#141a16)!important;
- color:#d6c5a0;
- box-shadow:inset 0 0 0 2px #151d17;
+ background:#0c150c!important;border:1px solid #506847!important;
+ color:#b4d88f;border-radius:5px!important;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter{
- border:1px solid #695a41!important;
- border-radius:2px!important;
- padding:17px!important;
- background:
-  linear-gradient(45deg,#232920 0 4px,transparent 4px) left top/14px 14px no-repeat,
-  linear-gradient(-45deg,#232920 0 4px,transparent 4px) right top/14px 14px no-repeat,
-  linear-gradient(#1b241e,#121a15)!important;
- box-shadow:inset 0 0 0 2px #101813,0 6px 17px #0005!important;
- position:relative;
-}
-body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter:before{
- content:"";position:absolute;top:6px;bottom:6px;left:6px;right:6px;
- border:1px solid #6c614022;pointer-events:none;
+ border:1px solid #48643c!important;background:#0b140c!important;
+ border-radius:5px!important;box-shadow:inset 0 0 0 1px #253521!important;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .tag{
- border-radius:1px;
- background:#262920;border-color:#95805e;color:#d9c6a0;
- text-transform:uppercase;font:700 10px/1.5 ui-monospace,monospace;
- letter-spacing:.11em;padding:5px 9px;
+ background:#132012;color:#a8da77;border:1px solid #4a7140;
+ border-radius:3px;font:700 10px/1.4 ui-monospace,monospace;letter-spacing:.08em;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .details{
- font:500 14px/1.5 system-ui,sans-serif;color:#b3b29d;
-}
-body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions{
- gap:10px!important;
+ color:#a3b29a;font:400 13px/1.5 system-ui,sans-serif;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions>.btn{
- border-radius:2px!important;
- clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,9px 100%,0 calc(100% - 9px));
- text-transform:uppercase!important;letter-spacing:.085em!important;
- font:700 13px/1.3 system-ui,sans-serif!important;
- border:1px solid #a89362!important;
- box-shadow:inset 0 0 0 2px #ffffff12!important;
- text-shadow:none;transition:background-color .16s ease,border-color .16s ease;
+ min-height:52px!important;border-radius:5px!important;
+ font:700 13px/1.3 ui-monospace,Consolas,monospace!important;
+ text-transform:uppercase!important;letter-spacing:.06em!important;
+ box-shadow:none!important;clip-path:none!important;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions>.btn.primary{
- background:linear-gradient(#dbbf8c,#b99a69)!important;
- color:#161711!important;border-color:#bba474!important;
+ background:#173014!important;color:#c7eca8!important;
+ border:1px solid #79a35f!important;
+ box-shadow:inset 0 0 0 1px #203d1d!important;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions>.btn.primary:before{
- content:"▸";font-size:18px;line-height:0;vertical-align:-1px;margin-right:8px;
+ content:"▸";display:inline-block;margin-right:8px;color:#b6df92;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions>.hs-open-spotify{
- background:linear-gradient(#263129,#17221d)!important;
- border-color:#72694e!important;color:#e8dec5!important;
+ background:#0b160f!important;border:1px solid #465d40!important;
+ color:#d2dbc9!important;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions>.hs-open-spotify:before{
- content:"♫";font:700 16px/1 Georgia,serif;vertical-align:-1px;margin-right:9px;
+ content:"♫";margin-right:8px;font:700 15px Georgia,serif;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions>.btn:focus-visible,
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-deck-arrow:focus-visible{
- outline:2px solid #e4c48d!important;outline-offset:3px;
+ outline:2px solid #b5e390!important;outline-offset:3px;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-deck-footer button{
- border-radius:1px;border-color:#6e624a;
- color:#d5c8a5;background:#212820;
- font:600 11px/1.3 ui-monospace,monospace;letter-spacing:.08em;
- text-transform:uppercase;
-}
-body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-visual-head h2,
-body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-visual-name{
- font-family:Georgia,serif;color:#eee5cd;
+ color:#bbd5a6;border:1px solid #496140;border-radius:5px;
+ background:#101b10;letter-spacing:.045em;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-visual-card{
- border-radius:2px;background:#1a211a;border-color:#6c6149;
- box-shadow:inset 0 0 0 1px #9b87541c;
+ background:#101a12;border-color:#3e5439;border-radius:5px;
 }
-body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-visual-media .hs-art{border-radius:0}
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-visual-actions button{
- border-radius:2px;border-color:#796a51;background:#202820;color:#e2d4b7;
- font:700 11px/1.2 ui-monospace,monospace;letter-spacing:.08em;
- text-transform:uppercase;
+ border:1px solid #466742;border-radius:5px;
+ background:#101a10;color:#bfe29c;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-visual-head h2{
+ color:#e1daca;font:600 21px Georgia,serif;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #now{
- border-color:#a08a62;
- background:linear-gradient(#22281e,#101711);
- box-shadow:inset 0 0 0 2px #20271f,0 14px 33px #000c;
+ background:#0b150c;border:1px solid #4e6c40;
+ box-shadow:0 12px 34px #000b;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #now.hs-mini{
- border-radius:3px!important;border-width:2px;
+ border-radius:6px!important;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #now .now-controls>.btn{
- border-radius:2px!important;
- font:700 11px/1.3 system-ui,sans-serif!important;
- letter-spacing:.035em!important;text-transform:uppercase!important;
+ background:#111c12;color:#d6dfca;border-color:#4d6244;
+ border-radius:5px!important;font:700 12px/1.2 system-ui,sans-serif!important;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #now .now-controls>#finishBtn{
- background:linear-gradient(#d4b67d,#af9263)!important;
- border-color:#bd9f70!important;color:#151814!important;
+ background:#224121!important;color:#d4efbb!important;border-color:#79a45b!important;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #now .now-controls>#openSpotifyBtn{
- background:#29342a!important;color:#e9dfc2!important;border-color:#756d53!important;
-}
-body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #now .now-controls>#pauseBtn{
- background:#151d17;color:#e0d5b7;border-color:#69664b;
+ background:#121f15!important;color:#e1e3d6!important;border-color:#536d4b!important;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #now #timer{
- font-family:ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums;
- color:#e7d8ad;
+ color:#b8df91;font:600 25px ui-monospace,Consolas,monospace;
 }
 body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #feedbackDialog{
- background:#171b16!important;border:1px solid #756247!important;
- color:#dfd8c4;border-radius:3px!important;
+ background:#0d170e!important;border:1px solid #48653f!important;
+ color:#dbd9c9;border-radius:7px!important;
 }
-body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #feedbackDialog .hs-issues button{
- border-radius:2px!important;
+/* Compact technical surface: summary first; explanations on demand. */
+body.hs-reader-ux .hs-tech-settings{
+ padding:0!important;margin:12px 0!important;
+ border:1px solid #3c563b!important;border-radius:6px!important;
+ background:#0b150d!important;
 }
-@media(max-width:340px){
- body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions>.btn{
-  font-size:12px!important;letter-spacing:.04em!important;
- }
+body.hs-reader-ux .hs-tech-settings>summary{
+ min-height:48px;padding:12px 14px;
+ color:#b1d492;font:650 12px/1.6 ui-monospace,monospace!important;
+ text-transform:uppercase;letter-spacing:.055em;
+}
+body.hs-reader-ux .hs-tech-settings[open]>summary{border-bottom:1px solid #2b462a}
+body.hs-reader-ux #hsBookVIReadAhead{
+ margin:0!important;padding:14px!important;
+ border:0!important;background:transparent!important;box-shadow:none!important;
+}
+body.hs-reader-ux #hsBookVIReadAhead .hs-prep-heading{
+ display:flex;justify-content:space-between;align-items:center;gap:10px;
+ font:650 13px/1.45 system-ui,sans-serif;color:#cfdac3;
+}
+body.hs-reader-ux #hsBookVIReadAhead .hs-prep-label{
+ padding:3px 7px;border:1px solid #3d663e;color:#a2ca87;
+ font:700 10px ui-monospace,monospace;
+}
+body.hs-reader-ux #hsReadAheadStatus{
+ margin:10px 0 9px;color:#b0d391;
+ font:700 14px/1.45 ui-monospace,monospace;
+}
+body.hs-reader-ux #hsBookVIReadAhead .hs-prep-log{
+ border-top:1px solid #304330;padding-top:9px;
+}
+body.hs-reader-ux #hsBookVIReadAhead .hs-prep-log>summary{
+ color:#bacab0;font:500 12px/1.6 system-ui,sans-serif;
+ letter-spacing:0;text-transform:none;min-height:30px;cursor:pointer;
+}
+body.hs-reader-ux #hsReadAheadVerbose{
+ margin:7px 0 9px;font:400 12px/1.55 system-ui,sans-serif;
+ color:#adbba7;overflow-wrap:anywhere;
+}
+body.hs-reader-ux #hsBookVIReadAhead #hsReadAheadRetry{
+ margin-top:11px;min-height:44px;border-radius:5px;
+ font:650 11px/1.4 ui-monospace,monospace;letter-spacing:.035em;
+ white-space:normal;
+}
+body.hs-reader-ux .hs-inner-diagnostics{
+ margin:0 12px 12px;border:1px solid #2c402c;border-radius:4px;
+}
+body.hs-reader-ux .hs-inner-diagnostics>summary{
+ min-height:40px;padding:9px 10px;
+ font:500 12px/1.5 system-ui,sans-serif!important;
+ color:#a7b99e;text-transform:none;letter-spacing:0;
+}
+body.hs-reader-ux .hs-inner-diagnostics>.panel{
+ padding:12px!important;margin:0!important;border:0!important;
 }
 @media(prefers-reduced-motion:reduce){
  body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions>.btn{transition:none}

@@ -17,6 +17,7 @@ function makeScenario(problem){
  vm.runInNewContext(read("scripts/editorial-score-engine.js"),ctx);
  vm.runInNewContext(read("data/descent-of-angels.js"),ctx);
  vm.runInNewContext(read("data/descent-of-angels-future-scores.js"),ctx);
+ vm.runInNewContext(read("data/descent-next-scene-review.js"),ctx);
  const data=window.HS_DESCENT_DATA;
  ctx.SCORES=data.scores;ctx.SCORE_META=data.scoreMeta;
  const tracks=new Map(),lookup=new Map();
@@ -39,7 +40,12 @@ function makeScenario(problem){
  if(problem==="artist")tracks.get(prelude[0].uri).artists[0].name="Unknown Artist";
  const actual=new Map();
  let writes=0,created=0;
- ctx.spotifyResolveTrack=async(name,artist)=>lookup.get(name+"|"+artist);
+ ctx.spotifyResolveTrack=async(name,artist)=>{
+  const uri=lookup.get(name+"|"+artist);
+  if(problem==="object")return {uri};
+  if(problem==="badformat")return {track:{uri}};
+  return uri;
+ };
  ctx.spotifyEnsurePlaylist=async n=>{
   const key="descent-of-angels:"+n;
   if(!ctx.state.spotify.playlists[key]){
@@ -85,7 +91,7 @@ function makeScenario(problem){
     .reduce((sum,c)=>sum+c.durationApproxSeconds*1000,0);
   assert.equal(runtime.durationMs,expected,"Exactly the authored full recordings must be confirmed");
   assert(Math.abs(runtime.durationMs-runtime.targetMs)<=60000);
-  assert.equal(ok.ctx.state.spotify.playlists["descent-of-angels:"+n].sourceVerifiedBy,"0.18.1");
+  assert.equal(ok.ctx.state.spotify.playlists["descent-of-angels:"+n].sourceVerifiedBy,"0.18.2");
  }
  assert.equal(ok.metrics().writes,6);
  assert.equal(ok.metrics().created,6);
@@ -101,13 +107,24 @@ function makeScenario(problem){
  await assert.rejects(()=>tooLong.ctx.spotifySyncChapter(1),/(?:validação editorial|fora da meta)/i);
  assert.equal(tooLong.metrics().writes,0);
  assert.equal(tooLong.metrics().created,0);
- for(const n of [7,8,15,20,24,25]){
+ const resolvedObject=makeScenario("object");
+ await resolvedObject.ctx.spotifySyncChapter(7);
+ assert.equal(resolvedObject.ctx.state.spotify.chapterRuntime[7].verified,true,
+  "Spotify {uri} objects must be normalized before GET and playlist write");
+ const unexpected=makeScenario("badformat");
+ await assert.rejects(()=>unexpected.ctx.spotifySyncChapter(7),/URI de faixa válida/i);
+ assert.equal(unexpected.metrics().created,0,"Bad format must not create playlist");
+ assert.equal(unexpected.metrics().writes,0,"Bad format must not write playlist");
+ for(const n of [7,8,9]){
   await ok.ctx.spotifySyncChapter(n);
   const runtime=ok.ctx.state.spotify.chapterRuntime[n];
-  assert(runtime.verified,"Staged unit "+n+" must pass exact mock confirmation");
+  assert(runtime.verified,"Source-reviewed unit "+n+" must pass exact mock confirmation");
   assert.equal(runtime.trackCount,ok.data.scores[n].length);
-  assert.equal(runtime.editorialStatus,"PREPLANNED_FULL_AUDIO_UNVERIFIED");
+  assert.equal(runtime.editorialStatus,"SCENE_MAPPED_AUDIO_UNVERIFIED");
  }
+ for(const n of [10,15,20,24,25])
+  await assert.rejects(()=>ok.ctx.spotifySyncChapter(n),/curadoria cinematográfica/i,
+   "Unreviewed catalog-only unit "+n+" must remain unpublished");
  await assert.rejects(()=>ok.ctx.spotifySyncChapter(26),/curadoria musical piloto/i);
- console.log("PASS Book VI six pilots with three-unit buffer: exact/resolved recordings, duration, readback, idempotence, fail-closed and future-sealing.");
+ console.log("PASS Book VI 0.18.2: string/object Spotify URI, scene-gated buffer and exact/resolved recordings, duration, readback, idempotence, fail-closed and future-sealing.");
 })().catch(err=>{console.error(err);process.exitCode=1});
