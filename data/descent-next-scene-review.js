@@ -79,6 +79,8 @@ for(const {n,roles} of musical){
  };
  chapter.startCue=cues[0].title;
  chapter.estimatedMinutes=chapter.wordCountApprox/197;
+ const old=window.HSBookVIFullDraft?.ranges?.[n];
+ if(old){old.count=cues.length;old.approximateSeconds=total;old.stage="SCENE_MAPPED_SPOTIFY_PENDING";}
 }
 window.HSBookVINextSceneReview=Object.freeze({
  version:"0.18.2",units:[7,8,9],
