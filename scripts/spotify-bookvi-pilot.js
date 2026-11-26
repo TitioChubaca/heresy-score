@@ -13,6 +13,16 @@ const emit=(n,phase,message)=>{
 };
 const same=(a,b)=>a.length===b.length&&a.every((t,i)=>t===b[i]);
 const delay=ms=>new Promise(r=>setTimeout(r,ms));
+// spotifyResolveTrack can return a plain URI OR an object containing {uri}.
+// Never assume a string, and never silently use a search result without GET.
+const candidateTrackUri=result=>{
+ const value=typeof result==="string"?result:
+  result&&typeof result==="object"&&typeof result.uri==="string"?result.uri:
+  result&&typeof result==="object"&&typeof result.id==="string"?
+   "spotify:track:"+result.id:null;
+ return typeof value==="string"&&/^spotify:track:[A-Za-z0-9]{22}$/.test(value)?value:null;
+};
+window.HSBookVITrackUri=candidateTrackUri;
 async function readPlaylist(id){
  const items=[];
  for(let offset=0;offset<200;offset+=50){
@@ -40,6 +50,10 @@ const syncUnwrapped=async function(n){
  if(state.activeBookSlug!==BOOK)return original(n);
  if(!Number.isInteger(n)||n<1||n>25||!SCORES[n]||!Array.isArray(SCORE_META[n]?.recordingReferences))throw Error("Esta unidade ainda não tem curadoria musical piloto; nenhuma playlist foi criada.");
  if(state.active)throw Error("Não alterar a playlist durante uma leitura ativa.");
+ // A catalog-only algorithm is not a chapter-by-chapter narrative review.
+ // Never publish an unreviewed future score as if it were scene-mapped.
+ if(n>=7&&SCORE_META[n]?.sceneReview?.reviewed!==true)
+  throw Error("Trilha deste capítulo ainda requer curadoria cinematográfica; nenhuma playlist foi alterada.");
  const refs=SCORE_META[n]?.recordingReferences;
  if(!Array.isArray(refs)||refs.length!==SCORES[n]?.length||refs.length<(n===25?1:3))
   throw Error("Plano musical da unidade "+n+" ausente ou incompleto.");
@@ -54,9 +68,11 @@ const syncUnwrapped=async function(n){
    // Prelude has source-grounded exact IDs. Subsequent early-book recordings
    // are resolved by title + composer, then STRICTLY verified by Spotify GET.
    // Never trust the first search hit (or its cached URI) without checking.
-   const candidateUri=cue.uri||await spotifyResolveTrack(cue.title,cue.artist);
-   const id=candidateUri?.split(":")[2];
-   if(!/^[A-Za-z0-9]{22}$/.test(id||""))throw Error("URI inválida para "+cue.title);
+   const lookup=cue.uri||await spotifyResolveTrack(cue.title,cue.artist);
+   const candidateUri=candidateTrackUri(lookup);
+   if(!candidateUri)throw Error("Spotify não devolveu uma URI de faixa válida para "+cue.title+
+     ". Refaça a busca; nenhuma playlist foi alterada.");
+   const id=candidateUri.slice("spotify:track:".length);
    const t=await spotifyApi("/tracks/"+encodeURIComponent(id));
    if(t?.uri!==candidateUri||norm(t.name)!==norm(cue.title)||
       !(t.artists||[]).some(a=>norm(a.name)===norm(cue.artist))||
@@ -108,7 +124,7 @@ const syncUnwrapped=async function(n){
   entry.finalCueIndex=confirmed.length-1;
   entry.trackCount=confirmed.length;
   entry.verifiedAt=time;
-  entry.sourceVerifiedBy="0.18.1";
+  entry.sourceVerifiedBy="0.18.2";
   entry.editorialStatus=SCORE_META[n].editorialStatus;
   entry.lastCorrection=needsWrite?"playlist-updated-and-verified":"existing-playlist-verified";
   state.spotify.chapterRuntime=state.spotify.chapterRuntime||{};
@@ -152,7 +168,7 @@ spotifySyncChapter=async function(n){
  try{return await promise}finally{activeChecks.delete(key)}
 };
 window.HSBookVIQA={
- version:"0.18.1",
+ version:"0.18.2",
  status:n=>state.spotify.chapterRuntime?.[n]||null,
  verified:n=>state.spotify.chapterRuntime?.[n]?.verified===true&&
   state.spotify.chapterRuntime?.[n]?.status==="WITHIN_RANGE"
