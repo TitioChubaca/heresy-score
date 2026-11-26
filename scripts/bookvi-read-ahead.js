@@ -61,7 +61,7 @@ async function prepare(force=false){
  if(inFlight)return inFlight;
  const windowUnits=currentUnits();
  const key=windowUnits.map(c=>c.number).join(",")+"|"+
-  windowUnits.map(c=>JSON.stringify(SCORES[c.number]||[])).join("|");
+  windowUnits.map(c=>(JSON.stringify(SCORES[c.number]||[])+":"+String(reviewed(c.number)))).join("|");
  if(!force&&key===lastAttemptedKey){details();return false}
  lastAttemptedKey=key;
  retry.disabled=true;
@@ -116,7 +116,7 @@ render=function(...args){
  details();
  if(state.activeBookSlug===BOOK&&!state.active&&spotifyConnected()){
   const units=currentUnits(),key=units.map(c=>c.number).join(",")+"|"+
-   units.map(c=>JSON.stringify(SCORES[c.number]||[])).join("|");
+   units.map(c=>(JSON.stringify(SCORES[c.number]||[])+":"+String(reviewed(c.number)))).join("|");
   if(key!==lastAttemptedKey&&!inFlight)queue();
  }
  return result;
