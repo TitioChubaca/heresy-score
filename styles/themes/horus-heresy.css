@@ -1,0 +1,232 @@
+/* Horus Heresy skin / v0.18.1.
+   A series theme, not global UI. Other books inherit the neutral shell.
+   References: Horus Heresy black-book archival ornament, leather/bronze,
+   31st-millennium military seals, Caliban weathered iron and parchment.
+   No script changes, no narrative content and no copyrighted logos. */
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"]{
+ --hh-brass:#aa8960;
+ --hh-ivory:#e9dfc5;
+ --hh-paper:#b6aa8b;
+ --hh-black:#0d100f;
+ --hh-stone:#242721;
+ --hh-verdigris:#4c6151;
+ --hh-line:#655841;
+ --hh-wax:#7b483e;
+ --hs-action:#c7ae7e;
+ --hs-action-ink:#171711;
+ --hs-ink:#e4dcc6;
+ --hs-muted:#b8b5a3;
+ --hs-edge:#595443;
+ --hs-surface:#151b18;
+ --hs-surface-raised:#242b25;
+ color:var(--hh-ivory);
+ background:
+  radial-gradient(ellipse at 50% -180px,rgba(125,98,61,.19),transparent 470px),
+  repeating-linear-gradient(90deg,transparent 0 35px,rgba(215,195,151,.013) 35px 36px),
+  #0c100e;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .mast{
+ background:linear-gradient(115deg,#181c19,#0c100e);
+ border:1px solid #68583f;
+ border-bottom:3px double #847251;
+ padding:12px 12px 11px;
+ position:relative;
+ box-shadow:inset 0 0 0 3px #1b211b,0 7px 23px #0008;
+ margin:9px 0 11px;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .mast:before,
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .mast:after{
+ content:"";position:absolute;height:7px;width:7px;background:#a38b5a;border:1px solid #302b20;z-index:2;
+ box-shadow:inset 0 0 0 1px #d2b980;
+ transform:rotate(45deg);pointer-events:none;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .mast:before{left:5px;top:5px}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .mast:after{right:5px;bottom:5px}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .mast h1{
+ font:700 clamp(23px,6vw,30px)/1.03 Georgia,"Times New Roman",serif;
+ text-transform:uppercase;letter-spacing:.025em;color:#e3d5ad;
+ text-shadow:0 2px 1px #000a;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .mast .sub{
+ font:600 9px/1.5 ui-monospace,monospace;
+ letter-spacing:.12em;text-transform:uppercase;color:#a99672;margin-top:5px;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .mast .menu-btn{
+ background:linear-gradient(#292a23,#181e1a);border:1px solid #897558;
+ border-radius:2px;color:#d6c6a0;
+ box-shadow:inset 0 0 0 2px #121813;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .rule{
+ border:0;border-bottom:1px solid #66583d;opacity:.75;margin:12px 0 16px;
+ background:linear-gradient(90deg,transparent,#564632 25%,#87704c 50%,#564632 75%,transparent);
+ height:2px;position:relative;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .frame{
+ border:1px solid #65573e;
+ border-radius:4px;
+ background:linear-gradient(160deg,rgba(32,38,31,.96),#0d1411 68%);
+ box-shadow:inset 0 0 0 3px #161e17,0 15px 30px #0009;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .bookhead{
+ border-bottom:1px solid #756546;
+ border-radius:0!important;
+ background:
+  radial-gradient(ellipse at 100% 0%,rgba(125,100,60,.19),transparent 75%),
+  linear-gradient(125deg,#1d251d,#101611);
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .bookhead .eyebrow,
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-visual-eyebrow{
+ color:#b19a70;
+ font:700 10px/1.5 ui-monospace,monospace;
+ letter-spacing:.19em;text-transform:uppercase;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .bookhead .title{
+ font:600 clamp(27px,6.8vw,38px)/1.11 Georgia,"Times New Roman",serif;
+ letter-spacing:.005em;color:#eee5cf;
+ text-shadow:0 1px #080b08;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .bookhead .progress{
+ background:repeating-linear-gradient(90deg,#8f7b53 0 10px,#b59b69 10px 19px);
+ box-shadow:0 0 7px #a38b5b33;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .bookhead .progressbar{
+ border:1px solid #6c5942;background:#070d09;
+ border-radius:1px;padding:1px;height:8px;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #hsQuickReadingStatus{
+ font:500 13px/1.5 system-ui,sans-serif;color:#cccbad;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #hsQuickReadingStatus:before{
+ border-radius:0;background:#bba16e;transform:rotate(45deg);
+ box-shadow:0 0 0 2px #272b20;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-deck-nav{
+ padding:18px 14px 14px!important;
+ background:linear-gradient(180deg,#181f19,#141a16);
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #hsDeckTitle{
+ font:600 clamp(23px,5.7vw,28px)/1.18 Georgia,serif;color:#e5dcc1;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-deck-arrow{
+ border-radius:2px!important;
+ border:1px solid #796e50!important;
+ background:linear-gradient(#252923,#141a16)!important;
+ color:#d6c5a0;
+ box-shadow:inset 0 0 0 2px #151d17;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter{
+ border:1px solid #695a41!important;
+ border-radius:2px!important;
+ padding:17px!important;
+ background:
+  linear-gradient(45deg,#232920 0 4px,transparent 4px) left top/14px 14px no-repeat,
+  linear-gradient(-45deg,#232920 0 4px,transparent 4px) right top/14px 14px no-repeat,
+  linear-gradient(#1b241e,#121a15)!important;
+ box-shadow:inset 0 0 0 2px #101813,0 6px 17px #0005!important;
+ position:relative;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter:before{
+ content:"";position:absolute;top:6px;bottom:6px;left:6px;right:6px;
+ border:1px solid #6c614022;pointer-events:none;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .tag{
+ border-radius:1px;
+ background:#262920;border-color:#95805e;color:#d9c6a0;
+ text-transform:uppercase;font:700 10px/1.5 ui-monospace,monospace;
+ letter-spacing:.11em;padding:5px 9px;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .details{
+ font:500 14px/1.5 system-ui,sans-serif;color:#b3b29d;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions{
+ gap:10px!important;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions>.btn{
+ border-radius:2px!important;
+ clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,9px 100%,0 calc(100% - 9px));
+ text-transform:uppercase!important;letter-spacing:.085em!important;
+ font:700 13px/1.3 system-ui,sans-serif!important;
+ border:1px solid #a89362!important;
+ box-shadow:inset 0 0 0 2px #ffffff12!important;
+ text-shadow:none;transition:background-color .16s ease,border-color .16s ease;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions>.btn.primary{
+ background:linear-gradient(#dbbf8c,#b99a69)!important;
+ color:#161711!important;border-color:#bba474!important;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions>.btn.primary:before{
+ content:"▸";font-size:18px;line-height:0;vertical-align:-1px;margin-right:8px;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions>.hs-open-spotify{
+ background:linear-gradient(#263129,#17221d)!important;
+ border-color:#72694e!important;color:#e8dec5!important;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions>.hs-open-spotify:before{
+ content:"♫";font:700 16px/1 Georgia,serif;vertical-align:-1px;margin-right:9px;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions>.btn:focus-visible,
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-deck-arrow:focus-visible{
+ outline:2px solid #e4c48d!important;outline-offset:3px;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-deck-footer button{
+ border-radius:1px;border-color:#6e624a;
+ color:#d5c8a5;background:#212820;
+ font:600 11px/1.3 ui-monospace,monospace;letter-spacing:.08em;
+ text-transform:uppercase;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-visual-head h2,
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-visual-name{
+ font-family:Georgia,serif;color:#eee5cd;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-visual-card{
+ border-radius:2px;background:#1a211a;border-color:#6c6149;
+ box-shadow:inset 0 0 0 1px #9b87541c;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-visual-media .hs-art{border-radius:0}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-visual-actions button{
+ border-radius:2px;border-color:#796a51;background:#202820;color:#e2d4b7;
+ font:700 11px/1.2 ui-monospace,monospace;letter-spacing:.08em;
+ text-transform:uppercase;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #now{
+ border-color:#a08a62;
+ background:linear-gradient(#22281e,#101711);
+ box-shadow:inset 0 0 0 2px #20271f,0 14px 33px #000c;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #now.hs-mini{
+ border-radius:3px!important;border-width:2px;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #now .now-controls>.btn{
+ border-radius:2px!important;
+ font:700 11px/1.3 system-ui,sans-serif!important;
+ letter-spacing:.035em!important;text-transform:uppercase!important;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #now .now-controls>#finishBtn{
+ background:linear-gradient(#d4b67d,#af9263)!important;
+ border-color:#bd9f70!important;color:#151814!important;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #now .now-controls>#openSpotifyBtn{
+ background:#29342a!important;color:#e9dfc2!important;border-color:#756d53!important;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #now .now-controls>#pauseBtn{
+ background:#151d17;color:#e0d5b7;border-color:#69664b;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #now #timer{
+ font-family:ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums;
+ color:#e7d8ad;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #feedbackDialog{
+ background:#171b16!important;border:1px solid #756247!important;
+ color:#dfd8c4;border-radius:3px!important;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] #feedbackDialog .hs-issues button{
+ border-radius:2px!important;
+}
+@media(max-width:340px){
+ body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions>.btn{
+  font-size:12px!important;letter-spacing:.04em!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions>.btn{transition:none}
+}

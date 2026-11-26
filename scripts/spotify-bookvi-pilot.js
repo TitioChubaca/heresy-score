@@ -38,10 +38,10 @@ async function confirm(id,expected){
 const activeChecks=new Map();
 const syncUnwrapped=async function(n){
  if(state.activeBookSlug!==BOOK)return original(n);
- if(!Number.isInteger(n)||n<1||n>6||!SCORES[n]||!Array.isArray(SCORE_META[n]?.recordingReferences))throw Error("Esta unidade ainda não tem curadoria musical piloto; nenhuma playlist foi criada.");
+ if(!Number.isInteger(n)||n<1||n>25||!SCORES[n]||!Array.isArray(SCORE_META[n]?.recordingReferences))throw Error("Esta unidade ainda não tem curadoria musical piloto; nenhuma playlist foi criada.");
  if(state.active)throw Error("Não alterar a playlist durante uma leitura ativa.");
  const refs=SCORE_META[n]?.recordingReferences;
- if(!Array.isArray(refs)||refs.length!==SCORES[n]?.length||refs.length<3)
+ if(!Array.isArray(refs)||refs.length!==SCORES[n]?.length||refs.length<(n===25?1:3))
   throw Error("Plano musical da unidade "+n+" ausente ou incompleto.");
  const key=BOOK+":"+n,signature=JSON.stringify(SCORES[n]),targetMs=Math.round(SCORE_META[n].estimatedMinutes*60000);
  if(!targetMs)throw Error("Tempo de leitura não definido para esta unidade.");
@@ -108,15 +108,15 @@ const syncUnwrapped=async function(n){
   entry.finalCueIndex=confirmed.length-1;
   entry.trackCount=confirmed.length;
   entry.verifiedAt=time;
-  entry.sourceVerifiedBy="0.17.7";
-  entry.editorialStatus="PILOT_FULL_AUDIO_UNVERIFIED";
+  entry.sourceVerifiedBy="0.18.1";
+  entry.editorialStatus=SCORE_META[n].editorialStatus;
   entry.lastCorrection=needsWrite?"playlist-updated-and-verified":"existing-playlist-verified";
   state.spotify.chapterRuntime=state.spotify.chapterRuntime||{};
   state.spotify.chapterRuntime[n]={
    verified:true,status:"WITHIN_RANGE",durationMs:measured,targetMs,trackCount:confirmed.length,
    finalCueIndex:confirmed.length-1,verifiedAt:time,sourceSignature:signature,
    auditTracks:confirmed.map((t,i)=>({position:i+1,title:t.title,seconds:Math.round(t.ms/1000)})),
-   editorialStatus:"PILOT_FULL_AUDIO_UNVERIFIED",autoFitResult:"PILOTO CONFIRMADO TECNICAMENTE · "+
+   editorialStatus:SCORE_META[n].editorialStatus,autoFitResult:"PILOTO CONFIRMADO TECNICAMENTE · "+
    clock(measured)+" / "+clock(targetMs)+" · revisão narrativa pendente"
   };
   state.spotify.auditResults=state.spotify.auditResults||{};
@@ -152,7 +152,7 @@ spotifySyncChapter=async function(n){
  try{return await promise}finally{activeChecks.delete(key)}
 };
 window.HSBookVIQA={
- version:"0.17.7",
+ version:"0.18.1",
  status:n=>state.spotify.chapterRuntime?.[n]||null,
  verified:n=>state.spotify.chapterRuntime?.[n]?.verified===true&&
   state.spotify.chapterRuntime?.[n]?.status==="WITHIN_RANGE"

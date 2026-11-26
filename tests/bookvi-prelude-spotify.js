@@ -16,11 +16,12 @@ function makeScenario(problem){
  };
  vm.runInNewContext(read("scripts/editorial-score-engine.js"),ctx);
  vm.runInNewContext(read("data/descent-of-angels.js"),ctx);
+ vm.runInNewContext(read("data/descent-of-angels-future-scores.js"),ctx);
  const data=window.HS_DESCENT_DATA;
  ctx.SCORES=data.scores;ctx.SCORE_META=data.scoreMeta;
  const tracks=new Map(),lookup=new Map();
  let auto=0;
- for(let n=1;n<=6;n++)for(const cue of data.scoreMeta[n].recordingReferences){
+ for(let n=1;n<=25;n++)for(const cue of data.scoreMeta[n].recordingReferences){
   const key=cue.title+"|"+cue.artist;
   let uri=cue.uri||lookup.get(key);
   if(!uri){
@@ -72,7 +73,7 @@ function makeScenario(problem){
  assert.equal(ok.data.chapters[0].unitId,"prelude");
  assert.equal(ok.data.chapters[1].unitId,"ch01");
  assert.equal(ok.data.chapters[2].unitId,"ch02");
- assert.equal(Object.keys(ok.data.scores).join(","),"1,2,3,4,5,6");
+ assert.equal(Object.keys(ok.data.scores).length,25);
  assert.equal(ok.data.scoreMeta[1].editorialStatus,"PILOT_FULL_AUDIO_UNVERIFIED");
  for(let n=1;n<=6;n++){
   await ok.ctx.spotifySyncChapter(n);
@@ -84,7 +85,7 @@ function makeScenario(problem){
     .reduce((sum,c)=>sum+c.durationApproxSeconds*1000,0);
   assert.equal(runtime.durationMs,expected,"Exactly the authored full recordings must be confirmed");
   assert(Math.abs(runtime.durationMs-runtime.targetMs)<=60000);
-  assert.equal(ok.ctx.state.spotify.playlists["descent-of-angels:"+n].sourceVerifiedBy,"0.17.7");
+  assert.equal(ok.ctx.state.spotify.playlists["descent-of-angels:"+n].sourceVerifiedBy,"0.18.1");
  }
  assert.equal(ok.metrics().writes,6);
  assert.equal(ok.metrics().created,6);
@@ -100,6 +101,13 @@ function makeScenario(problem){
  await assert.rejects(()=>tooLong.ctx.spotifySyncChapter(1),/(?:validação editorial|fora da meta)/i);
  assert.equal(tooLong.metrics().writes,0);
  assert.equal(tooLong.metrics().created,0);
- await assert.rejects(()=>ok.ctx.spotifySyncChapter(7),/curadoria musical piloto/i);
+ for(const n of [7,8,15,20,24,25]){
+  await ok.ctx.spotifySyncChapter(n);
+  const runtime=ok.ctx.state.spotify.chapterRuntime[n];
+  assert(runtime.verified,"Staged unit "+n+" must pass exact mock confirmation");
+  assert.equal(runtime.trackCount,ok.data.scores[n].length);
+  assert.equal(runtime.editorialStatus,"PREPLANNED_FULL_AUDIO_UNVERIFIED");
+ }
+ await assert.rejects(()=>ok.ctx.spotifySyncChapter(26),/curadoria musical piloto/i);
  console.log("PASS Book VI six pilots with three-unit buffer: exact/resolved recordings, duration, readback, idempotence, fail-closed and future-sealing.");
 })().catch(err=>{console.error(err);process.exitCode=1});
