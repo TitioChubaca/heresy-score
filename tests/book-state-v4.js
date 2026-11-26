@@ -37,6 +37,7 @@ assert.throws(()=>HS.switchBook({...state,active:{chapter:25}},HS.VI),/Finish or
 const parsed={window:{}};
 vm.runInNewContext(load("data/descent-of-angels.js"),parsed);
 vm.runInNewContext(load("data/descent-of-angels-future-scores.js"),parsed);
+vm.runInNewContext(load("data/descent-next-scene-review.js"),parsed);
 const d=parsed.window.HS_DESCENT_DATA;
 assert.equal(d.chapters.length,25);
 assert.equal(d.chapters[0].unitId,"prelude");
@@ -53,7 +54,7 @@ assert.equal(d.scores[3].length,8,"Book VI Chapter 2 must contain eight cues");
 assert.equal(d.scores[4].length,9);
 assert.equal(d.scores[5].length,6);
 assert.equal(d.scores[6].length,8);
-for(let unit=7;unit<=25;unit++)assert.equal(d.scoreMeta[unit].editorialStatus,"PREPLANNED_FULL_AUDIO_UNVERIFIED");
+for(let unit=7;unit<=25;unit++)assert.equal(d.scoreMeta[unit].editorialStatus,unit<=9?"SCENE_MAPPED_AUDIO_UNVERIFIED":"PREPLANNED_FULL_AUDIO_UNVERIFIED");
 for(let n=1;n<=6;n++)assert.equal(d.scoreMeta[n].editorialStatus,"PILOT_FULL_AUDIO_UNVERIFIED");
 assert.equal(d.people.length,0,"No Book VI characters accidentally spoiled");
 assert.equal(d.archive.length,0,"No future locations prematurely released");
