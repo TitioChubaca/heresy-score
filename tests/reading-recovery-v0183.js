@@ -121,8 +121,8 @@ assert(html.includes('<body class="hs-reader-ux" data-hs-ui-series="warhammer-30
 assert(html.indexOf('id="hs-reader-foundation-css"')<html.indexOf("</head>"));
 assert(html.indexOf('id="hs-theme-horus-heresy"')<html.indexOf("</head>"));
 assert(html.includes('src="./scripts/reading-recovery.js"'));
-assert(sw.includes('"./scripts/reading-recovery.js"')&&sw.includes('heresy-score-v0183'));
-assert(build.includes('version:"0.18.3"'));
+assert(sw.includes('"./scripts/reading-recovery.js"')&&sw.includes('heresy-score-v0184'));
+assert(build.includes('version:"0.18.4"'));
 assert(foundation.includes('if(recovered)advanced.append(recovered)'),"Resume stays in expanded reading options");
 assert(resume.includes('controls.id="hsRestoreControls"'));
 assert(resume.includes('resumeFromSavedPoint')&&resume.includes('saved?.playlistId===entry.id'));
