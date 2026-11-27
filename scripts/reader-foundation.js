@@ -18,7 +18,9 @@ if(now&&controls&&advanced&&pause&&spotify&&conclude){
   if(button)extra.append(button);
  }
  advanced.append(extra);
+ const recovered=document.getElementById("hsRestoreControls");
  controls.replaceChildren(pause,spotify,conclude);
+ if(recovered)controls.append(recovered);
  const setNames=()=>{
   pause.textContent=state.active?.paused?"Retomar":"Pausar";
   spotify.textContent="Spotify";
@@ -31,15 +33,16 @@ if(now&&controls&&advanced&&pause&&spotify&&conclude){
  renderNow=function(...args){const res=formerNow(...args);setNames();return res};
  setNames();
 }
-// Last-loaded stylesheet wins over the retired in-script design patches.
-const stylesheet=document.createElement("link");
-stylesheet.rel="stylesheet";
-stylesheet.href="./styles/reader-foundation.css";
-stylesheet.id="hs-reader-foundation-css";
-document.head.append(stylesheet);
-const hhStyle=document.createElement("link");
-hhStyle.rel="stylesheet";hhStyle.href="./styles/themes/horus-heresy.css";
-hhStyle.id="hs-theme-horus-heresy";document.head.append(hhStyle);
+// Styles now load in <head> before first paint. Keep a safe compatibility
+// fallback for older cached shells, without inserting duplicates on 0.18.3.
+for(const [id,url] of [
+ ["hs-reader-foundation-css","./styles/reader-foundation.css"],
+ ["hs-theme-horus-heresy","./styles/themes/horus-heresy.css"]
+]){
+ if(document.getElementById(id))continue;
+ const link=document.createElement("link");link.rel="stylesheet";
+ link.id=id;link.href=url;document.head.append(link);
+}
 // The shell is genre-neutral. Warhammer is only a theme for current books.
 function themeSeries(slug){
  return [HSBooks.IV,HSBooks.V,HSBooks.VI].includes(slug)?"warhammer-30k":"neutral";
@@ -65,7 +68,7 @@ render=function(...args){
  return result;
 };
 window.HSReaderFoundation={
- version:"0.18.0",playerButtons:["pauseBtn","openSpotifyBtn","finishBtn"],
+ version:"0.18.3",playerButtons:["pauseBtn","openSpotifyBtn","finishBtn"],
  presentationTheme:slug=>window.HSReaderVisuals?.theme(slug)||null
 };
 })();
