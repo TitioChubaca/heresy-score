@@ -293,7 +293,7 @@ async function spotifyStartPlaylist(id){try{let d=await spotifyResolveDevice(),s
 async function spotifyPlayback(){try{return await spotifyApi("/me/player")}catch(e){return null}}
 async function refreshPlayer(){if(!state.active||!spotifyConnected())return;let p=await spotifyPlayback();if(!p||!p.item)return;const expectedPlaylist=state.spotify.playlists?.[(state.activeBookSlug||HSBooks.IV)+":"+state.active.chapter]?.id;if(expectedPlaylist&&p.context?.uri&&p.context.uri!=="spotify:playlist:"+expectedPlaylist){$("playbackState").textContent="outra música no Spotify — retome a trilha do capítulo";return}let artist=(p.item.artists||[]).map(a=>a.name).join(", ")||"Heresy Score";$("trackTitle").textContent=p.item.name||"Spotify";$("trackArtist").textContent=artist;$("playbackState").textContent=p.is_playing?"playing":"paused";let next={uri:p.item.uri||"",title:p.item.name||"Spotify",artist};
 if(Number.isFinite(p.progress_ms)&&expectedPlaylist&&
-   (!p.context?.uri||p.context.uri==="spotify:playlist:"+expectedPlaylist)){
+   p.context?.uri==="spotify:playlist:"+expectedPlaylist){
  state.active.lastSpotifyProgress={
   uri:next.uri,positionMs:Math.max(0,Math.floor(p.progress_ms)),
   capturedAt:Date.now(),playlistId:expectedPlaylist
