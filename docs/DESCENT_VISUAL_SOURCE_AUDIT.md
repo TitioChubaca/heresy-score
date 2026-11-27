@@ -26,7 +26,7 @@ Esse índice introdutório contém personagens que não apareceram até o ponto 
 - **Caliban:** o planeta (unidade 1); referência textual canônica, sem imagem individual validada.
 - **Florestas de Caliban:** cenário (unidade 1); reconstrução original anterior.
 - **Northwilds:** região mencionada no Prelude (unidade 1); sem imagem própria verificada.
-- **Aldurukh:** fortaleza-mosteiro da Ordem (unidade 2); reconstrução original anterior.
+- **Aldurukh:** fortaleza-mosteiro da Ordem já mencionada no Prelude (unidade 1); reconstrução original anterior.
 - **Câmara Circular:** salão da Ordem (unidade 3); sem imagem própria verificada.
 
 ## Pesquisa de imagens realizada antes de qualquer geração
