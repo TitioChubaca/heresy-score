@@ -125,7 +125,7 @@ assert(sw.includes('"./scripts/reading-recovery.js"')&&sw.includes('heresy-score
 assert(build.includes('version:"0.18.3"'));
 assert(foundation.includes('if(recovered)controls.append(recovered)'));
 assert(resume.includes('controls.id="hsRestoreControls"'));
-assert(resume.includes('resumeFromSavedPoint')&&resume.includes('saved.playlistId===entry.id'));
+assert(resume.includes('resumeFromSavedPoint')&&resume.includes('saved?.playlistId===entry.id'));
 assert(skin.includes("#now.hs-mini .now-controls>.hs-restore-controls"));
 assert(skin.includes("border-radius:0!important"),"Classic square edges should override rounded UI");
 assert(html.includes('pendingReopens?.[r.chapter]&&!state.done?.[r.chapter]'),
