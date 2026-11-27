@@ -20,7 +20,9 @@ if(now&&controls&&advanced&&pause&&spotify&&conclude){
  advanced.append(extra);
  const recovered=document.getElementById("hsRestoreControls");
  controls.replaceChildren(pause,spotify,conclude);
- if(recovered)controls.append(recovered);
+ // Keep music seek/resume where users expect advanced reading controls.
+ // It must NOT compete with Pausar / Spotify / Concluir in the mini-player.
+ if(recovered)advanced.append(recovered);
  const setNames=()=>{
   pause.textContent=state.active?.paused?"Retomar":"Pausar";
   spotify.textContent="Spotify";
@@ -68,7 +70,7 @@ render=function(...args){
  return result;
 };
 window.HSReaderFoundation={
- version:"0.18.3",playerButtons:["pauseBtn","openSpotifyBtn","finishBtn"],
+ version:"0.18.4",playerButtons:["pauseBtn","openSpotifyBtn","finishBtn"],
  presentationTheme:slug=>window.HSReaderVisuals?.theme(slug)||null
 };
 })();

@@ -46,6 +46,6 @@ assert(html.indexOf('src="./data/descent-of-angels-future-scores.js"')>
  html.indexOf('src="./data/descent-of-angels.js"'));
 assert(html.indexOf('src="./data/descent-of-angels-future-scores.js"')<
  html.indexOf('src="./scripts/book-switch.js"'));
-assert(/version:"0\.18\.3"/.test(read("scripts/app-build.js")));
-assert(sw.includes('const CACHE="heresy-score-v0183"'));
+assert(/version:"0\.18\.4"/.test(read("scripts/app-build.js")));
+assert(sw.includes('const CACHE="heresy-score-v0184"'));
 console.log("PASS full 25 unit music-only draft ("+total+" new cues), timing budgets, soundtrack metadata, privacy and isolated Warhammer UI theme.");
