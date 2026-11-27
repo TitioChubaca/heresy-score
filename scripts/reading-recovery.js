@@ -37,6 +37,7 @@ function recentlyFinished(done,n,now=Date.now()){
  return at!==null&&now>=at&&now-at<=48*60*60*1000;
 }
 window.HSReadingRecoveryModel={makePausedSession,latestDone,recentlyFinished};
+if(typeof document==="undefined")return;
 
 const player=document.getElementById("now");
 const finish=document.getElementById("finishBtn");
