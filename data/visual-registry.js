@@ -23,7 +23,7 @@ const raw=[
  {id:"caliban-forests",name:"Florestas de Caliban",kind:"place",unlock:1,
   group:"Caliban",role:"Ambiente",quadrant:"sw",
   summary:"Florestas imensas e perigosas que marcam o cotidiano e os costumes do planeta."},
- {id:"the-order-fortress",name:"Aldurukh",kind:"place",unlock:2,
+ {id:"the-order-fortress",name:"Aldurukh",kind:"place",unlock:1,
   group:"A Ordem",role:"Fortaleza-mosteiro",quadrant:"se",
   summary:"Fortaleza da Ordem em Caliban, onde ocorrem treinamentos e cerimônias."},
  {id:"caliban",name:"Caliban",kind:"place",unlock:1,
