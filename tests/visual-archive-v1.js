@@ -11,7 +11,7 @@ vm.runInNewContext(read("data/visual-registry.js"),ctx);
 const api=ctx.window.HSReaderVisuals,book=ctx.window.HS_DESCENT_DATA;
 assert(api&&api.schema===2);
 assert.equal(api.known("descent-of-angels",0).length,0,"No records before the Prelude");
-assert.equal(api.known("descent-of-angels",1).length,5,"Prelude references Caliban, Northwilds and Order leadership");
+assert.equal(api.known("descent-of-angels",1).length,6,"Prelude already mentions Aldurukh, Caliban, Northwilds and Order leadership");
 assert.equal(api.known("descent-of-angels",2).length,9,"Book VI Chapter 1 introduces Zahariel, Cypher and Ramiel");
 assert.equal(api.known("descent-of-angels",3).length,12,"Book VI Chapter 2 introduces Nemiel, Amadis and Circle Chamber");
 assert.equal(api.known("descent-of-angels",4).length,14,"Book VI Chapter 3 introduces Attias and Eliath");
