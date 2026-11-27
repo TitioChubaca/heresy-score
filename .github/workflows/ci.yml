@@ -30,6 +30,7 @@ jobs:
           node tests/archive-search-v2.js
           node tests/book-state-v4.js
           node tests/reader-ux-v3.js
+          node tests/reading-recovery-v0183.js
           node tests/visual-archive-v1.js
           node tests/descent-full-book-v1.js
           node tests/backup-restore-v2.js
