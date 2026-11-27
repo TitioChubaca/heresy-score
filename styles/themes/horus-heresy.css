@@ -232,3 +232,127 @@ body.hs-reader-ux .hs-inner-diagnostics>.panel{
 @media(prefers-reduced-motion:reduce){
  body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions>.btn{transition:none}
 }
+
+
+/* v0.18.3: match the ORIGINAL angular terminal style throughout. The
+   responsive button layout from the foundation remains intact. */
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"]{
+ font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] :is(
+ .frame,.panel,.chapter,.btn,.menu-btn,.hs-deck-arrow,.hs-deck-footer button,
+ .tag,.chip,.sigil,.hs-visual-card,.hs-visual-actions button,.hs-art-credit,
+ .hs-tech-settings,.hs-inner-diagnostics,.hs-modal-visual,.person,.world-card,
+ .log-card,#now,#now.hs-mini,#feedbackDialog,#archiveDialog,#personDialog,
+ .hs-decision-dialog,.hs-recent-completion
+){border-radius:0!important}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .bookhead .meta{
+ display:flex!important;gap:6px;flex-wrap:wrap;margin-top:12px;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .bookhead .chip{
+ color:#809d70;font:600 9px/1.3 ui-monospace,monospace;
+ letter-spacing:.08em;text-transform:uppercase;padding:5px 6px;
+ border:1px solid #344c30;background:#081108;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions>.btn{
+ border-radius:0!important;text-transform:uppercase!important;
+ font-family:ui-monospace,Consolas,monospace!important;
+ background:#101b10;letter-spacing:.07em!important;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .chapter .actions>.btn.primary{
+ border:1px solid #6c9654!important;background:#142a13!important;
+ color:#c0e8a1!important;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-deck-footer button{
+ font:650 11px/1.4 ui-monospace,monospace;letter-spacing:.06em;
+ text-transform:uppercase;border-color:#3c5235;
+}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] :is(
+ .navitem,.btn,.hs-visual-kind,.hs-visual-eyebrow,.hs-deck-eyebrow,
+ .hs-visual-actions button
+){font-family:ui-monospace,Consolas,monospace}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-recent-completion{
+ margin-top:11px;border:1px solid #597a47;padding:12px 13px;
+ display:flex;gap:10px;justify-content:space-between;align-items:center;
+ background:#0c160c;font:12px/1.5 ui-monospace,monospace;color:#b6d6a2;
+}
+body.hs-reader-ux .hs-recent-completion[hidden]{display:none!important}
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-recent-completion .btn{
+ flex:none;min-height:44px;border:1px solid #72945a;background:#10210f;
+ color:#bfe0a6;font:650 11px/1.35 ui-monospace,monospace;
+}
+/* Dialogs use the original Archivum visual language and deliberate tap
+   targets. They do not start/stop Spotify or write a log until confirmed. */
+body.hs-reader-ux .hs-decision-dialog{
+ width:min(460px,calc(100vw - 28px));max-height:calc(100dvh - 36px);
+ padding:18px;border:1px solid #6f9257;background:#0b120b;
+ color:#e0ddcd;box-shadow:0 23px 70px #000e;overflow-y:auto;
+}
+body.hs-reader-ux .hs-decision-dialog::backdrop{background:#000c}
+body.hs-reader-ux .hs-decision-dialog h2{
+ font:700 18px/1.35 Georgia,serif;color:#c5dfae;margin:0 0 12px;
+}
+body.hs-reader-ux .hs-decision-dialog p{
+ color:#b6c6ad;font:13px/1.55 ui-monospace,Consolas,monospace;margin:0 0 18px;
+}
+body.hs-reader-ux .hs-decision-actions{
+ display:grid;grid-template-columns:1fr 1fr;gap:9px;
+}
+body.hs-reader-ux .hs-decision-actions .btn{min-width:0;min-height:50px;padding:9px}
+body.hs-reader-ux .hs-decision-actions .btn.primary{
+ background:#203820;color:#ccedb0;border:1px solid #71985b;
+}
+body.hs-reader-ux #feedbackDialog .hs-reopen-link{
+ border:1px solid #587b45!important;color:#b8e19a!important;
+ background:#0d1d0c!important;font:650 12px ui-monospace,monospace!important;
+ min-height:45px;grid-column:1/-1;
+}
+body.hs-reader-ux #feedbackDialog .hs-reopen-link[hidden]{display:none!important}
+/* The resume control is ALWAYS accessible in the minimal player, not
+   accidentally hidden with the old advanced diagnostics and feedback. */
+body.hs-reader-ux #now .now-controls>.hs-restore-controls{
+ display:flex!important;grid-column:1/-1;gap:6px;min-width:0;width:100%;
+ justify-content:stretch;align-items:stretch;margin:2px 0 0!important;
+}
+body.hs-reader-ux #now .now-controls>.hs-restore-controls button{
+ min-height:44px!important;width:auto!important;min-width:46px!important;
+ margin:0!important;padding:8px 9px!important;
+ border:1px solid #45663b!important;background:#111b10!important;
+ color:#d0dfbf!important;font:650 12px/1.3 ui-monospace,monospace!important;
+ letter-spacing:.01em!important;text-transform:none!important;border-radius:0!important;
+}
+body.hs-reader-ux #now .now-controls>.hs-restore-controls #hsRestoreChapterMusic{
+ flex:1 1 auto;min-width:0!important;white-space:normal!important;
+ background:#183018!important;border-color:#72965b!important;color:#c5e8a8!important;
+}
+body.hs-reader-ux #now.hs-mini{
+ max-height:none!important;min-height:0!important;overflow:visible!important;
+ grid-template-rows:auto auto auto!important;gap:7px!important;
+ border-radius:0!important;
+}
+body.hs-reader-ux #now.hs-mini .now-controls{
+ grid-column:1!important;grid-row:3!important;
+ display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ gap:7px!important;min-width:0!important;
+}
+body.hs-reader-ux #now.hs-mini .now-controls>.btn{
+ min-width:0!important;max-width:none!important;width:100%!important;
+ min-height:46px!important;border-radius:0!important;
+ font:650 12px/1.25 ui-monospace,monospace!important;
+}
+body.hs-reader-ux #now.hs-mini .now-controls>.hs-restore-controls{
+ grid-column:1/-1!important;grid-row:2!important;
+}
+body.hs-reader-ux #now.hs-mini .now-controls>.hs-restore-controls button{
+ min-height:44px!important;
+}
+/* Original 40k header and HUD art is a design surface, not a plot reveal. */
+body.hs-reader-ux[data-hs-ui-series="warhammer-30k"] .hs-art-credit{
+ border:1px solid #415737!important;border-radius:0!important;
+}
+@media(max-width:380px){
+ body.hs-reader-ux #now.hs-mini .now-controls>.btn{font-size:11px!important;padding:7px 4px!important}
+ body.hs-reader-ux #now .now-controls>.hs-restore-controls button{font-size:11px!important;padding:6px!important}
+ body.hs-reader-ux .hs-recent-completion{flex-direction:column;align-items:stretch}
+ body.hs-reader-ux .hs-decision-actions{grid-template-columns:minmax(0,1fr)}
+}

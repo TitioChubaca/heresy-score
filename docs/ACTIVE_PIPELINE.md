@@ -1,5 +1,17 @@
 # Heresy Score — Active Product Pipeline
 
+## Atualização v0.18.3 — 26/11/2026 · desenho clássico e recuperação de leitura
+
+- **Problema visto em Android:** ao abrir a PWA o leitor via o layout original e depois outra apresentação excessivamente arredondada; a causa era CSS essencial anexado ao `head` somente após a inicialização de JavaScript, somado a wrappers visuais históricos. A base e skin Warhammer agora são carregadas em `<head>` antes do corpo, com `body.hs-reader-ux` marcado desde a primeira pintura. O visual busca reproduzir o Archivum original (preto/verde, monoespaçado, aquila/skull, linhas retas e cantos quadrados), conservando a organização responsiva, controles grandes e ações legíveis.
+- **Incidente real:** o leitor tocou involuntariamente em `Concluir` durante o próximo capítulo, perdendo a sessão e acesso ao botão de retomar a trilha. No Supabase, o livro VI apresentava apenas unidades internas 1–6 (Prelude e capítulos 1–5); **nenhuma unidade 7 encontrada na nuvem** em consulta somente leitura. O eventual encerramento acidental da unidade 7 pode estar somente no armazenamento local do telefone. Não mexer nos logs 1–6.
+- **Correção preventiva:** `scripts/reading-recovery.js` exige confirmação de `Concluir`; `Continuar lendo` mantém a sessão. `Reabrir leitura` pode ser acionado no último histórico, no formulário pós-leitura e na home durante 48h de uma conclusão recente. Não reabre registros de capítulos anteriores se existir outro mais recente.
+- **Recuperação sem perda:** salva o registro anterior por livro em `state.books[slug].pendingReopens[chapter]`, retira-o temporariamente de `done`, restabelece `state.active` pausada com cronômetro em ms. Ao confirmar a conclusão real, preserva notas antigas e libera nova sincronização. `cloudPullLogs` não reimporta automaticamente uma conclusão antiga enquanto há uma recuperação pendente. **Não há deleção/alteração de linhas remotas no Supabase** por esta sprint.
+- **Spotify:** `hsRestoreChapterMusic` e ±30s agora ficam visíveis no mini-player, sem desaparecer na área avançada. Recuperação não dispara playback. Nos novos capítulos, `refreshPlayer` guarda a URI e `progress_ms` somente se o contexto corresponde à playlist do capítulo; após reabertura, toque explícito em `Retomar trilha no ponto da leitura` dá preferência à posição Spotify salva. Para sessões encerradas na versão anterior, é estimado pelo tempo do cronômetro; avisar essa limitação, permitir ±30s.
+- **Qualidade pendente:** validação real no Galaxy/Android (primeira pintura sem flash; forma dos botões; não sobreposição; confirmação, log, recuperar e retomar posição real com Spotify conectado). Os testes de Node/GitHub não substituem teste do navegador.
+- **Teto de spoiler:** não inferir progresso de leitura pela conclusão acidental. Até confirmação do leitor, manter **Prelude + capítulos 1–5 realmente concluídos**; próximo capítulo narrativo é o 6 (unidade interna 7). Não expor acontecimentos futuros.
+
+---
+
 ## CHECKPOINT 25/11/2026 — v0.18.2: Spotify, visual e curadoria sem atalhos
 
 **Teto de spoiler:** *Descent of Angels* Prelude e capítulos 1–5 concluídos (**6/25 unidades**); próxima leitura **Capítulo 6 / unidade 7**. Supabase só foi consultado, sem modificações. Dados existentes e playlists anteriores devem permanecer intactos.
