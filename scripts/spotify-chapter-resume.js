@@ -10,7 +10,7 @@ b.style.cssText="margin:8px 4px 4px 0";
 const info=document.createElement("div");info.className="small";
 info.id="hsRestoreChapterStatus";info.setAttribute("aria-live","polite");
 info.style.margin="5px 0 9px";info.textContent="Se você ouviu outras músicas, retome a trilha no tempo do cronômetro.";
-const controls=document.createElement("div");controls.style.cssText="display:flex;flex-wrap:wrap;gap:5px";
+const controls=document.createElement("div");controls.id="hsRestoreControls";controls.className="hs-restore-controls";
 const minus=document.createElement("button"),plus=document.createElement("button");
 minus.type=plus.type="button";minus.className=plus.className="btn";
 minus.textContent="−30s";plus.textContent="+30s";minus.disabled=plus.disabled=true;
@@ -67,7 +67,20 @@ async function restore(delta){
   const previous=Number(state.active.musicOffsetMs)||0;
   const adjust=delta?previous+delta:previous;
   const desired=Math.max(0,at+adjust);
-  const target=locate(tracks,desired);
+  let target=locate(tracks,desired),fromSaved=false;
+  // Prefer an actual Spotify position captured in this playlist over the
+  // approximate elapsed-time mapping. Never seek to another playlist.
+  const saved=state.active.resumeFromSavedPoint?state.active.lastSpotifyProgress:null;
+  if(!delta&&saved?.playlistId===entry.id&&
+     typeof saved.uri==="string"&&Number.isFinite(saved.positionMs)){
+   const matching=tracks.findIndex(t=>t.uri===saved.uri);
+   if(matching>=0){
+    target={index:matching,positionMs:Math.max(0,Math.min(
+     saved.positionMs,Math.max(0,tracks[matching].durationMs-1000))),
+     title:tracks[matching].title};
+    fromSaved=true;
+   }
+  }
   const device=await spotifyResolveDevice();
   if(!device?.id)throw Error("Nenhum dispositivo Spotify ativo. Abra o aplicativo Spotify e reproduza uma faixa primeiro");
   if(mySession()!==session)throw Error("Sessão alterada");
@@ -78,7 +91,9 @@ async function restore(delta){
    })
   });
   if(mySession()!==session)return;
-  state.active.musicOffsetMs=adjust;
+  const elapsedBefore=tracks.slice(0,target.index).reduce((sum,t)=>sum+t.durationMs,0);
+  state.active.musicOffsetMs=fromSaved?elapsedBefore+target.positionMs-at:adjust;
+  state.active.resumeFromSavedPoint=false;
   state.active.musicRestoredAt=new Date().toISOString();
   state.active.musicRestoredTrack=target.index;
   state.active.musicRestoredPositionMs=target.positionMs;
@@ -93,7 +108,7 @@ async function restore(delta){
   }
   lastTarget={session,index:target.index,positionMs:target.positionMs};
   save();renderNow();renderSpotify();refreshPlayer();
-  info.textContent="Retomada: faixa "+(target.index+1)+" aos "+clock(target.positionMs)+" · cronômetro "+clock(at)+". Ajuste ±30s se necessário.";
+  info.textContent="Retomada: faixa "+(target.index+1)+" aos "+clock(target.positionMs)+" · cronômetro "+clock(at)+(fromSaved?" · posição salva do Spotify.":" · posição estimada; ajuste ±30s se necessário.");
   minus.disabled=plus.disabled=false;
  }catch(e){
   info.textContent="Spotify não retomou: "+(e.message||e)+". Cronômetro preservado; use Abrir Spotify para reprodução manual.";
