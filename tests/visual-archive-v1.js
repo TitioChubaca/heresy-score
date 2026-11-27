@@ -64,8 +64,8 @@ for(const p of [
  "assets/visuals/caliban-first-archive.svg",
  "assets/visuals/caliban-first-archive.webp"
 ])assert(sw.includes('"./'+p+'"'),"PWA must precache "+p);
-assert.match(sw,/heresy-score-v0183/);
-assert.match(read("scripts/app-build.js"),/version:"0\.18\.3"/);
+assert.match(sw,/heresy-score-v0184/);
+assert.match(read("scripts/app-build.js"),/version:"0\.18\.4"/);
 assert(css.includes("grid-template-columns:minmax(0,1fr)!important"),
  "Chapter actions stack vertically on small screens");
 assert(css.includes("#now.hs-mini .now-controls"),"Compact player action grid must be defined");
