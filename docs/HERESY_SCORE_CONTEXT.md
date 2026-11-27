@@ -1,5 +1,17 @@
 # Heresy Score — Technical and Musical Context
 
+## Checkpoint v0.18.4 — 26/11/2026 · Dramatis canônico e imagens por procedência
+
+- Pedido: `Retomar trilha no ponto da leitura` e ajustes ±30s ficam em `Outras opções` do player **expandido**, sem ocupar o mini-player. `scripts/reader-foundation.js` move os mesmos nós DOM (listeners e Spotify intactos). As ações primárias continuam Pausar, Spotify, Concluir.
+- Foi relido o **MOBI privado original**, somente Prelude e Capítulos 1–5, para distinguir personagens realmente apresentados daqueles listados apenas no Dramatis inicial. Foram cadastrados **9 personagens** (Lion El’Jonson, Luther, Zahariel, Nemiel, Lord Cypher, Mestre Ramiel, Irmão Amadis, Attias e Eliath) e **5 lugares** (Caliban, florestas de Caliban, Aldurukh, Câmara Circular, Northwilds), todos com `unlock` na primeira aparição segura.
+- Apenas **4 imagens originais anteriores** (Zahariel, Nemiel, florestas, Aldurukh) continuam representativas. Os sete outros personagens e três lugares ficam com a indicação honesta `retratro em pesquisa` / `imagem em pesquisa`; NÃO atribuir a eles arte não validada.
+- Pesquisa feita primeiro no catálogo oficial: [Warhammer Art — Descent of Angels / Neil Roberts](https://www.warhammerart.com/products/descent-of-angels). O app liga para a capa como referência editorial externa, sem reaproveitar arte protegida nem declarar que o rosto é um personagem. Fanarts sem autorização ou de época futura não foram integradas. **Não houve geração de novas imagens por IA.**
+- Regra editorial permanente: **arte oficial segura e com permissão de uso → fanart creditada com permissão → reconstrução original somente se aprovada**, sempre protegendo o ponto de leitura.
+- **Leitura:** Prelude e Capítulos 1–5 são os concluídos confirmados pelo leitor. Supabase mostra agora unidade 7 (Capítulo 6) com **8 minutos e encerramento**, coerente com o fechamento acidental relatado; isso **não confirma leitura integral nem libera spoilers**. Não alterar/excluir registro remoto sem instrução; a ação `Reabrir leitura` continua no app.
+- Sem mudanças em playlist, sequências musicais, dados de leitura ou esquema Supabase. Cobertura e processo completos em `docs/DESCENT_VISUAL_SOURCE_AUDIT.md`.
+
+---
+
 ## Atualização v0.18.3 — 26/11/2026 · desenho clássico e recuperação de leitura
 
 - **Problema visto em Android:** ao abrir a PWA o leitor via o layout original e depois outra apresentação excessivamente arredondada; a causa era CSS essencial anexado ao `head` somente após a inicialização de JavaScript, somado a wrappers visuais históricos. A base e skin Warhammer agora são carregadas em `<head>` antes do corpo, com `body.hs-reader-ux` marcado desde a primeira pintura. O visual busca reproduzir o Archivum original (preto/verde, monoespaçado, aquila/skull, linhas retas e cantos quadrados), conservando a organização responsiva, controles grandes e ações legíveis.
